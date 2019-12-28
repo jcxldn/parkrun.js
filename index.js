@@ -1,28 +1,9 @@
-const axios = require("axios").default;
+const net = require("./axios");
 
 const Parkrun = require("./classes/parkrun");
 const Tokens = require("./classes/tokens");
 
-const constants = require("./constants");
-
-// Get the initial user/pass from the raw auth data
-const authSplit = Buffer.from(constants.auth_raw, "base64")
-  .toString("utf8")
-  .split(":");
-
-const a = axios.create({
-  baseURL: constants.api_base,
-  auth: {
-    username: authSplit[0],
-    password: authSplit[1]
-  },
-  headers: {
-    "User-Agent": constants.user_agent,
-    "X-Powered-By": "Parkrun.JS"
-  }
-});
-
-module.exports = async (id, password) => {
+const auth = async (id, password) => {
   // ID checking here
 
   const params = new URLSearchParams();
@@ -31,7 +12,7 @@ module.exports = async (id, password) => {
   params.append("scope", "app");
   params.append("grant_type", "password");
   try {
-    const res = await a.post("/user_auth.php", params, {
+    const res = await net.post("/user_auth.php", params, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 
@@ -41,7 +22,7 @@ module.exports = async (id, password) => {
 
     if (res.status == 200) {
       // Login successful, tokens recieved
-      return new Parkrun(new Tokens(res.data, res.headers));
+      return new Parkrun(new Tokens(res.data, res.headers.date));
     }
   } catch (error) {
     if (error.response != undefined) {
@@ -53,4 +34,8 @@ module.exports = async (id, password) => {
       throw new Error("unspecified error during auth flow");
     }
   }
+};
+
+module.exports = {
+  auth
 };
