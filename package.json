@@ -5,7 +5,7 @@
   "main": "src/classes/parkrun.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:build": "jsdoc -r src -R README.MD -c jsdoc.json"
+    "docs:build": "jsdoc -r src -R ./README.MD -c jsdoc.json"
   },
   "repository": {
     "type": "git",
