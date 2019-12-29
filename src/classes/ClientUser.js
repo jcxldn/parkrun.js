@@ -6,7 +6,12 @@ const User = require("./User");
 
 const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtra");
 
-module.exports = class ClientUser extends User {
+/**
+ * A class representing the currently-logged in user.
+ *
+ * @extends {User}
+ */
+class ClientUser extends User {
   constructor(res) {
     const data = Validate(res, ClientAthleteExpandedExtra).value.data
       .Athletes[0];
@@ -95,4 +100,6 @@ module.exports = class ClientUser extends User {
   getEmail() {
     return this._email;
   }
-};
+}
+
+module.exports = ClientUser;

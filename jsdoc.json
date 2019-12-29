@@ -1,0 +1,32 @@
+{
+  "opts": {
+    "template": "node_modules/docdash",
+    "encoding": "utf8",
+    "destination": "./docs/",
+    "recurse": true,
+    "verbose": true
+  },
+
+  "plugins": ["plugins/markdown"],
+
+  "docdash": {
+    "sectionOrder": [
+      "Modules",
+      "Classes",
+      "Externals",
+      "Events",
+      "Namespaces",
+      "Mixins",
+      "Tutorials",
+      "Interfaces"
+    ],
+    "search": "true",
+    "menu": {
+      "GitHub": {
+        "href": "https://github.com/Prouser123/parkrun.js",
+        "target": "_blank",
+        "class": "menu-item"
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
-const net = require("./axios");
+const net = require("./net");
 
 const Parkrun = require("./classes/parkrun");
-const Tokens = require("./classes/tokens");
+const Tokens = require("./classes/Tokens");
 
 const auth = async (id, password) => {
   // ID checking here
@@ -36,6 +36,4 @@ const auth = async (id, password) => {
   }
 };
 
-module.exports = {
-  auth
-};
+module.exports = auth;

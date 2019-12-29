@@ -1,3 +1,9 @@
+/**
+ * Parkrun.JS Constants
+ *
+ * @static
+ * @readonly
+ */
 module.exports = {
   api_base: "https://api.parkrun.com",
   auth_raw:

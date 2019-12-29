@@ -6,6 +6,9 @@ const authSplit = Buffer.from(constants.auth_raw, "base64")
   .toString("utf8")
   .split(":");
 
+/**
+ * The customised axios client to use for web requests.
+ */
 const net = axios.create({
   baseURL: constants.api_base,
   auth: {

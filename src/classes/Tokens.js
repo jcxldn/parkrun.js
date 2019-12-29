@@ -1,4 +1,4 @@
-module.exports = class Tokens {
+class Tokens {
   constructor(auth_res, date_issued) {
     this._access = auth_res.access_token;
     this._refresh = auth_res.refresh_token;
@@ -17,4 +17,6 @@ module.exports = class Tokens {
   isValid() {
     return new Date().getTime() / 1000 < this._date_end;
   }
-};
+}
+
+module.exports = Tokens;
