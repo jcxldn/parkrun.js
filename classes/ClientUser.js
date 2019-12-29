@@ -1,5 +1,98 @@
 // Represents the currently logged in user
 
+const Validate = require("../validate");
+
 const User = require("./User");
 
-module.exports = class ClientUser extends User {};
+const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtra");
+
+module.exports = class ClientUser extends User {
+  constructor(res) {
+    const data = Validate(res, ClientAthleteExpandedExtra).value.data
+      .Athletes[0];
+    // Set the base objects
+    super(res);
+
+    // Set the client-only objects
+    console.log(data);
+    this._clubID = data.ClubID;
+    this._dob = data.DOB;
+    this._mobileNumber = data.MobileNumber;
+    this._base2_mail_ok = data.OKtoMail;
+    this._postcode = data.Postcode;
+    this._preSignupWeeklyExerciseFrequency = data.PreParkrunExerciseFrequency;
+    this._base2_wheelchair = data.WheelchairAthlete;
+    this._email = data.eMailID;
+  }
+
+  /**
+   * Gets the Club ID for the currently logged-in user.
+   * @returns {number} club id
+   */
+  getClubID() {
+    return this._clubID;
+  }
+
+  /**
+   * Gets the Date of Birth for the currently logged-in user.
+   *
+   * @returns {Date} date of birth
+   */
+  getDOB() {
+    return this._dob;
+  }
+
+  /**
+   * Gets the mobile number for the currently logged-in user.
+   *
+   * @returns {String} mobile number
+   */
+  getMobileNumber() {
+    return this._mobileNumber;
+  }
+
+  /**
+   * Gets the user's status towards extra communications.
+   *
+   * @returns {boolean} user's preference
+   */
+  getCommunicationAllowed() {
+    return Boolean(this._base2_mail_ok);
+  }
+
+  /**
+   * Gets the post code of the currently-logged in user.
+   *
+   * @returns {string} post code
+   */
+  getPostcode() {
+    return this._postcode;
+  }
+
+  /**
+   * Gets the amount of times per week the user exercised before joining parkrun (survey data)
+   *
+   * @returns {number}
+   */
+  getPreSignupExerciseFrequency() {
+    return this._preSignupWeeklyExerciseFrequency;
+  }
+
+  /**
+   * Gets data on if the user is a wheelchair user
+   *
+   * @returns {boolean} user uses wheelchair?
+   */
+  getIsWheelchairUser() {
+    return Boolean(this._base2_wheelchair);
+  }
+
+  /**
+   * Get's the user's email address.
+   *
+   * @returns {string} email address
+   */
+  getEmail() {
+    return this._email;
+  }
+};
