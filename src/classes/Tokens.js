@@ -1,3 +1,8 @@
+/**
+ * A class representing the client's authentication tokens.
+ *
+ * @class Tokens
+ */
 class Tokens {
   constructor(auth_res, date_issued) {
     this._access = auth_res.access_token;
@@ -14,9 +19,16 @@ class Tokens {
     console.log(this._date_end);
   }
 
+  /**
+   * Boolean to check if the access token is valid.
+   *
+   * @returns {Boolean} is the token valid?
+   */
   isValid() {
     return new Date().getTime() / 1000 < this._date_end;
   }
+
+  // TODO: Add getters
 }
 
 module.exports = Tokens;
