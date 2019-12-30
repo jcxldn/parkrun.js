@@ -1,26 +1,27 @@
-name: Documentation >> GitHub Pages
+name: docs
 
 on:
   push:
-    branches: 
+    branches:
       - master
 
-jobs:  
+jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-        
-      - name: Install
+
+      - name: Install & Build Docs
         run: |
           npm install
           npm run docs:build
-      - name: Build and Deploy Repo
+
+      - name: Deploy Docs
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: 'docs'
+          FOLDER: "docs"
           #CNAME: (cname)
           CLEAN: true
