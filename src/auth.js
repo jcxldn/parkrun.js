@@ -1,6 +1,5 @@
 const net = require("./net");
 
-const Parkrun = require("./classes/parkrun");
 const Tokens = require("./classes/Tokens");
 
 const auth = async (id, password) => {
@@ -22,7 +21,8 @@ const auth = async (id, password) => {
 
     if (res.status == 200) {
       // Login successful, tokens recieved
-      return new Parkrun(new Tokens(res.data, res.headers.date));
+      //return new Parkrun(new Tokens(res.data, res.headers.date));
+      return new Tokens(res.data, res.headers.date);
     }
   } catch (error) {
     if (error.response != undefined) {
@@ -31,6 +31,7 @@ const auth = async (id, password) => {
         throw new Error("invalid username or password!");
       }
     } else {
+      console.error(error);
       throw new Error("unspecified error during auth flow");
     }
   }

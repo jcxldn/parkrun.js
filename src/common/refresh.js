@@ -1,6 +1,6 @@
-const net = require("../axios");
+const net = require("../net");
 
-const Tokens = require("../classes/tokens");
+const TokensData = require("../classes/tokens")._TokensData;
 
 module.exports = async refreshToken => {
   const params = new URLSearchParams();
@@ -15,7 +15,7 @@ module.exports = async refreshToken => {
     // Token refresh was successful, now we return a new Tokens class object.
     const output = res.data;
     output.refresh_token = refreshToken;
-    return new Tokens(output, res.headers.date);
+    return new TokensData(output, res.headers.date);
   } catch (err) {
     throw new Error("error during token refresh");
   }
