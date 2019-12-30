@@ -21,9 +21,9 @@ class Parkrun {
   }
 
   /**
-   * Get the login and/or refresh tokens for this client instance.
+   * Get the authentication (login) and refresh tokens for this client instance.
    *
-   * @returns {Tokens}
+   * @returns {Tokens} Tokens instance.
    */
   getTokens() {
     return this._tokens;
