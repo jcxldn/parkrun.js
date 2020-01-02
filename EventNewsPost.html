@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Parkrun - Documentation</title>
+    <title>EventNewsPost - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">Parkrun</h1>
+    <h1 class="page-title">EventNewsPost</h1>
     
 
     
@@ -47,10 +47,10 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-ParkrunJS.html">ParkrunJS</a>~</span>
-        
-        Parkrun
+        EventNewsPost
         </h2>
+        
+            <div class="class-description"><p>A class representing a news post for a parkrun event.</p></div>
         
     
 </header>
@@ -62,8 +62,10 @@
             
 
     
+    <h2>Constructor</h2>
+    
 
-    <h4 class="name" id="Parkrun"><span class="type-signature"></span>new Parkrun<span class="signature">(tokens)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="EventNewsPost"><span class="type-signature"></span>new EventNewsPost<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -75,7 +77,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line25">line 25</a>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -114,9 +116,6 @@
 
 
 
-<div class="description">
-    <p>Constructor from tokens.</p>
-</div>
 
 
 
@@ -125,56 +124,6 @@
 
 
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>tokens</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="Tokens.html">Tokens</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -220,7 +169,7 @@
 
     
 
-    <h4 class="name" id=".auth"><span class="type-signature">(static) </span>auth<span class="signature">(id, password, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="getAuthorAvatarURL"><span class="type-signature"></span>getAuthorAvatarURL<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -232,7 +181,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line83">line 83</a>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -272,7 +221,7 @@
 
 
 <div class="description">
-    <p>Synchronously authenticate a user via id/password</p>
+    <p>Get the author's avatar for this news post.</p>
 </div>
 
 
@@ -283,281 +232,6 @@
 
 
 
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>const Parkrun = require("parkrun.js")
-Parkrun.auth("A1234567", "password", function(client) => {
- // ...
-})</code></pre>
-
-    <pre class="prettyprint"><code>// Alternative example using ES6
-
-const Parkrun = require("parkrun.js")
-Parkrun.auth("A1234567", "password", (client) => {
- // ...
-})</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">authCallback</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>the callback to run once login has completed. The first paramater is the Parkrun client.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id=".authSync"><span class="type-signature">(async, static) </span>authSync<span class="signature">(id, password)</span><span class="type-signature"> &rarr; {Promise.&lt;Parkrun>}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line52">line 52</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Asynchronously authenticate a user via id/password</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>const Parkrun = require("parkrun.js")
-const client = await Parkrun.authSync("A1234567", "password")</code></pre>
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>password</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
 
 
 
@@ -577,6 +251,10 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    <p>Avatar URL.</p>
+</div>
+
 
 
 <dl class="param-type">
@@ -585,7 +263,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;Parkrun></span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -600,7 +278,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
     
 
-    <h4 class="name" id="getAthlete"><span class="type-signature">(async) </span>getAthlete<span class="signature">(id)</span><span class="type-signature"> &rarr; {<a href="User.html">User</a>}</span></h4>
+    <h4 class="name" id="getAuthorName"><span class="type-signature"></span>getAuthorName<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
@@ -612,7 +290,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line101">line 101</a>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -652,7 +330,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
 
 <div class="description">
-    <p>Asynchronously get an athlete based on their ID.</p>
+    <p>Get the author's name for this news post.</p>
 </div>
 
 
@@ -665,116 +343,147 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
 
 
-    <h5>Parameters:</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Author name.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
     
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
 
-        <th>Type</th>
 
         
+            
 
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
-        <tr>
-            
-                <td class="name"><code>id</code></td>
-            
+    <h4 class="name" id="getCommentCount"><span class="type-signature"></span>getCommentCount<span class="signature">()</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
-            <td class="type">
-            
-                
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Get the amount of comments for this news post.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Comment count.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
 <span class="param-type">Number</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>athlete id of the user you wish to get.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        <p>ParkrunJS Networking Error.</p>
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl class="param-type">
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type"><a href="ParkrunNetError.html">ParkrunNetError</a></span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>User object of the specified athlete.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="User.html">User</a></span>
-
-
     </dd>
 </dl>
 
@@ -787,7 +496,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
     
 
-    <h4 class="name" id="getNews"><span class="type-signature">(async) </span>getNews<span class="signature">(eventID)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="EventNewsPost.html">EventNewsPost</a>>}</span></h4>
+    <h4 class="name" id="getDate"><span class="type-signature"></span>getDate<span class="signature">()</span><span class="type-signature"> &rarr; {Date}</span></h4>
 
     
 
@@ -799,7 +508,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line120">line 120</a>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -839,7 +548,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
 
 <div class="description">
-    <p>Get all news posts for the specified event id.</p>
+    <p>Get the post date for this news item.</p>
 </div>
 
 
@@ -852,116 +561,147 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
 
 
-    <h5>Parameters:</h5>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Post date.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Date</span>
+
+
+    </dd>
+</dl>
+
     
 
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
 
-        <th>Type</th>
 
         
+            
 
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
     
 
-        <tr>
-            
-                <td class="name"><code>eventID</code></td>
-            
+    <h4 class="name" id="getEventID"><span class="type-signature"></span>getEventID<span class="signature">()</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
-            <td class="type">
-            
-                
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Get the parent event ID for this news post.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Event ID.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
 <span class="param-type">Number</span>
 
 
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Throws:</h5>
-
-        
-
-<dl>
-    <dt>
-        <div class="param-desc">
-        <p>ParkrunJS Networking Error.</p>
-        </div>
-    </dt>
-    <dd></dd>
-    <dt>
-        <dl class="param-type">
-            <dt>
-                Type
-            </dt>
-            <dd>
-                
-<span class="param-type"><a href="ParkrunNetError.html">ParkrunNetError</a></span>
-
-
-            </dd>
-        </dl>
-    </dt>
-    <dd></dd>
-</dl>
-
-
-    
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>Array of news posts.</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array.&lt;<a href="EventNewsPost.html">EventNewsPost</a>></span>
-
-
     </dd>
 </dl>
 
@@ -974,7 +714,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
     
 
-    <h4 class="name" id="getTokens"><span class="type-signature"></span>getTokens<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Tokens.html">Tokens</a>}</span></h4>
+    <h4 class="name" id="getID"><span class="type-signature"></span>getID<span class="signature">()</span><span class="type-signature"> &rarr; {Number}</span></h4>
 
     
 
@@ -986,7 +726,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="classes_parkrun.js.html">classes/parkrun.js</a>, <a href="classes_parkrun.js.html#line37">line 37</a>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line29">line 29</a>
     </li></ul></dd>
     
 
@@ -1026,7 +766,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
 
 <div class="description">
-    <p>Get the authentication (login) and refresh tokens for this client instance.</p>
+    <p>Get the post ID of this object.</p>
 </div>
 
 
@@ -1057,7 +797,7 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
 
         
 <div class="param-desc">
-    <p>Tokens instance.</p>
+    <p>Post ID.</p>
 </div>
 
 
@@ -1068,7 +808,116 @@ const client = await Parkrun.authSync("A1234567", "password")</code></pre>
     </dt>
     <dd>
         
-<span class="param-type"><a href="Tokens.html">Tokens</a></span>
+<span class="param-type">Number</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getTitle"><span class="type-signature"></span>getTitle<span class="signature">()</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="classes_EventNewsPost.js.html">classes/EventNewsPost.js</a>, <a href="classes_EventNewsPost.js.html#line74">line 74</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Get the post title for this news post.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Post title.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
 
 
     </dd>

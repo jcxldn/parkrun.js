@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>classes/HomeRun.js - Documentation</title>
+    <title>classes/EventNewsPost.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">classes/HomeRun.js</h1>
+    <h1 class="page-title">classes/EventNewsPost.js</h1>
     
 
     
@@ -45,44 +45,84 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * A class representing a user's Home Parkrun.
+ * A class representing a news post for a parkrun event.
  */
-class HomeRun {
-  constructor(id, loc, name) {
-    this._id = Number.parseInt(id);
-    this._loc = loc;
-    this._name = name;
+class EventNewsPost {
+  constructor(res) {
+    this._event = Number.parseInt(res.EventNumber);
+    this._id = Number.parseInt(res.ID);
+    this._commentCount = Number.parseInt(res.NumberOfComments);
+    this._authorName = res.author;
+    this._authorAvatar = res.avatar;
+    this._date = new Date(res.post_date);
+    this._title = res.post_title;
   }
 
   /**
-   * Get the Run ID for this run.
+   * Get the parent event ID for this news post.
    *
-   * @returns {Number} run ID
+   * @returns {Number} Event ID.
+   */
+  getEventID() {
+    return this._event;
+  }
+
+  /**
+   * Get the post ID of this object.
+   *
+   * @returns {Number} Post ID.
    */
   getID() {
     return this._id;
   }
 
   /**
-   * Get the location for this run.
+   * Get the amount of comments for this news post.
    *
-   * @return {String} run location
+   * @returns {Number} Comment count.
    */
-  getLocation() {
-    return this._loc;
+  getCommentCount() {
+    return this._commentCount;
   }
 
   /**
-   * Get the name of this run.
+   * Get the author's name for this news post.
    *
-   * @return {String} run name
+   * @returns {String} Author name.
    */
-  getName() {
-    return this._name;
+  getAuthorName() {
+    return this._authorName;
+  }
+
+  /**
+   * Get the author's avatar for this news post.
+   *
+   * @returns {String} Avatar URL.
+   */
+  getAuthorAvatarURL() {
+    return this._authorAvatar;
+  }
+
+  /**
+   * Get the post date for this news item.
+   *
+   * @returns {Date} Post date.
+   */
+  getDate() {
+    return this._date;
+  }
+
+  /**
+   * Get the post title for this news post.
+   *
+   * @returns {String} Post title.
+   */
+  getTitle() {
+    return this._title;
   }
 }
 
-module.exports = HomeRun;
+module.exports = EventNewsPost;
 </code></pre>
         </article>
     </section>

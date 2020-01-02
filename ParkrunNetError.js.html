@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>classes/HomeRun.js - Documentation</title>
+    <title>ParkrunNetError.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">classes/HomeRun.js</h1>
+    <h1 class="page-title">ParkrunNetError.js</h1>
     
 
     
@@ -44,45 +44,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * A class representing a user's Home Parkrun.
+            <pre class="prettyprint source linenums"><code>const Constants = require("./constants");
+
+/**
+ * Error class for Networking-related errors.
+ *
+ * @extends {Error}
  */
-class HomeRun {
-  constructor(id, loc, name) {
-    this._id = Number.parseInt(id);
-    this._loc = loc;
-    this._name = name;
-  }
+class ParkrunNetError extends Error {
+  constructor(err) {
+    const message = `HTTP Error ${err.response.status} (${
+      err.response.statusText
+    }) on ${err.response.config.method.toString().toUpperCase()} request to '${
+      err.response.config.url.toString().split(Constants.api_base)[1]
+    }'`;
 
-  /**
-   * Get the Run ID for this run.
-   *
-   * @returns {Number} run ID
-   */
-  getID() {
-    return this._id;
-  }
+    super(message);
 
-  /**
-   * Get the location for this run.
-   *
-   * @return {String} run location
-   */
-  getLocation() {
-    return this._loc;
-  }
-
-  /**
-   * Get the name of this run.
-   *
-   * @return {String} run name
-   */
-  getName() {
-    return this._name;
+    this.name = this.constructor.name;
   }
 }
 
-module.exports = HomeRun;
+module.exports = ParkrunNetError;
 </code></pre>
         </article>
     </section>
