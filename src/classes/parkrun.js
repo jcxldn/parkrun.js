@@ -2,6 +2,8 @@
 
 const Net = require("./Net");
 const User = require("./User");
+const EventNewsPost = require("./EventNewsPost");
+
 const NetError = require("../ParkrunNetError");
 
 const authSync = require("../auth");
@@ -106,6 +108,30 @@ class Parkrun {
       });
 
     return new User(res.data);
+  }
+
+  /**
+   * Get all news posts for the specified event id.
+   *
+   * @param {Number} eventID
+   * @returns {Array<EventNewsPost>} Array of news posts.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getNews(eventID) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/news/${eventID}`, {
+        params: { offset: 0, ...this._net_params }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    const output = [];
+    for (var i = 0, len = res.data.data.EventNews.length; i < len; i++) {
+      output.push(new EventNewsPost(res.data.data.EventNews[i]));
+    }
+
+    return output;
   }
 }
 
