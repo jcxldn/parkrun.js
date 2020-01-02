@@ -2,6 +2,7 @@
 
 const Net = require("./Net");
 const User = require("./User");
+const ClientUser = require("./ClientUser");
 const EventNewsPost = require("./EventNewsPost");
 
 const NetError = require("../ParkrunNetError");
@@ -95,7 +96,7 @@ class Parkrun {
    * Asynchronously get an athlete based on their ID.
    *
    * @param {Number} id athlete id of the user you wish to get.
-   * @returns {User} User object of the specified athlete.
+   * @returns {Promise<User>} User object of the specified athlete.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAthlete(id) {
@@ -114,7 +115,7 @@ class Parkrun {
    * Get all news posts for the specified event id.
    *
    * @param {Number} eventID
-   * @returns {Array<EventNewsPost>} Array of news posts.
+   * @returns {Promise<Array<EventNewsPost>>} Array of news posts.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getNews(eventID) {
@@ -132,6 +133,22 @@ class Parkrun {
     }
 
     return output;
+  }
+
+  /**
+   * Get the Profile of the currently logged-in user.
+   *
+   * @returns {Promise<ClientUser>} Your ClientUser object.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getMe() {
+    const res = await this._getAuthedNet()
+      .get("/v1/me")
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return new ClientUser(res.data);
   }
 }
 
