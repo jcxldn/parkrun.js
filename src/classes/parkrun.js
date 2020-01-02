@@ -1,5 +1,9 @@
 // TODO: Rename to 'Client'
 
+const Net = require("./Net");
+const User = require("./User");
+const NetError = require("../ParkrunNetError");
+
 const authSync = require("../auth");
 
 // We are requiring this so we get IntelliSense for end-users.
@@ -18,6 +22,9 @@ class Parkrun {
    */
   constructor(tokens) {
     this._tokens = tokens;
+
+    this._net_authed = new Net(tokens.getCurrentAccessToken());
+    this._net_params = this._net_authed._params;
   }
 
   /**
@@ -76,7 +83,29 @@ class Parkrun {
     authSync(id, password).then(tokens => {
       callback(new Parkrun(tokens));
     });
-    //authSync(id, password).then(callback);
+  }
+
+  _getAuthedNet() {
+    return this._net_authed.getAuthed();
+  }
+
+  /**
+   * Asynchronously get an athlete based on their ID.
+   *
+   * @param {Number} id athlete id of the user you wish to get.
+   * @returns {User} User object of the specified athlete.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAthlete(id) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/athletes/${id}`, {
+        params: { limit: 100, ...this._net_params }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return new User(res.data);
   }
 }
 
