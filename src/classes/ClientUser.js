@@ -12,11 +12,11 @@ const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtr
  * @extends {User}
  */
 class ClientUser extends User {
-  constructor(res) {
+  constructor(res, authedNet) {
     const data = Validate(res, ClientAthleteExpandedExtra).value.data
       .Athletes[0];
     // Set the base objects
-    super(res);
+    super(res, authedNet);
 
     // Set the client-only objects
     console.log(data);

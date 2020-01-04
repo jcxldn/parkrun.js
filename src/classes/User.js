@@ -2,7 +2,12 @@ const Validate = require("../validate");
 
 const HomeRun = require("./HomeRun");
 
+const NetError = require("../ParkrunNetError");
+
 const AthleteExpandedSchema = require("../schemas/AthleteExpanded");
+
+// Importing for IntelliSense
+const AxiosInstance = require("axios").default;
 
 const capitalize = str =>
   str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
@@ -15,9 +20,10 @@ class User {
    * Create a new User class from the API responses.
    *
    * @param {*} res the API response
+   * @param {AxiosInstance} authedNet parkrun.js networking instance
    * @returns {User} the new user class
    */
-  constructor(res) {
+  constructor(res, authedNet) {
     const data = Validate(res, AthleteExpandedSchema).value.data.Athletes[0];
 
     this._athleteID = data.AthleteID;
@@ -31,6 +37,7 @@ class User {
     );
     this._lastName = data.LastName;
     this._sex = data.Sex;
+    this._authedNet = authedNet;
   }
 
   /**
@@ -103,6 +110,23 @@ class User {
    */
   getFullName() {
     return `${this.getFirstName()} ${this.getLastName()}`;
+  }
+
+  /**
+   * Get the user's run count.
+   *
+   * @returns {Promise<Number>} Run count.
+   */
+  async getRunCount() {
+    const res = await this._authedNet
+      .get("/v1/hasrun/count/Run", {
+        params: { athleteId: this._athleteID, offset: 0 }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return Number.parseInt(res.data.data.TotalRuns[0].RunTotal);
   }
 }
 
