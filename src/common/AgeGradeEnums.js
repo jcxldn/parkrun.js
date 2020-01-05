@@ -1,3 +1,5 @@
+// Source (archived): https://web.archive.org/web/20191229114504/https://support.parkrun.com/hc/en-us/articles/200565263-What-is-age-grading-
+
 const AGEGRADE = Object.freeze({
   WORLD_RECORD_BREAKING: "age_grade_10",
   WORLD_RECORD_MATCH: "age_grade_9",

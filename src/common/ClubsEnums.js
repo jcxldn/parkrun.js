@@ -1,3 +1,5 @@
+// Source (archived): https://web.archive.org/web/20200105200441/https://support.parkrun.com/hc/en-us/articles/200565303-What-are-the-10-50-100-250-500-Clubs-
+
 const CLUBS = Object.freeze({
   null: { id: "c0", name: "No Club" },
   // 10 J only
