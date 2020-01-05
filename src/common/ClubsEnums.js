@@ -1,31 +1,35 @@
 const CLUBS = Object.freeze({
-  undefined: "clubs_0",
-  null: "clubs_0",
+  null: { id: "c0", name: "No Club" },
   // 10 J only
-  50: "clubs_1",
-  100: "clubs_2",
-  250: "clubs_3",
-  500: "clubs_4"
+  50: { id: "c1", name: "50+ Club" },
+  100: { id: "c2", name: "100+ Club" },
+  250: { id: "c3", name: "250+ Club" },
+  500: { id: "c4", name: "500+ Club" }
 });
 
 const VOLUNTEER_CLUBS = Object.freeze({
-  undefined: "clubs_voln_0",
-  null: "clubs_voln_0",
-  25: "clubs_voln_1"
+  null: { id: "v0", name: "No Club" },
+  25: { id: "v1", name: "Volunteer 25+ Club" }
 });
 
 const JUNIOR_CLUBS = Object.freeze({
-  undefined: "clubs_jr_0",
-  null: "clubs_jr_0",
-  10: "clubs_jr_1",
-  50: "clubs_jr_2",
-  100: "clubs_jr_3",
-  250: "clubs_jr_4",
-  500: "clubs_jr_5"
+  null: { id: "j0", name: "No Club" },
+  10: { id: "j1", name: "Junior 10+ Club" },
+  50: { id: "j2", name: "Junior 50+ Club" },
+  100: { id: "j3", name: "Junior 100+ Club" },
+  250: { id: "j4", name: "Junior 250+ Club" },
+  500: { id: "j5", name: "Junior 500+ Club" }
 });
+
+const _volnFromCount = count => {
+  if (count >= 25) return VOLUNTEER_CLUBS[25];
+
+  return VOLUNTEER_CLUBS.null;
+};
 
 module.exports = {
   CLUBS,
   VOLUNTEER_CLUBS,
-  JUNIOR_CLUBS
+  JUNIOR_CLUBS,
+  _volnFromCount
 };

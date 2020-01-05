@@ -2,6 +2,7 @@ const Validate = require("../validate");
 
 const HomeRun = require("./HomeRun");
 const RunResult = require("./RunResult");
+const ClubsEnums = require("../common/ClubsEnums");
 
 const NetError = require("../ParkrunNetError");
 
@@ -156,6 +157,47 @@ class User {
       out.push(new RunResult(res.data.data.Results[i]));
     }
     return out;
+  }
+
+  /**
+   * Get the user's Parkrun Clubs (for milestone runs / duties)
+   *
+   * @returns {Promise<Object>}
+   *
+   * @example
+   *
+   * const user = .....
+   *
+   *
+   * await user.getClubs()
+   *
+   * // Example Response:
+   *
+   * {
+   *   ParkrunClub: { id: 'c3', name: '250+ Club' }
+   *   JuniorClub: { id: 'j0', name: 'No Club' },
+   *   VolunteerClub: { id: 'v1', name: 'Volunteer 25+ Club' }
+   * }
+   */
+  async getClubs() {
+    // We are using /v1/results (from getRuns() as it returns all club statuses at once.)
+    const res = await this._authedNet
+      .get(`/v1/results`, {
+        params: {
+          athleteId: this._athleteID,
+          limit: 1,
+          offset: 0
+        }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+    const data = res.data.data.Results[0];
+    return {
+      ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership],
+      JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],
+      VolunteerClub: ClubsEnums._volnFromCount(data.volcount)
+    };
   }
 }
 
