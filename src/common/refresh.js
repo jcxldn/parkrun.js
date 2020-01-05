@@ -1,4 +1,4 @@
-const net = require("../net");
+const net = require("../classes/Net").getNonAuthed();
 
 const TokensData = require("../classes/tokens")._TokensData;
 
@@ -10,8 +10,7 @@ module.exports = async refreshToken => {
     const res = await net.post("/auth/refresh", params, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
-    console.log(res.status);
-    console.log(res.data);
+
     // Token refresh was successful, now we return a new Tokens class object.
     const output = res.data;
     output.refresh_token = refreshToken;

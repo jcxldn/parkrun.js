@@ -1,4 +1,4 @@
-const net = require("./net");
+const net = require("./classes/Net").getNonAuthed();
 
 const Tokens = require("./classes/Tokens");
 
@@ -16,9 +16,6 @@ const auth = async (id, password) => {
     });
 
     // Success, continue
-    console.log(res.status);
-    console.log(res.data);
-
     if (res.status == 200) {
       // Login successful, tokens recieved
       //return new Parkrun(new Tokens(res.data, res.headers.date));

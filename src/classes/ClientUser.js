@@ -19,7 +19,6 @@ class ClientUser extends User {
     super(res, authedNet);
 
     // Set the client-only objects
-    console.log(data);
     this._clubID = data.ClubID;
     this._dob = data.DOB;
     this._mobileNumber = data.MobileNumber;
