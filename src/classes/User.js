@@ -1,6 +1,7 @@
 const Validate = require("../validate");
 
 const HomeRun = require("./HomeRun");
+const RunResult = require("./RunResult");
 
 const NetError = require("../ParkrunNetError");
 
@@ -116,6 +117,7 @@ class User {
    * Get the user's run count.
    *
    * @returns {Promise<Number>} Run count.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRunCount() {
     const res = await this._authedNet
@@ -127,6 +129,33 @@ class User {
       });
 
     return Number.parseInt(res.data.data.TotalRuns[0].RunTotal);
+  }
+
+  /**
+   * Get a array of the user's runs.
+   *
+   * @returns {Promise<Array<RunResult>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getRuns() {
+    const res = await this._authedNet
+      .get("/v1/results", {
+        params: {
+          athleteId: this._athleteID,
+          orderBy: "EventDate", // The app uses this, but it does not return in order.
+          limit: 1000,
+          offset: 0
+        }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    const out = [];
+    for (var i = 0, len = res.data.data.Results.length; i < len; i++) {
+      out.push(new RunResult(res.data.data.Results[i]));
+    }
+    return out;
   }
 }
 
