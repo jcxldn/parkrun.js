@@ -4,6 +4,7 @@ const Net = require("./Net");
 const User = require("./User");
 const ClientUser = require("./ClientUser");
 const EventNewsPost = require("./EventNewsPost");
+const RosterVolunteer = require("./RosterVolunteer");
 
 const NetError = require("../errors/ParkrunNetError");
 
@@ -70,7 +71,7 @@ class Parkrun {
    * @param {authCallback} callback the callback to run once login has completed. The first paramater is the Parkrun client.
    * @example
    * const Parkrun = require("parkrun.js")
-   * Parkrun.auth("A1234567", "password", function(client) => {
+   * Parkrun.auth("A1234567", "password", function(client) {
    *  // ...
    * })
    * @example
@@ -149,6 +150,29 @@ class Parkrun {
       });
 
     return new ClientUser(res.data, this._getAuthedNet());
+  }
+
+  /**
+   * Get the upcoming roster(s) for a parkrun event.
+   *
+   * @param {Number} eventID
+   * @returns {Promise<Array<RosterVolunteer>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getRoster(eventID) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/events/${eventID}/rosters`)
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    const output = [];
+
+    for (var i = 0, len = res.data.data.Rosters.length; i < len; i++) {
+      output.push(new RosterVolunteer(res.data.data.Rosters[i]));
+    }
+
+    return output;
   }
 }
 
