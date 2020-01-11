@@ -9,7 +9,7 @@ const EventNewsPost = require("./EventNewsPost");
  * @borrows Parkrun#getNews as getNews
  */
 class Event {
-  constructor(res) {
+  constructor(res, core) {
     this._id = Number.parseInt(res.EventNumber);
     this._name_internal = res.EventName;
     this._name_short = res.EventShortName;
@@ -28,6 +28,8 @@ class Event {
     this._helperEmail = res.EventHelpersEmail;
     this._totalEvents = Number.parseInt(res.TotalEventsStaged);
     this._public = new Boolean(res.AccessibleToPublic);
+
+    this._core = core;
   }
 
   /**
@@ -40,7 +42,7 @@ class Event {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getNews() {
-    return core.getNews(this._id);
+    return this._core.getNews(this._id);
   }
 
   /**
