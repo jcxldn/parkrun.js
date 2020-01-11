@@ -106,6 +106,20 @@ class ClientUser extends User {
   getEmail() {
     return this._email;
   }
+
+  async getFreedomRuns() {
+    const res = await this._authedNet.get(`/v1/freedomruns`).catch(err => {
+      throw new NetError(err);
+    });
+
+    const out = [];
+
+    for (var i = 0, len = res.data.data.FreedomRuns.length; i < len; i++) {
+      out.push(new FreedomRunResult(res.data.data.FreedomRuns[i]));
+    }
+
+    return out;
+  }
 }
 
 module.exports = ClientUser;
