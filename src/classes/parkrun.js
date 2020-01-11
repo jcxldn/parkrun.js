@@ -150,7 +150,7 @@ class Parkrun {
         throw new NetError(err);
       });
 
-    return new ClientUser(res.data, this._getAuthedNet());
+    return new ClientUser(res.data, this._getAuthedNet(), this);
   }
 
   /**

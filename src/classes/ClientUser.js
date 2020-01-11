@@ -14,7 +14,7 @@ const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
  * @extends {User}
  */
 class ClientUser extends User {
-  constructor(res, authedNet) {
+  constructor(res, authedNet, core) {
     const data = Validate(res, ClientAthleteExpandedExtra).value.data
       .Athletes[0];
     // Set the base objects
@@ -29,6 +29,8 @@ class ClientUser extends User {
     this._preSignupWeeklyExerciseFrequency = data.PreParkrunExerciseFrequency;
     this._base2_wheelchair = data.WheelchairAthlete;
     this._email = data.eMailID;
+
+    this._core = core;
   }
 
   /**
@@ -115,7 +117,7 @@ class ClientUser extends User {
     const out = [];
 
     for (var i = 0, len = res.data.data.FreedomRuns.length; i < len; i++) {
-      out.push(new FreedomRunResult(res.data.data.FreedomRuns[i]));
+      out.push(new FreedomRunResult(res.data.data.FreedomRuns[i], this._core));
     }
 
     return out;
