@@ -1,5 +1,7 @@
 const { getDisplayName } = require("../common/AgeGradeEnums");
 
+const SeriesID = require("../common/SeriesID")
+
 /*
 
 ------------------------------
@@ -11,7 +13,6 @@ Reason: Globally static
     - [data.Assisted] - Always null.
     - [data.OrgSubTypeID] - Always null.
     - [data.OrganisationID] - Always '1'.
-    - [data.SeriesID] - Always '1'.
     - [data.runnerSocial] - Always null.
 
 
@@ -49,6 +50,7 @@ class RunResult {
     this._finish_time = data.RunTime;
     this._updated = new Date(data.Updated);
     this._was_pb = new Boolean(data.WasPbRun);
+    this._series_id = Number.parseInt(data.SeriesID);
 
     this._age_grading_label = getDisplayName(this._age_grading);
   }
@@ -208,6 +210,25 @@ class RunResult {
    */
   getWasPB() {
     return this._was_pb;
+  }
+
+  /**
+   * Get the numerical series ID for this run / event.
+   * 
+   * @see getEventDay for this value as a string.
+   * @returns {Number} Series ID.
+   */
+  getSeriesID() {
+    return this._series_id
+  }
+
+  /**
+   * Get the day of the week that this event takes place.
+   *
+   * @returns {"Saturday" | "Sunday" | "Unknown"} String day.
+   */
+  getEventDay() {
+    return SeriesID.getDayOfWeek(this.getSeriesID())
   }
 }
 
