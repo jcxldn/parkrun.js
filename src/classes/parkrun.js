@@ -5,6 +5,7 @@ const User = require("./User");
 const ClientUser = require("./ClientUser");
 const EventNewsPost = require("./EventNewsPost");
 const RosterVolunteer = require("./RosterVolunteer");
+const Event = require("./Event");
 
 const NetError = require("../errors/ParkrunNetError");
 
@@ -173,6 +174,23 @@ class Parkrun {
     }
 
     return output;
+  }
+
+  /**
+   * Asynchronously get an event based on its ID.
+   *
+   * @param {Number} id
+   * @returns {Promise<Event>} Event Object.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getEvent(id) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/events/${id}`)
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return new Event(res.data.data.Events[0], this);
   }
 }
 
