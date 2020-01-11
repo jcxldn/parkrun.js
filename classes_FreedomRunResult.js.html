@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>classes/FreedomRunResult.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,46 +34,96 @@
 
 <div id="main">
     
+    <h1 class="page-title">classes/FreedomRunResult.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * A class representing the Results of a Freedom Run.
+ * 
+ * @borrows Parkrun#getEvent as getEvent
+ */
+class FreedomRunResult {
+  constructor(res, core) {
+    this._time = res.RunTime;
+    this._date = new Date(res.RunDate);
+    this._athlete = Number.parseInt(res.AthleteID);
+    this._event = Number.parseInt(res.EventNumber);
 
+    this._core = core;
 
-    <section class="package">
-        <h3> </h3>		
+    // Core object is the Parkrun.JS core class.
+    // Also note that there is no point in having a getAthlete() function as you can only use this with ClientUser anyway.
+  }
+
+  /**
+   * Get the event object for the event this took place at.
+   *
+   * @see Parkrun#getEvent()
+   *
+   * @returns {Promise&lt;Event>} Array of news posts.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getEvent() {
+    return this._core.getEvent(this.getEventID())
+  }
+
+  /**
+   *  Get the name of the event that this run took place at.
+   * 
+   * @returns {String} Event name.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getEventName() {
+    return (await this.getEvent()).getName()
+  }
+
+  /**
+   * Get the finish time for this run.
+   * 
+   * @returns {String} Finish time.
+   */
+  getFinishTime() {
+    return this._time;
+  }
+
+  /**
+   * Get the date of this run as a native Date object.
+   * 
+   * @returns {Date} Date object.
+   */
+  getRunDate() {
+    return this._date;
+  }
+
+  /**
+   * Get the Athlete ID of the runner.
+   * 
+   * @returns {Number} Athlete ID.
+   */
+  getAthleteID() {
+    return this._athlete;
+  }
+
+  /**
+   * Get the Event ID for this run's location.
+   * 
+   * @returns {Number} Event ID.
+   */
+  getEventID() {
+    return this._event;
+  }
+}
+
+module.exports = FreedomRunResult</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>parkrun.js</h1>
-<p>A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app.</p>
-<h2>Upstream API Limitations</h2>
-<p>These are limitations with all services using the official parkrun API.</p>
-<ul>
-<li>
-<p>Freedom Runs can only be accessed for the current user</p>
-<ul>
-<li>401: <code>Attempt to access details for AthleteId which does not match user AthleteId</code></li>
-</ul>
-</li>
-</ul></article>
-    </section>
-
-
 
 
 
