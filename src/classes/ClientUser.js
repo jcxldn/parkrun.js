@@ -6,6 +6,8 @@ const User = require("./User");
 
 const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtra");
 
+const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
+
 /**
  * A class representing the currently-logged in user.
  *
@@ -50,8 +52,13 @@ class ClientUser extends User {
    * Gets the mobile number for the currently logged-in user.
    *
    * @returns {String} mobile number
+   * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
    */
   getMobileNumber() {
+    if (this._mobileNumber == null)
+      throw new DataNotAvailableError(
+        `getMobileNumber, athlete ${this.getID()}, reason: mobile number not set`
+      );
     return this._mobileNumber;
   }
 

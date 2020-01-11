@@ -5,7 +5,7 @@ const User = require("./User");
 const ClientUser = require("./ClientUser");
 const EventNewsPost = require("./EventNewsPost");
 
-const NetError = require("../ParkrunNetError");
+const NetError = require("../errors/ParkrunNetError");
 
 const authSync = require("../auth");
 

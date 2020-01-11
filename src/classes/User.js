@@ -4,7 +4,8 @@ const HomeRun = require("./HomeRun");
 const RunResult = require("./RunResult");
 const ClubsEnums = require("../common/ClubsEnums");
 
-const NetError = require("../ParkrunNetError");
+const NetError = require("../errors/ParkrunNetError");
+const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
 const AthleteExpandedSchema = require("../schemas/AthleteExpanded");
 
@@ -128,8 +129,8 @@ class User {
       .catch(err => {
         throw new NetError(err);
       });
-
-    return Number.parseInt(res.data.data.TotalRuns[0].RunTotal);
+    // If the user has no runs, this will return NaN, so in that case just return 0.
+    return Number.parseInt(res.data.data.TotalRuns[0].RunTotal) || 0;
   }
 
   /**
@@ -163,6 +164,8 @@ class User {
    * Get the user's Parkrun Clubs (for milestone runs / duties)
    *
    * @returns {Promise<Object>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
    *
    * @example
    *
@@ -193,6 +196,8 @@ class User {
         throw new NetError(err);
       });
     const data = res.data.data.Results[0];
+    if (data == undefined)
+      throw new DataNotAvailableError("getClubs, athlete " + this.getID());
     return {
       ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership],
       JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],
