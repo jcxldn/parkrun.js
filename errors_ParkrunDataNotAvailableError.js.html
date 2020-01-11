@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>schemas/ClientAthleteExpandedExtra.js - Documentation</title>
+    <title>errors/ParkrunDataNotAvailableError.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">schemas/ClientAthleteExpandedExtra.js</h1>
+    <h1 class="page-title">errors/ParkrunDataNotAvailableError.js</h1>
     
 
     
@@ -44,35 +44,22 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Joi = require("@hapi/joi");
-
-/**
- * Joi Schema for the extra Client Athlete (Expanded) data.
+            <pre class="prettyprint source linenums"><code>/**
+ * Error when no data is available, usually because of a new account with no runs.
+ *
+ * @extends {Error}
  */
-module.exports = Joi.object({
-  data: Joi.object({
-    Athletes: Joi.array()
-      .items({
-        ClubID: Joi.number().required(),
-        ConfirmCode: Joi.string().required(),
-        DOB: Joi.date().required(),
-        // Unfortunately no supported phone number module exists
-        MobileNumber: Joi.string().required(),
-        OKtoMail: Joi.number()
-          .max(1)
-          .required(),
-        Postcode: Joi.string().required(),
-        PreParkrunExerciseFrequency: Joi.number().required(),
-        WheelchairAthlete: Joi.number()
-          .max(1)
-          .required(),
-        eMailID: Joi.string()
-          .email()
-          .required()
-      })
-      .required()
-  }).required()
-});
+class ParkrunDataNotAvailableError extends Error {
+  constructor(reqName) {
+    const message = `no data available for ${reqName}`;
+
+    super(message);
+
+    this.name = this.constructor.name;
+  }
+}
+
+module.exports = ParkrunDataNotAvailableError;
 </code></pre>
         </article>
     </section>

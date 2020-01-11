@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>schemas/ClientAthleteExpandedExtra.js - Documentation</title>
+    <title>errors/ParkrunNetError.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -34,7 +34,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">schemas/ClientAthleteExpandedExtra.js</h1>
+    <h1 class="page-title">errors/ParkrunNetError.js</h1>
     
 
     
@@ -44,35 +44,28 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>const Joi = require("@hapi/joi");
+            <pre class="prettyprint source linenums"><code>const Constants = require("../constants");
 
 /**
- * Joi Schema for the extra Client Athlete (Expanded) data.
+ * Error class for Networking-related errors.
+ *
+ * @extends {Error}
  */
-module.exports = Joi.object({
-  data: Joi.object({
-    Athletes: Joi.array()
-      .items({
-        ClubID: Joi.number().required(),
-        ConfirmCode: Joi.string().required(),
-        DOB: Joi.date().required(),
-        // Unfortunately no supported phone number module exists
-        MobileNumber: Joi.string().required(),
-        OKtoMail: Joi.number()
-          .max(1)
-          .required(),
-        Postcode: Joi.string().required(),
-        PreParkrunExerciseFrequency: Joi.number().required(),
-        WheelchairAthlete: Joi.number()
-          .max(1)
-          .required(),
-        eMailID: Joi.string()
-          .email()
-          .required()
-      })
-      .required()
-  }).required()
-});
+class ParkrunNetError extends Error {
+  constructor(err) {
+    const message = `HTTP Error ${err.response.status} (${
+      err.response.statusText
+    }) on ${err.response.config.method.toString().toUpperCase()} request to '${
+      err.response.config.url.toString().split(Constants.api_base)[1]
+    }'`;
+
+    super(message);
+
+    this.name = this.constructor.name;
+  }
+}
+
+module.exports = ParkrunNetError;
 </code></pre>
         </article>
     </section>
