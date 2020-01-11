@@ -192,6 +192,85 @@ class Parkrun {
 
     return new Event(res.data.data.Events[0], this);
   }
+
+  /**
+   * Get statistics across all of parkrun.
+   *
+   * @see Parkrun#getStatsByCountry
+   * @see Parkrun#getStatsByEvent
+   *
+   * @returns {Promise<Object>} statistics.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getStats() {
+    const res = await this._getAuthedNet()
+      .get("/v1/statistics")
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return this._makeStatsResponse(res);
+  }
+
+  /**
+   * Get statistics across a country.
+   *
+   * @see Parkrun#getStats
+   * @param {Number} id Country ID.
+   * @returns {Promise<Object>} statistics.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getStatsByCountry(id) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/countries/${id}/statistics`)
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return this._makeStatsResponse(res);
+  }
+
+  /**
+   * Get statistics across a parkrun event.
+   *
+   * @see Parkrun#getStats
+   * @param {Number} id Event ID.
+   * @returns {Promise<Object>} statistics.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getStatsByEvent(id) {
+    const res = await this._getAuthedNet()
+      .get(`/v1/events/${id}/statistics`)
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return this._makeStatsResponse(res);
+  }
+
+  /**
+   * Internal function for creating Objects from the array of the statistics API endpoint.
+   *
+   * @see Parkrun#getStats
+   * @ignore
+   */
+  _makeStatsResponse(res) {
+    // getStatsByEvent does not return this statistic type
+    if (res.data.data["Statistics-eventsThisWeek"] == null)
+      res.data.data["Statistics-eventsThisWeek"] = [];
+
+    // Official channels use the first of the three stat results
+    return {
+      ...res.data.data["Statistics-TotalEvents"][0],
+      ...res.data.data["Statistics-Runners"][0],
+      ...res.data.data["Statistics-Averages"][0],
+      ...res.data.data["Statistics-Clubs"][0],
+      ...res.data.data["Statistics-Groups"][0],
+      ...res.data.data["Statistics-TotalRunTime"][0],
+      ...res.data.data["Statistics-Volunteers"][0],
+      ...res.data.data["Statistics-eventsThisWeek"][0]
+    };
+  }
 }
 
 module.exports = Parkrun;
