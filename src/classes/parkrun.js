@@ -318,6 +318,37 @@ class Parkrun {
     return await this._getEventClassArrayOfAllEventsUsingURL(url);
   }
 
+  /**
+   * Get an array with the names of all parkrun events, in alphabetical order.
+   *
+   * @returns {Promise<Array<String>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAllEventNames() {
+    return await this._getArrayOfAllEventNamesUsingURL("/v1/searchEvents");
+  }
+
+  async getAllEventNamesByCountry(countryID) {
+    return await this._getArrayOfAllEventNamesUsingURL(
+      `/v1/countries/${countryID}/searchEvents`
+    );
+  }
+
+  async _getArrayOfAllEventNamesUsingURL(url) {
+    // Get an array of parkrun events using the specified url
+    const respArr = await this._getArrayOfAllEventsUsingURL(url);
+
+    const output = [];
+
+    // Create a new array with the names of those events
+    for (var i = 0, len = respArr.length; i < len; i++) {
+      output.push(respArr[i].EventLongName);
+    }
+
+    // Return the array list in alphabetical order
+    return output.sort();
+  }
+
   async _getEventClassArrayOfAllEventsUsingURL(url) {
     const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(url);
 

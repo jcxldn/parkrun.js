@@ -3,6 +3,7 @@
  *
  *
  * @borrows Parkrun#getAllEventsByCountry as getAllEvents
+ * @borrows Parkrun#getAllEventNamesByCountry() as getAllEventNames
  */
 class Country {
   constructor(res, core) {
@@ -31,6 +32,19 @@ class Country {
   async getAllEvents() {
     const url = `/v1/countries/${this._code}/searchEvents`;
     return await this._core._getEventClassArrayOfAllEventsUsingURL(url);
+  }
+
+  /**
+   * Get an array with the names of all parkrun events in this country, in alphabetical order.
+   *
+   * @see Parkrun#getAllEventNames()
+   * @see Parkrun#getAllEventNamesByCountry()
+   *
+   * @returns {Promise<Array<String>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAllEventNames() {
+    return await this._core.getAllEventNamesByCountry(this._code);
   }
 
   /**
