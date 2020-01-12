@@ -4,8 +4,14 @@
   "description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
   "main": "src/classes/parkrun.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:build": "jsdoc -r src -R README.md -c jsdoc.json"
+    "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
+    "test": "node tests/pre_ensure_env.js && npm run test:run",
+    "test:run": "mocha --timeout 15000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js",
+    "coverage:all": "npm run coverage:test && npm run coverage:report && npm run coverage:send",
+    "coverage:test": "nyc npm test",
+    "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
+    "coverage:report:html": "nyc report --reporter=html",
+    "coverage:send": "codecov"
   },
   "repository": {
     "type": "git",
@@ -26,7 +32,13 @@
     "axios": "^0.19.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.8.0",
+    "@babel/register": "^7.8.0",
+    "chai": "^4.2.0",
+    "codecov": "^3.6.1",
     "docdash": "^1.1.1",
-    "jsdoc": "^3.6.3"
+    "jsdoc": "^3.6.3",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0"
   }
 }
