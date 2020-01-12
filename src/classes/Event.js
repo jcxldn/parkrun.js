@@ -1,5 +1,7 @@
 const SeriesID = require("../common/SeriesID");
 
+const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
+
 // We are requiring this so we get IntelliSense for end-users.
 const EventNewsPost = require("./EventNewsPost");
 
@@ -19,14 +21,18 @@ class Event {
     this._preferredLanguage = res.PreferredLanguage;
     this._seriesID = Number.parseInt(res.SeriesID);
     // Skipping res.NextAnniversary as it seems to be broken. (returns 2017 in 2020.)
-    this._isClientUserHomeRun = new Boolean(res.HomeRunSelection);
+
+    // After 08850d5, res.HomeRunSelection has been removed as it is not an accurate response.
+
     this._isActive = new Boolean(res.StatusLive);
     // Skipping res.AnniversarySaturdayOfMonth as we can calculate that from the series ID.
     this._status = res.EventStatus;
     // Skipping res.UserFavourite for now, waiting on issue #4.
-    this._officeEmail = res.EventOfficeEmail;
-    this._helperEmail = res.EventHelpersEmail;
-    this._totalEvents = Number.parseInt(res.TotalEventsStaged);
+
+    this._officeEmail = res.EventOfficeEmail; // undefined handled in getter
+    this._helperEmail = res.EventHelpersEmail; // undefined handled in getter
+    this._totalEvents = Number.parseInt(res.TotalEventsStaged); // NaN handled in getter
+
     this._public = new Boolean(res.AccessibleToPublic);
 
     this._core = core;
@@ -135,15 +141,6 @@ class Event {
   }
 
   /**
-   * Boolean value representing weather this event is the client user's home run.
-   *
-   * @returns {Boolean} is client user's home run?
-   */
-  getIsClientUserHomerun() {
-    return this._isClientUserHomeRun;
-  }
-
-  /**
    * Boolean showing weather this event is active or not.
    *
    * @returns {Boolean} is active?
@@ -165,8 +162,14 @@ class Event {
    * Get the office email for this event.
    *
    * @returns {String} Office Email.
+   * @throws {ParkrunDataNotAvailableError} When not using ParkrunJS.getEvent(), this value is not provided and trying to access it will result in this error.
+   * @see Parkrun#getEvent()
    */
   getOfficeEmail() {
+    if (this._officeEmail == undefined)
+      throw new DataNotAvailableError(
+        "getOfficeEmail(). reason: only available when using getEvent()"
+      );
     return this._officeEmail;
   }
 
@@ -174,8 +177,14 @@ class Event {
    * Get the helper email for this event.
    *
    * @returns {String} Helper Email.
+   * @throws {ParkrunDataNotAvailableError} When not using ParkrunJS.getEvent(), this value is not provided and trying to access it will result in this error.
+   * @see Parkrun#getEvent()
    */
   getHelperEmail() {
+    if (this._helperEmail == undefined)
+      throw new DataNotAvailableError(
+        "getHelperEmail(). reason: only available when using getEvent()"
+      );
     return this._helperEmail;
   }
 
@@ -183,8 +192,14 @@ class Event {
    * Get the amount of sessions that have taken place at this event.
    *
    * @returns {Number} No. of sessions taken place.
+   * @throws {ParkrunDataNotAvailableError} When not using ParkrunJS.getEvent(), this value is not provided and trying to access it will result in this error.
+   * @see Parkrun#getEvent()
    */
   getTotalCount() {
+    if (isNaN(this._totalEvents))
+      throw new DataNotAvailableError(
+        "getTotalCount(). reason: only available when using getEvent()"
+      );
     return this._totalEvents;
   }
 

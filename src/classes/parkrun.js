@@ -6,6 +6,7 @@ const ClientUser = require("./ClientUser");
 const EventNewsPost = require("./EventNewsPost");
 const RosterVolunteer = require("./RosterVolunteer");
 const Event = require("./Event");
+const Country = require("./Country");
 
 const NetError = require("../errors/ParkrunNetError");
 
@@ -269,6 +270,119 @@ class Parkrun {
       ...res.data.data["Statistics-TotalRunTime"][0],
       ...res.data.data["Statistics-Volunteers"][0],
       ...res.data.data["Statistics-eventsThisWeek"][0]
+    };
+  }
+
+  /**
+   *  Get an array of all active parkrun countries.
+   *
+   * @returns {Promise<Array<Country>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getActiveCountries() {
+    const res = await this._getAuthedNet()
+      .get(`/v1/countries`)
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    const output = [];
+
+    for (var i = 0, len = res.data.data.Countries.length; i < len; i++) {
+      output.push(new Country(res.data.data.Countries[i], this));
+    }
+
+    return output;
+  }
+
+  /**
+   * Get an array of all events for a country.
+   *
+   * @param {Number} countryID Country ID.
+   * @returns {Promise<Array<Event>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAllEventsByCountry(countryID) {
+    const url = `/v1/countries/${countryID}/searchEvents`;
+    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+  }
+
+  /**
+   * Get an array of all parkrun events.
+   *
+   * @returns {Promise<Array<Event>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAllEvents() {
+    const url = "/v1/searchEvents";
+    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+  }
+
+  async _getEventClassArrayOfAllEventsUsingURL(url) {
+    const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(url);
+
+    const output = [];
+
+    for (var i = 0, len = EventsObjectArray.length; i < len; i++) {
+      output.push(new Event(EventsObjectArray[i], this));
+    }
+
+    return output;
+  }
+
+  async _getArrayOfAllEventsUsingURL(url) {
+    // Note that the parkrun API will return a max of 100 items per request.
+
+    // Create the events array for responses.
+    let events = [];
+
+    // Make the first request with a default offset of 0.
+    const requestOne = await this._makeSearchEventsRequest(url);
+
+    // Save the Range object (this tells us how many more requests we have to make)
+    let range = requestOne.range;
+
+    // Concat the response to the existing array.
+    events = events.concat(requestOne.arr);
+
+    // While we still have more requests to make...
+    while (Number.parseInt(range.last) < Number.parseInt(range.max)) {
+      // Make another request with a higher offset
+      const res = await this._makeSearchEventsRequest(
+        url,
+        Number.parseInt(range.last)
+      );
+
+      // Concat the response to the array
+      events = events.concat(res.arr);
+      // Change the range to the newly-returned range (will be higher than last)
+      range = res.range;
+
+      console.log(res.range);
+    }
+
+    // Now we have made enough requests to gather all the data.
+
+    console.log(`RETURN LEN: ${events.length}`);
+
+    // We now return the FULL array.
+    return events;
+  }
+
+  async _makeSearchEventsRequest(url = `/v1/searchEvents`, offset = 0) {
+    const res = await this._getAuthedNet()
+      .get(url, {
+        params: {
+          offset
+        }
+      })
+      .catch(err => {
+        throw new NetError(err);
+      });
+
+    return {
+      arr: res.data.data.Events,
+      range: res.data["Content-Range"].EventsRange[0]
     };
   }
 }
