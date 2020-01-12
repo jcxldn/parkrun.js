@@ -12,6 +12,9 @@ const NetError = require("../errors/ParkrunNetError");
 
 const authSync = require("../auth");
 
+// Import package.json for version and license static variables
+const package = require("../../package.json");
+
 // We are requiring this so we get IntelliSense for end-users.
 const Tokens = require("./Tokens");
 
@@ -417,5 +420,19 @@ class Parkrun {
     };
   }
 }
+
+/**
+ * The Parkrun.JS version.
+ *
+ * @returns {String} Package version.
+ */
+Parkrun.version = package.version;
+
+/**
+ * The Parkrun.JS license, as stated by NPM.
+ *
+ * @returns {String} License type.
+ */
+Parkrun.license = package.license;
 
 module.exports = Parkrun;
