@@ -30,8 +30,7 @@ class Country {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEvents() {
-    const url = `/v1/countries/${this._code}/searchEvents`;
-    return await this._core._getEventClassArrayOfAllEventsUsingURL(url);
+    return await this._core.getAllEventsByCountry(this._code);
   }
 
   /**
