@@ -9,7 +9,8 @@ module.exports = async refreshToken => {
   params.append("refresh_token", refreshToken);
   params.append("grant_type", "refresh_token");
   try {
-    const res = await net.post("/auth/refresh", params, {
+    // .toString() for fix on node 8.x
+    const res = await net.post("/auth/refresh", params.toString(), {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 
