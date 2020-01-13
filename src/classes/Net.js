@@ -36,7 +36,11 @@ class Net {
     this._axiosAuthed = axios.create(auth_opts);
     // https://github.com/axios/axios/issues/2190 (axios >=0.18.0)
     this._axiosAuthed.interceptors.request.use(config => {
-      config.params = Object.assign(this._params, config.params);
+      config.params = Object.assign(
+        // Fix for leaking params when making multiple requests
+        Object.assign({}, this._params),
+        config.params
+      );
       return config;
     });
   }

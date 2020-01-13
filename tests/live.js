@@ -2,6 +2,7 @@ const Parkrun = require("../src/classes/parkrun");
 const chai = require("chai");
 
 const RunResult = require("../src/classes/RunResult");
+const FreedomRunResult = require("../src/classes/FreedomRunResult");
 
 chai.should();
 describe("Live", () => {
@@ -301,6 +302,68 @@ describe("Live", () => {
           done();
         })
         .catch(err => done(err));
+    });
+  });
+
+  describe("Client User (Athlete)", () => {
+    athlete = null;
+    before("getMe() (await)", async () => {
+      athlete = await client.getMe();
+    });
+
+    it("getClubID()", done => {
+      const data = athlete.getClubID();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it("getDOB()", done => {
+      const data = athlete.getDOB();
+      chai.expect(data).to.be.a("date");
+      done();
+    });
+
+    // getMobileNumber skipped...
+
+    it("getCommunicationAllowed()", done => {
+      const data = athlete.getCommunicationAllowed();
+      chai.expect(data).to.be.a("boolean");
+      done();
+    });
+
+    it("getPostcode()", done => {
+      const data = athlete.getPostcode();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it("getPreSignupExerciseFrequency()", done => {
+      const data = athlete.getPreSignupExerciseFrequency();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it("getIsWheelchairUser()", done => {
+      const data = athlete.getIsWheelchairUser();
+      chai.expect(data).to.be.a("boolean");
+      done();
+    });
+
+    it("getEmail()", done => {
+      const data = athlete.getEmail();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it("getFreedomRuns() (.then)", done => {
+      athlete.getFreedomRuns().then(data => {
+        chai.expect(data).to.be.an("array");
+
+        // If this user has data available, assert that too.
+        if (data.length != 0) chai.assert(data[0] instanceof FreedomRunResult);
+
+        done();
+      });
     });
   });
 });
