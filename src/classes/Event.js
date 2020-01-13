@@ -4,11 +4,13 @@ const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
 // We are requiring this so we get IntelliSense for end-users.
 const EventNewsPost = require("./EventNewsPost");
+const RosterVolunteer = require("./RosterVolunteer");
 
 /**
  *  A class representing a Parkrun event.
  *
  * @borrows Parkrun#getNews as getNews
+ * @borrows Parkrun#getRoster as getRoster
  */
 class Event {
   constructor(res, core) {
@@ -43,12 +45,23 @@ class Event {
    *
    * @see Parkrun#getNews()
    *
-   * @param {Number} eventID
    * @returns {Promise<Array<EventNewsPost>>} Array of news posts.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getNews() {
     return this._core.getNews(this._id);
+  }
+
+  /**
+   * Get the upcoming roster(s) for this event.
+   *
+   * @see Parkrun#getRoster()
+   *
+   * @returns {Promise<Array<RosterVolunteer>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getRoster() {
+    return this._core.getRoster(this._id);
   }
 
   /**
