@@ -8,6 +8,8 @@ const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtr
 
 const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
+const FreedomRunResult = require("../classes/FreedomRunResult");
+
 /**
  * A class representing the currently-logged in user.
  *
@@ -111,6 +113,12 @@ class ClientUser extends User {
     return this._email;
   }
 
+  /**
+   * Get an array of all the user's freedom runs.
+   *
+   * @returns {Promise<Array<FreedomRunResult>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
   async getFreedomRuns() {
     const res = await this._authedNet.get(`/v1/freedomruns`).catch(err => {
       throw new NetError(err);
