@@ -12,7 +12,7 @@ const AGEGRADE = Object.freeze({
 
 const calculateEnum = decimal => {
   if (decimal > 1) return AGEGRADE.WORLD_RECORD_BREAKING;
-  if ((decimal = 1)) return AGEGRADE.WORLD_RECORD_MATCH;
+  if (decimal == 1) return AGEGRADE.WORLD_RECORD_MATCH;
   if (decimal > 0.9) return AGEGRADE.WORLD_CLASS;
   if (decimal > 0.8) return AGEGRADE.NATIONAL_CLASS;
   if (decimal > 0.7) return AGEGRADE.REGIONAL_CLASS;
