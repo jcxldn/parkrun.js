@@ -1,6 +1,6 @@
 const net = require("../classes/Net").getNonAuthed();
 
-const TokensData = require("../classes/Tokens")._TokensData;
+const TokensData = require("../classes/TokensData");
 
 module.exports = async refreshToken => {
   const params = new URLSearchParams();
