@@ -2,6 +2,8 @@ const net = require("./classes/Net").getNonAuthed();
 
 const Tokens = require("./classes/Tokens");
 
+const { URLSearchParams } = require("url");
+
 const auth = async (id, password) => {
   // ID checking here
 
