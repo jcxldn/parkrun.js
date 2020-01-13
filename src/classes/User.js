@@ -29,7 +29,7 @@ class User {
   constructor(res, authedNet) {
     const data = Validate(res, AthleteExpandedSchema).value.data.Athletes[0];
 
-    this._athleteID = data.AthleteID;
+    this._athleteID = Number.parseInt(data.AthleteID);
     this._avatar = data.Avatar;
     this._clubName = data.ClubName;
     this._firstName = data.FirstName;
