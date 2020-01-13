@@ -11,6 +11,7 @@ const RosterVolunteer = require("./RosterVolunteer");
  *
  * @borrows Parkrun#getNews as getNews
  * @borrows Parkrun#getRoster as getRoster
+ * @borrows Parkrun#getStatsByEvent as getStats
  */
 class Event {
   constructor(res, core) {
@@ -62,6 +63,19 @@ class Event {
    */
   async getRoster() {
     return this._core.getRoster(this._id);
+  }
+
+  /**
+   * Get statistics across a parkrun event.
+   *
+   * @see Parkrun#getStats
+   * @see Parkrun#getStatsByEvent
+   *
+   * @returns {Promise<Object>} statistics.
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getStats() {
+    return this._core.getStatsByEvent(this._id);
   }
 
   /**
