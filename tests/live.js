@@ -165,7 +165,128 @@ describe("Live", () => {
         .catch(err => done(err));
     });
 
-    // DESCRIBE RUNRESULT HERE
+    describe("RunResult", () => {
+      let result = null;
+      before(async () => {
+        // Get a single run and save it
+        result = (await athlete.getRuns())[0];
+      });
+
+      it("getAgeCategory()", done => {
+        data = result.getAgeCategory();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getAgeGradingDecimal()", done => {
+        data = result.getAgeGradingDecimal();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getAgeGradingLabel()", done => {
+        data = result.getAgeGradingLabel();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getAthleteId()", done => {
+        data = result.getAthleteId();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getEventDate()", done => {
+        data = result.getEventDate();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
+
+      it("getEventName()", done => {
+        data = result.getEventName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getEventID()", done => {
+        data = result.getEventID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getFinishPosition()", done => {
+        data = result.getFinishPosition();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getFirstName()", done => {
+        data = result.getFirstName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getWasFirstRunAtEvent()", done => {
+        data = result.getWasFirstRunAtEvent();
+        chai.expect(data).to.be.a("boolean");
+        done();
+      });
+
+      it("getGenderFinishPosition()", done => {
+        data = result.getGenderFinishPosition();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getWasGenuinePB()", done => {
+        data = result.getWasGenuinePB();
+        chai.expect(data).to.be.a("boolean");
+        done();
+      });
+
+      it("getLastName()", done => {
+        data = result.getLastName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getRunNumber()", done => {
+        data = result.getRunNumber();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getFinishTime()", done => {
+        data = result.getFinishTime();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getLastUpdated()", done => {
+        data = result.getLastUpdated();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
+
+      it("getWasPB()", done => {
+        data = result.getWasPB();
+        chai.expect(data).to.be.a("boolean");
+        done();
+      });
+
+      it("getSeriesID()", done => {
+        data = result.getSeriesID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getEventDay()", done => {
+        data = result.getEventDay();
+        chai.expect(data).to.be.a("string");
+        chai.assert(data == ("Saturday" || "Sunday" || "Unknown"));
+        done();
+      });
+    });
 
     it("getClubs() (.then)", done => {
       athlete
