@@ -8,7 +8,7 @@ const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtr
 
 const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
-const FreedomRunResult = require("../classes/FreedomRunResult");
+const FreedomRunResult = require("./FreedomRunResult");
 
 /**
  * A class representing the currently-logged in user.
