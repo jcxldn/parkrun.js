@@ -13,7 +13,8 @@ const auth = async (id, password) => {
   params.append("scope", "app");
   params.append("grant_type", "password");
   try {
-    const res = await net.post("/user_auth.php", params, {
+    // .toString() for fix on node 8.x
+    const res = await net.post("/user_auth.php", params.toString(), {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 

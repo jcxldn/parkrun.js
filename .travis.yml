@@ -2,8 +2,7 @@ language: node_js
 
 node_js:
   # Supported Versions
-  - "7.6" # Minimum version
-  - "8"
+  - "8.10" # Min version
   - "10"
   - "12"
   # Latest stable
