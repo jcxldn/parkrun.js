@@ -14,6 +14,7 @@ These are limitations with all services using the official parkrun API.
 
 We have several dependencies (as well as some code) that uses newer features, such as...
 
+- async (`>=7.6`)
 - spread syntax (`>8.5`)
 - mocha 7 (chokidar, `>8.10`)
 
