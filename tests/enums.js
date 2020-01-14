@@ -2,6 +2,7 @@ const chai = require("chai");
 
 const AgeGradeEnums = require("../src/common/AgeGradeEnums");
 const ClubsEnums = require("../src/common/ClubsEnums");
+const SeriesID = require("../src/common/SeriesID");
 
 chai.should();
 describe("Enums", () => {
@@ -185,6 +186,17 @@ describe("Enums", () => {
       chai
         .expect(ClubsEnums._volnFromCount(26))
         .to.deep.eql(ClubsEnums.VOLUNTEER_CLUBS[25]);
+
+      done();
+    });
+  });
+
+  describe("SeriesID", () => {
+    it("getDayOfWeek", done => {
+      chai.expect(SeriesID.getDayOfWeek(1)).to.eql("Saturday");
+      chai.expect(SeriesID.getDayOfWeek(2)).to.eql("Sunday");
+      chai.expect(SeriesID.getDayOfWeek(0)).to.eql("Unknown");
+      chai.expect(SeriesID.getDayOfWeek(3)).to.eql("Unknown");
 
       done();
     });
