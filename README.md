@@ -2,7 +2,9 @@
 
 A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app.
 
-## Upstream API Limitations
+## FAQ
+
+### Upstream API Limitations
 
 These are limitations with all services using the official parkrun API.
 
@@ -10,7 +12,7 @@ These are limitations with all services using the official parkrun API.
 
   - 401: `Attempt to access details for AthleteId which does not match user AthleteId`
 
-## Why is Node.js 8.10 the mininum?
+### Why is Node.js 8.10 the mininum?
 
 We have several dependencies (as well as some code) that uses newer features, such as...
 
