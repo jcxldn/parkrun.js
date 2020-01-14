@@ -1,6 +1,7 @@
 const chai = require("chai");
 
 const AgeGradeEnums = require("../src/common/AgeGradeEnums");
+const ClubsEnums = require("../src/common/ClubsEnums");
 
 chai.should();
 describe("Enums", () => {
@@ -85,6 +86,105 @@ describe("Enums", () => {
       chai
         .expect(AgeGradeEnums.getDisplayName(AgeGradeEnums.AGEGRADE.NO_GRADE))
         .to.eql("No Grade");
+
+      done();
+    });
+  });
+
+  describe("ClubsEnums", () => {
+    it("Enum | CLUBS", done => {
+      chai.expect(ClubsEnums.CLUBS[null]).to.deep.eql({
+        id: "c0",
+        name: "No Club"
+      });
+
+      chai.expect(ClubsEnums.CLUBS[50]).to.deep.eql({
+        id: "c1",
+        name: "50+ Club"
+      });
+
+      chai.expect(ClubsEnums.CLUBS[100]).to.deep.eql({
+        id: "c2",
+        name: "100+ Club"
+      });
+
+      chai.expect(ClubsEnums.CLUBS[250]).to.deep.eql({
+        id: "c3",
+        name: "250+ Club"
+      });
+
+      chai.expect(ClubsEnums.CLUBS[500]).to.deep.eql({
+        id: "c4",
+        name: "500+ Club"
+      });
+
+      done();
+    });
+
+    it("Enum | VOLUNTEER_CLUBS", done => {
+      chai.expect(ClubsEnums.VOLUNTEER_CLUBS.null).to.deep.eql({
+        id: "v0",
+        name: "No Club"
+      });
+
+      chai.expect(ClubsEnums.VOLUNTEER_CLUBS[25]).to.deep.eql({
+        id: "v1",
+        name: "Volunteer 25+ Club"
+      });
+
+      done();
+    });
+
+    it("Enum | JUNIOR_CLUBS", done => {
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[null]).to.deep.eql({
+        id: "j0",
+        name: "No Club"
+      });
+
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[10]).to.deep.eql({
+        id: "j1",
+        name: "Junior 10+ Club"
+      });
+
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[50]).to.deep.eql({
+        id: "j2",
+        name: "Junior 50+ Club"
+      });
+
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[100]).to.deep.eql({
+        id: "j3",
+        name: "Junior 100+ Club"
+      });
+
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[250]).to.deep.eql({
+        id: "j4",
+        name: "Junior 250+ Club"
+      });
+
+      chai.expect(ClubsEnums.JUNIOR_CLUBS[500]).to.deep.eql({
+        id: "j5",
+        name: "Junior 500+ Club"
+      });
+
+      done();
+    });
+
+    it("Helper | _volnFromCount", done => {
+      chai
+        .expect(ClubsEnums._volnFromCount(0))
+        .to.deep.eql(ClubsEnums.VOLUNTEER_CLUBS.null);
+
+      chai
+        .expect(ClubsEnums._volnFromCount(24))
+        .to.deep.eql(ClubsEnums.VOLUNTEER_CLUBS.null);
+
+      chai
+        .expect(ClubsEnums._volnFromCount(25))
+        .to.deep.eql(ClubsEnums.VOLUNTEER_CLUBS[25]);
+
+      chai
+        .expect(ClubsEnums._volnFromCount(26))
+        .to.deep.eql(ClubsEnums.VOLUNTEER_CLUBS[25]);
 
       done();
     });
