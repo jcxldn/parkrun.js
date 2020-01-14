@@ -5,7 +5,7 @@ class RosterVolunteer {
   constructor(res) {
     this._eventNumber = Number.parseInt(res.EventNumber);
     this._eventDate = new Date(res.eventdate);
-    this._athleteID = res.athleteid;
+    this._athleteID = Number.parseInt(res.athleteid);
     this._taskID = Number.parseInt(res.taskid);
     this._rosterID = Number.parseInt(res.rosterid);
     this._taskName = res.TaskName;
@@ -33,6 +33,8 @@ class RosterVolunteer {
 
   /**
    *  Get the Athlete ID of the volunteer for this job.
+   *
+   * @returns {Number} Athlete ID.
    */
   getVolunteerID() {
     return this._athleteID;

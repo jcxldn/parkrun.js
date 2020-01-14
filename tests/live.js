@@ -4,6 +4,10 @@ const chai = require("chai");
 const RunResult = require("../src/classes/RunResult");
 const FreedomRunResult = require("../src/classes/FreedomRunResult");
 
+const SeriesDayAssert = data => {
+  return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
+};
+
 chai.should();
 describe("Live", () => {
   let client = null;
@@ -284,7 +288,7 @@ describe("Live", () => {
       it("getEventDay()", done => {
         data = result.getEventDay();
         chai.expect(data).to.be.a("string");
-        chai.assert(data == ("Saturday" || "Sunday" || "Unknown"));
+        SeriesDayAssert(data);
         done();
       });
     });
@@ -364,6 +368,217 @@ describe("Live", () => {
 
         done();
       });
+    });
+  });
+
+  describe("Event", () => {
+    let event = null;
+    const eventID = 953;
+    before(async () => {
+      event = await client.getEvent(eventID);
+    });
+
+    describe("EventNewsPost (Arr #0)", () => {
+      let post = null;
+      before(async () => {
+        post = (await event.getNews())[0];
+      });
+
+      it("getEventID()", done => {
+        const data = post.getEventID();
+        chai.expect(data).to.be.a("number");
+        chai.expect(data).to.eql(eventID);
+        done();
+      });
+
+      it("getID()", done => {
+        const data = post.getID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getCommentCount()", done => {
+        const data = post.getCommentCount();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getAuthorName()", done => {
+        const data = post.getAuthorName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getAuthorAvatarURL()", done => {
+        const data = post.getAuthorAvatarURL();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getDate()", done => {
+        const data = post.getDate();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
+
+      it("getTitle()", done => {
+        const data = post.getTitle();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+    });
+
+    describe("RosterVolunteer (Arr #0)", () => {
+      let roster = null;
+      before(async () => {
+        roster = (await event.getRoster())[0];
+      });
+
+      it(`getEventNumber()`, done => {
+        const data = roster.getEventNumber();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it(`getEventDate()`, done => {
+        const data = roster.getEventDate();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
+
+      it(`getVolunteerID()`, done => {
+        const data = roster.getVolunteerID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it(`getTaskID()`, done => {
+        const data = roster.getTaskID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it(`getRosterID()`, done => {
+        const data = roster.getRosterID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it(`getTaskName()`, done => {
+        const data = roster.getTaskName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it(`getVolunteerFirstName()`, done => {
+        const data = roster.getVolunteerFirstName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it(`getVolunteerLastName()`, done => {
+        const data = roster.getVolunteerLastName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+    });
+
+    it(`getStats() (.then)`, done => {
+      event.getStats().then(data => {
+        chai.expect(data).to.be.an("object");
+        done();
+      });
+    });
+
+    it(`getID()`, done => {
+      const data = event.getID();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it(`getInternalName()`, done => {
+      const data = event.getInternalName();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getShortName()`, done => {
+      const data = event.getShortName();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getName()`, done => {
+      const data = event.getName();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getLocation()`, done => {
+      const data = event.getLocation();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getCountryCode()`, done => {
+      const data = event.getCountryCode();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it(`getPreferredLanguage()`, done => {
+      const data = event.getPreferredLanguage();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getSeriesID()`, done => {
+      const data = event.getSeriesID();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it(`getEventDay()`, done => {
+      const data = event.getEventDay();
+      chai.expect(data).to.be.a("string");
+      SeriesDayAssert(data);
+      done();
+    });
+
+    it(`getIsActive()`, done => {
+      const data = event.getIsActive();
+      chai.expect(data).to.be.a("boolean");
+      done();
+    });
+
+    it(`getStatus()`, done => {
+      const data = event.getStatus();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getOfficeEmail() (via getEvent)`, done => {
+      const data = event.getOfficeEmail();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getHelperEmail() (via getEvent)`, done => {
+      const data = event.getHelperEmail();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it(`getTotalCount() (via getEvent)`, done => {
+      const data = event.getTotalCount();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it(`getIsPublic()`, done => {
+      const data = event.getIsPublic();
+      chai.expect(data).to.be.a("boolean");
+      done();
     });
   });
 });
