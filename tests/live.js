@@ -701,4 +701,34 @@ describe("Live", () => {
       done();
     });
   });
+
+  it("getAllEvents() (.then)", done => {
+    client.getAllEvents().then(data => {
+      // Events class already tested, so we'll only test the response class.
+
+      chai.expect(data).to.be.an("array");
+
+      // Expect each item in the array to be an instance of Country
+      for (var i = 0, len = data.length; i < len; i++) {
+        chai.assert(data[i] instanceof Event);
+      }
+
+      done();
+    });
+  });
+
+  it("getAllEventNames()", done => {
+    client.getAllEventNames().then(data => {
+      // Events class already tested, so we'll only test the response class.
+
+      chai.expect(data).to.be.an("array");
+
+      // Expect each item in the array to be an instance of Country
+      for (var i = 0, len = data.length; i < len; i++) {
+        chai.expect(data[i]).to.be.a("string")
+      }
+
+      done();
+    });
+  });
 });
