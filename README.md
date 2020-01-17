@@ -1,5 +1,9 @@
 # parkrun.js
 
+![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js?label=tests)
+![Codecov](https://img.shields.io/codecov/c/gh/prouser123/parkrun.js)
+![docs build status](https://img.shields.io/github/workflow/status/prouser123/parkrun.js/docs?label=docs)
+
 A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app.
 
 ## FAQ
