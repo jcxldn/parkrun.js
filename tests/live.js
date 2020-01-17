@@ -3,6 +3,8 @@ const chai = require("chai");
 
 const RunResult = require("../src/classes/RunResult");
 const FreedomRunResult = require("../src/classes/FreedomRunResult");
+const Country = require("../src/classes/Country");
+const Event = require("../src/classes/Event");
 
 const SeriesDayAssert = data => {
   return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
@@ -606,4 +608,97 @@ describe("Live", () => {
   });
 
   // getStatsByEvent() already tested in Event object!
+
+  describe("Country (using getActiveCountries())", () => {
+    let country = null;
+    let countries = null;
+    before(async () => {
+      countries = await client.getActiveCountries();
+      country = countries[0];
+    });
+
+    it(`getActiveCountries() should return Class Array`, done => {
+      chai.expect(countries).to.be.an("array");
+
+      // Expect each item in the array to be an instance of Country
+      for (var i = 0, len = countries.length; i < len; i++) {
+        chai.assert(countries[i] instanceof Country);
+      }
+
+      done();
+    });
+
+    // [ROOT].getAllEventsByCountry() cast
+    it(`getAllEvents() (.then)`, done => {
+      country.getAllEvents().then(data => {
+        // Events class already tested, so we'll only test the response class.
+
+        chai.expect(data).to.be.an("array");
+
+        // Expect each item in the array to be an instance of Country
+        for (var i = 0, len = data.length; i < len; i++) {
+          chai.assert(data[i] instanceof Event);
+        }
+
+        done();
+      });
+    });
+
+    // [ROOT].getAllEventNamesByCountry() cast
+    it(`getAllEventNames() (.then)`, done => {
+      country.getAllEventNames().then(data => {
+        chai.expect(data).to.be.an("array");
+
+        // Expect each item in the array to be a string
+        for (var i = 0, len = data.length; i < len; i++) {
+          chai.expect(data[i]).to.be.a("string");
+        }
+
+        done();
+      });
+    });
+
+    it("getCode()", done => {
+      const data = country.getCode();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it("getName()", done => {
+      const data = country.getName();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it("getIsActive()", done => {
+      const data = country.getIsActive();
+      chai.expect(data).to.be.a("boolean");
+      chai.assert(data == true); // Since this was requested via getActiveCountries()
+      done();
+    });
+
+    it("getSiteURL()", done => {
+      const data = country.getSiteURL();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it("getLanguageID()", done => {
+      const data = country.getLanguageID();
+      chai.expect(data).to.be.a("number");
+      done();
+    });
+
+    it("getWikiName()", done => {
+      const data = country.getWikiName();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+
+    it("getCCTLD()", done => {
+      const data = country.getCCTLD();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
+  });
 });
