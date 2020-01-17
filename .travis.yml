@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+  # Supported Versions
+  - "8.10" # Min version
+  - "10"
+  - "12"
+  # Latest stable
+  - "node"
+
+# Run tests
+
+install:
+  - npm install
+jobs:
+  include:
+    - stage: Coverage
+      node_js: 10
+      script: npm run coverage:all

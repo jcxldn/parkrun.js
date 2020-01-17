@@ -2,6 +2,8 @@ const net = require("./classes/Net").getNonAuthed();
 
 const Tokens = require("./classes/Tokens");
 
+const { URLSearchParams } = require("url");
+
 const auth = async (id, password) => {
   // ID checking here
 
@@ -11,7 +13,8 @@ const auth = async (id, password) => {
   params.append("scope", "app");
   params.append("grant_type", "password");
   try {
-    const res = await net.post("/user_auth.php", params, {
+    // .toString() for fix on node 8.x
+    const res = await net.post("/user_auth.php", params.toString(), {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 

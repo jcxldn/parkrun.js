@@ -8,6 +8,8 @@ const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtr
 
 const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
+const FreedomRunResult = require("./FreedomRunResult");
+
 /**
  * A class representing the currently-logged in user.
  *
@@ -21,13 +23,15 @@ class ClientUser extends User {
     super(res, authedNet);
 
     // Set the client-only objects
-    this._clubID = data.ClubID;
-    this._dob = data.DOB;
+    this._clubID = Number.parseInt(data.ClubID);
+    this._dob = new Date(data.DOB);
     this._mobileNumber = data.MobileNumber;
-    this._base2_mail_ok = data.OKtoMail;
+    this._base2_mail_ok = new Boolean(data.OKtoMail);
     this._postcode = data.Postcode;
-    this._preSignupWeeklyExerciseFrequency = data.PreParkrunExerciseFrequency;
-    this._base2_wheelchair = data.WheelchairAthlete;
+    this._preSignupWeeklyExerciseFrequency = Number.parseInt(
+      data.PreParkrunExerciseFrequency
+    );
+    this._base2_wheelchair = new Boolean(data.WheelchairAthlete);
     this._email = data.eMailID;
 
     this._core = core;
@@ -70,7 +74,7 @@ class ClientUser extends User {
    * @returns {boolean} user's preference
    */
   getCommunicationAllowed() {
-    return Boolean(this._base2_mail_ok);
+    return this._base2_mail_ok;
   }
 
   /**
@@ -97,7 +101,7 @@ class ClientUser extends User {
    * @returns {boolean} user uses wheelchair?
    */
   getIsWheelchairUser() {
-    return Boolean(this._base2_wheelchair);
+    return this._base2_wheelchair;
   }
 
   /**
@@ -109,6 +113,12 @@ class ClientUser extends User {
     return this._email;
   }
 
+  /**
+   * Get an array of all the user's freedom runs.
+   *
+   * @returns {Promise<Array<FreedomRunResult>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
   async getFreedomRuns() {
     const res = await this._authedNet.get(`/v1/freedomruns`).catch(err => {
       throw new NetError(err);
