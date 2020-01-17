@@ -483,8 +483,11 @@ describe("Live", () => {
       });
     });
 
+    // getStatsByEvent() cast
     it(`getStats() (.then)`, done => {
       event.getStats().then(data => {
+        // https://github.com/Prouser123/parkrun.js/issues/14
+        // Currently only returns strings.
         chai.expect(data).to.be.an("object");
         done();
       });
@@ -581,4 +584,26 @@ describe("Live", () => {
       done();
     });
   });
+
+  // Root object function tests
+
+  it(`getStats() (.then)`, done => {
+    client.getStats().then(data => {
+      // https://github.com/Prouser123/parkrun.js/issues/14
+      // Currently only returns strings.
+      chai.expect(data).to.be.an("object");
+      done();
+    });
+  });
+
+  it("getStatsByCountry() (.then)", done => {
+    client.getStatsByCountry(97).then(data => {
+      // https://github.com/Prouser123/parkrun.js/issues/14
+      // Currently only returns strings.
+      chai.expect(data).to.be.an("object");
+      done();
+    });
+  });
+
+  // getStatsByEvent() already tested in Event object!
 });
