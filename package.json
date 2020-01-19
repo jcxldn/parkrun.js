@@ -11,7 +11,9 @@
     "coverage:test": "nyc npm test",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
     "coverage:report:html": "nyc report --reporter=html",
-    "coverage:send": "codecov"
+    "coverage:send": "codecov",
+    "build": "webpack --config webpack.config.js --mode development --verbose",
+    "build:joi": "webpack --config joi.webpack.config.js --mode production"
   },
   "repository": {
     "type": "git",
@@ -28,18 +30,26 @@
   },
   "homepage": "https://github.com/Prouser123/parkrun.js#readme",
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "github:prouser123/joi#v16.x",
     "axios": "^0.19.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.0",
+    "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "@babel/register": "^7.8.0",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "codecov": "^3.6.1",
     "docdash": "^1.1.1",
     "jsdoc": "^3.6.3",
     "mocha": "^7.0.0",
-    "nyc": "^15.0.0"
+    "null-loader": "^3.0.0",
+    "nyc": "^15.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "engines": {
     "node": ">=8.10"
