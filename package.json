@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Prouser123/parkrun.js#readme",
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1"
   },
   "devDependencies": {
