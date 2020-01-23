@@ -29,5 +29,7 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  // Plugins
+  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })]
 };
