@@ -2,6 +2,8 @@ const webpack = require("webpack");
 
 const path = require("path");
 
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+
 module.exports = {
   entry: ["@babel/polyfill", "./src/classes/parkrun.js"],
   output: {
@@ -31,5 +33,9 @@ module.exports = {
     ]
   },
   // Plugins
-  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })]
+  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })],
+  // Optimizations
+  optimization: {
+    minimizer: [new UglifyJsPlugin()]
+  }
 };

@@ -12,7 +12,7 @@
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
     "coverage:report:html": "nyc report --reporter=html",
     "coverage:send": "codecov",
-    "build": "webpack --config webpack.config.js --mode development --verbose",
+    "build": "webpack --config webpack.config.js --mode production",
     "build:joi": "webpack --config joi.webpack.config.js --mode production"
   },
   "repository": {
@@ -48,6 +48,7 @@
     "mocha": "^7.0.0",
     "null-loader": "^3.0.0",
     "nyc": "^15.0.0",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   },
