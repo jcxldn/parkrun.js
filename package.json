@@ -14,9 +14,8 @@
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
     "coverage:report:html": "nyc report --reporter=html",
     "coverage:send": "codecov",
-    "build": "rimraf dist/ && npm run build:joi && npm run build:core",
-    "build:core": "webpack --config webpack.config.js --mode production",
-    "build:joi": "webpack --config joi.webpack.config.js --mode production",
+    "build": "rimraf dist/ && npm run build:web",
+    "build:web": "webpack --config webpack.config.js --mode production",
     "prepublishOnly": "npm run build",
     "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
     "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
@@ -37,7 +36,7 @@
   },
   "homepage": "https://github.com/Prouser123/parkrun.js#readme",
   "dependencies": {
-    "@hapi/joi": "github:prouser123/joi#v16.x",
+    "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1"
   },
   "devDependencies": {

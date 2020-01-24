@@ -11,11 +11,6 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     library: "Parkrun"
   },
-  resolve: {
-    alias: {
-      "@hapi/joi": path.resolve(__dirname, "dist/joi.browser.min.js")
-    }
-  },
   // Loaders
   module: {
     rules: [
@@ -42,9 +37,5 @@ module.exports = {
     ]
   },
   // Plugins
-  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })],
-  // Optimizations
-  optimization: {
-    minimizer: [new UglifyJsPlugin()]
-  }
+  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })]
 };
