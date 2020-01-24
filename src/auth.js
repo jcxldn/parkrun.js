@@ -14,7 +14,6 @@ const auth = async (id, password) => {
     ["grant_type", "password"]
   ]);
   try {
-    // .toString() for fix on node 8.x
     const res = await net.post("/user_auth.php", params.get(), {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
