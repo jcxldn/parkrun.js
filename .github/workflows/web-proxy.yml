@@ -3,7 +3,7 @@ name: web-proxy
 on:
   push:
     branches:
-      - feat/webpack/web # Whilst in development
+      - master
 
 jobs:
   deploy:
