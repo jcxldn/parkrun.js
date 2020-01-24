@@ -110,3 +110,7 @@ docs/
 dist/
 
 .cf-workers/*.min.js
+
+# Web tests temp file
+
+tests/*.tmp.js

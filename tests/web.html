@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>Parkrun.JS</title>
+    <script src="https://www.chaijs.com/chai.js"></script>
+
+    <script src="https://unpkg.com/chai/chai.js"></script>
+    <script src="https://unpkg.com/mocha/mocha.js"></script>
+
+    <script src="../dist/parkrun.browser.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mocha/mocha.css" />
+  </head>
+
+  <body>
+    <div id="mocha"></div>
+
+    <script class="mocha-init">
+      mocha.timeout(20000);
+      mocha.setup("bdd");
+      mocha.checkLeaks();
+    </script>
+
+    <script src="web_bundle.tmp.js"></script>
+
+    <script class="mocha-exec">
+      mocha.run();
+    </script>
+  </body>
+</html>

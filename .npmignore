@@ -103,3 +103,7 @@ webpack.config.js
 
 dist/*
 !dist/parkrun.browser.min.js
+
+# Web test files
+
+tests/*.tmp.js

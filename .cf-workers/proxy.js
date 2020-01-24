@@ -61,7 +61,8 @@ async function onEvent(request) {
       headers: {
         "x-jcx-status": "proxy-bypass",
         "access-control-allow-origin": "*",
-        "access-control-allow-headers": "*"
+        "access-control-allow-headers": "*",
+        "access-control-expose-headers": "*"
       }
     });
   } else {
@@ -130,6 +131,12 @@ async function makeProxyRequest(request) {
     new_response_headers.delete("content-security-policy");
     new_response_headers.delete("content-security-policy-report-only");
     new_response_headers.delete("clear-site-data");
+
+    let h = "x-jcx-fake";
+    for (var pair of new_response_headers.entries()) {
+      h += ", " + pair[0];
+    }
+    new_response_headers.set("access-control-expose-headers", h);
 
     const content_type = new_response_headers.get("content-type");
     if (content_type.includes("text/html") && content_type.includes("UTF-8")) {
