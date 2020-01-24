@@ -50,6 +50,7 @@
     "browserify-shim": "^3.8.14",
     "chai": "^4.2.0",
     "codecov": "^3.6.2",
+    "cross-env": "^6.0.3",
     "docdash": "^1.1.1",
     "envify": "^4.1.0",
     "jsdoc": "^3.6.3",

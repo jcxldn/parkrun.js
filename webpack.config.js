@@ -2,8 +2,6 @@ const webpack = require("webpack");
 
 const path = require("path");
 
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
-
 module.exports = {
   entry: ["@babel/polyfill", "./src/classes/parkrun.js"],
   output: {
