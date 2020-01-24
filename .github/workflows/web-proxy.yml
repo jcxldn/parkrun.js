@@ -17,7 +17,7 @@ jobs:
         
       - name: Deploy Proxy
         env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT.ID }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         uses: cloudflare/wrangler-action@1.1.0
         with:
           apiToken: ${{ secrets.CF_API_KEY }}
