@@ -2,15 +2,16 @@ const net = require("../classes/Net").getNonAuthed();
 
 const TokensData = require("../classes/TokensData");
 
-const { URLSearchParams } = require("url");
+const SearchParams = require("./SearchParams");
 
 module.exports = async refreshToken => {
-  const params = new URLSearchParams();
-  params.append("refresh_token", refreshToken);
-  params.append("grant_type", "refresh_token");
+  const params = new SearchParams([
+    ["refresh_token", refreshToken],
+    ["grant_type", "refresh_token"]
+  ]);
+
   try {
-    // .toString() for fix on node 8.x
-    const res = await net.post("/auth/refresh", params.toString(), {
+    const res = await net.post("/auth/refresh", params.get(), {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 

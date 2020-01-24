@@ -12,13 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
-      - name: Install Dependencies
+      - name: Install Dependencies & Build Proxy
         run: npm install && npm run build:cf-workers:webpack
         
       - name: Deploy Proxy
         env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT.ID }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
         uses: cloudflare/wrangler-action@1.1.0
         with:
-          apiToken: ${{ secrets.CF_API_KET }}
+          apiToken: ${{ secrets.CF_API_KEY }}
           workingDirectory: .cf-workers

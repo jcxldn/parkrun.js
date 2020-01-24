@@ -21,7 +21,7 @@ module.exports = Joi.object({
           .max(1)
           .required(),
         eMailID: Joi.string()
-          .email()
+          .email({ tlds: { allow: false } }) // TLD Validation has been disabled for improved version control, so that we don't have to build for browsers manually (and so keep a custom fork maintained)
           .required()
       })
       .required()

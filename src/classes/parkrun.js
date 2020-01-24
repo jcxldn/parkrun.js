@@ -18,6 +18,9 @@ const { version, license } = require("../../package.json");
 // We are requiring this so we get IntelliSense for end-users.
 const Tokens = require("./Tokens");
 
+// Class List Feature (helps with tests)
+const ClassList = require("../class_list");
+
 /**
  * The main hub for interacting with the Parkrun API.
  *
@@ -434,5 +437,7 @@ Parkrun.version = version;
  * @returns {String} License type.
  */
 Parkrun.license = license;
+
+Parkrun.ClassList = ClassList;
 
 module.exports = Parkrun;

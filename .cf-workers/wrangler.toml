@@ -1,0 +1,4 @@
+name = "parkrun-proxy"
+type = "javascript"
+account_id = "$CF_ACCOUNT_ID"
+workers_dev = true

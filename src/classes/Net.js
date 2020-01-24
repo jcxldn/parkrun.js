@@ -13,10 +13,14 @@ const opts = {
     password: authSplit[1]
   },
   headers: {
-    "User-Agent": constants.user_agent,
     "X-Powered-By": "Parkrun.JS"
   }
 };
+
+// If available on the target platform, set the user agent
+process.env.PLATFORM != "WEB"
+  ? (opts.headers["User-Agent"] = constants.user_agent)
+  : undefined;
 
 class Net {
   static getNonAuthed() {

@@ -3,15 +3,23 @@
   "version": "0.0.1",
   "description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
   "main": "src/classes/parkrun.js",
+  "browser": "dist/parkrun.browser.min.js",
   "scripts": {
     "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
     "test": "node tests/pre_ensure_env.js && npm run test:run",
-    "test:run": "mocha --timeout 20000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js",
+    "test:run": "mocha --timeout 20000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js --exclude tests/*.tmp.js",
+    "test:web:build": "cross-env-shell browserify tests/core.js tests/live.js tests/enums.js -o tests/web_bundle.tmp.js -t [ envify --ID $ID --PASS $PASS ]",
     "coverage:all": "npm run coverage:test && npm run coverage:report && npm run coverage:send",
     "coverage:test": "nyc npm test",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
     "coverage:report:html": "nyc report --reporter=html",
-    "coverage:send": "codecov"
+    "coverage:send": "codecov",
+    "build": "rimraf dist/ && npm run build:web",
+    "build:web": "webpack --config webpack.config.js --mode production",
+    "prepublishOnly": "npm run build",
+    "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
+    "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
+    "build:cf-workers:deploy": "cd .cf-workers && wrangler publish"
   },
   "repository": {
     "type": "git",
@@ -28,20 +36,49 @@
   },
   "homepage": "https://github.com/Prouser123/parkrun.js#readme",
   "dependencies": {
-    "@hapi/joi": "^16.1.8",
+    "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "@babel/register": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "browserify": "^16.5.0",
+    "browserify-shim": "^3.8.14",
     "chai": "^4.2.0",
     "codecov": "^3.6.2",
+    "cross-env": "^6.0.3",
     "docdash": "^1.1.1",
+    "envify": "^4.1.0",
     "jsdoc": "^3.6.3",
     "mocha": "^7.0.0",
-    "nyc": "^15.0.0"
+    "nyc": "^15.0.0",
+    "rimraf": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   },
   "engines": {
     "node": ">=8.10"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "../src/classes/parkrun": "global:Parkrun",
+    "../src/classes/ClientUser": "global:Parkrun.ClassList.ClientUser",
+    "../src/classes/Country": "global:Parkrun.ClassList.Country",
+    "../src/classes/Event": "global:Parkrun.ClassList.Event",
+    "../src/classes/EventNewsPost": "global:Parkrun.ClassList.EventNewsPost",
+    "../src/classes/FreedomRunResult": "global:Parkrun.ClassList.FreedomRunResult",
+    "../src/classes/HomeRun": "global:Parkrun.ClassList.HomeRun",
+    "../src/classes/RosterVolunteer": "global:Parkrun.ClassList.RosterVolunteer",
+    "../src/classes/RunResult": "global:Parkrun.ClassList.RunResult",
+    "chai": "global:chai",
+    "describe": "global:describe"
   }
 }
