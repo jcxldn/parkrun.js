@@ -15,7 +15,10 @@
     "build": "rimraf dist/ && npm run build:joi && npm run build:core",
     "build:core": "webpack --config webpack.config.js --mode production",
     "build:joi": "webpack --config joi.webpack.config.js --mode production",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
+    "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
+    "build:cf-workers:deploy": "cd .cf-workers && wrangler publish"
   },
   "repository": {
     "type": "git",

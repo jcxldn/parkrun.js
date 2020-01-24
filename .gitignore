@@ -105,7 +105,8 @@ dist
 
 *.i.js
 
-
 docs/
 
 dist/
+
+.cf-workers/*.min.js
