@@ -5,12 +5,6 @@ const opts = {
   user_agent: "parkrun/1.2.7 CFNetwork/1121.2.2 Darwin/19.3.0"
 };
 
-// Countries and regions where you wish to suspend your service.
-const blocked_region = ["CN", "KP", "SY", "PK", "CU"];
-
-// IP addresses which you wish to block from using your service.
-const blocked_ip_address = ["0.0.0.0", "127.0.0.1"];
-
 // Replace texts.
 const replace_dict = {
   $upstream: "$custom_domain",
@@ -83,77 +77,61 @@ async function makeProxyRequest(request) {
 
   url.host = opts.base_url;
 
-  if (blocked_region.includes(region)) {
-    response = new Response(
-      "Access denied: WorkersProxy is not available in your region yet.",
-      {
-        status: 403
-      }
-    );
-  } else if (blocked_ip_address.includes(ip_address)) {
-    response = new Response(
-      "Access denied: Your IP address is blocked by WorkersProxy.",
-      {
-        status: 403
-      }
+  let method = request.method;
+  let request_headers = request.headers;
+  console.log(request.headers.get("grant_type"));
+  let new_request_headers = new Headers(request_headers);
+
+  let requestHeaders = JSON.stringify([...request.headers], null, 2);
+  console.log(requestHeaders);
+
+  new_request_headers.set("Host", opts.base_url);
+  new_request_headers.set("Referer", url.href);
+  new_request_headers.set("User-Agent", opts.user_agent);
+  new_request_headers.set("X-Served-By", "jcx/cf-workers/proxy");
+
+  new_request_headers.delete("cookie");
+
+  let original_response = await fetch(url.href, {
+    method: method,
+    headers: new_request_headers,
+    body: method == "POST" ? await readRequestBody(request) : undefined
+  });
+
+  let original_response_clone = original_response.clone();
+  let original_text = null;
+  let response_headers = original_response.headers;
+  let new_response_headers = new Headers(response_headers);
+  let status = original_response.status;
+
+  new_response_headers.set("access-control-allow-origin", "*");
+  new_response_headers.set("access-control-allow-credentials", true);
+  new_response_headers.set("x-jcx-sha", __SHA__);
+  new_response_headers.delete("content-security-policy");
+  new_response_headers.delete("content-security-policy-report-only");
+  new_response_headers.delete("clear-site-data");
+
+  let h = "x-jcx-fake";
+  for (var pair of new_response_headers.entries()) {
+    h += ", " + pair[0];
+  }
+  new_response_headers.set("access-control-expose-headers", h);
+
+  const content_type = new_response_headers.get("content-type");
+  if (content_type.includes("text/html") && content_type.includes("UTF-8")) {
+    original_text = await replace_response_text(
+      original_response_clone,
+      opts.base_url,
+      url_host
     );
   } else {
-    let method = request.method;
-    let request_headers = request.headers;
-    console.log(request.headers.get("grant_type"));
-    let new_request_headers = new Headers(request_headers);
-
-    let requestHeaders = JSON.stringify([...request.headers], null, 2);
-    console.log(requestHeaders);
-
-    new_request_headers.set("Host", opts.base_url);
-    new_request_headers.set("Referer", url.href);
-    new_request_headers.set("User-Agent", opts.user_agent);
-    new_request_headers.set("X-Served-By", "jcx/cf-workers/proxy");
-
-    new_request_headers.delete("cookie");
-
-    let original_response = await fetch(url.href, {
-      method: method,
-      headers: new_request_headers,
-      body: method == "POST" ? await readRequestBody(request) : undefined
-    });
-
-    let original_response_clone = original_response.clone();
-    let original_text = null;
-    let response_headers = original_response.headers;
-    let new_response_headers = new Headers(response_headers);
-    let status = original_response.status;
-
-    new_response_headers.set("access-control-allow-origin", "*");
-    new_response_headers.set("access-control-allow-credentials", true);
-    new_response_headers.set("x-jcx-sha", __SHA__);
-    new_response_headers.delete("content-security-policy");
-    new_response_headers.delete("content-security-policy-report-only");
-    new_response_headers.delete("clear-site-data");
-
-    let h = "x-jcx-fake";
-    for (var pair of new_response_headers.entries()) {
-      h += ", " + pair[0];
-    }
-    new_response_headers.set("access-control-expose-headers", h);
-
-    const content_type = new_response_headers.get("content-type");
-    if (content_type.includes("text/html") && content_type.includes("UTF-8")) {
-      original_text = await replace_response_text(
-        original_response_clone,
-        opts.base_url,
-        url_host
-      );
-    } else {
-      original_text = original_response_clone.body;
-    }
-
-    response = new Response(original_text, {
-      status,
-      headers: new_response_headers
-    });
+    original_text = original_response_clone.body;
   }
+
+  response = new Response(original_text, {
+    status,
+    headers: new_response_headers
+  });
   return response;
 }
 
