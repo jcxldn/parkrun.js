@@ -55,7 +55,7 @@ async function readRequestBody(request) {
 }
 
 async function onEvent(request) {
-  if (request.url.includes("user_auth.php") && request.method == "OPTIONS") {
+  if (request.method == "OPTIONS") {
     return new Response("ok, cf caught", {
       status: 200,
       headers: {
