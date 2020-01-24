@@ -7,7 +7,7 @@
   "scripts": {
     "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
     "test": "node tests/pre_ensure_env.js && npm run test:run",
-    "test:run": "mocha --timeout 20000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js",
+    "test:run": "mocha --timeout 20000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js --exclude tests/*.tmp.js",
     "test:web:build": "cross-env-shell browserify tests/core.js tests/live.js tests/enums.js -o tests/web_bundle.tmp.js -t [ envify --ID $ID --PASS $PASS ]",
     "coverage:all": "npm run coverage:test && npm run coverage:report && npm run coverage:send",
     "coverage:test": "nyc npm test",

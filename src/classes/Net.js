@@ -17,10 +17,10 @@ const opts = {
   }
 };
 
-//opts.headers["User-Agent"] =
-//  process.env.PLATFORM !== "WEB" ? constants.user_agent : undefined;
-
-console.log(`DEBUG: OPTS ${JSON.stringify(opts.headers)}`);
+// If available on the target platform, set the user agent
+process.env.PLATFORM != "WEB"
+  ? (opts.headers["User-Agent"] = constants.user_agent)
+  : undefined;
 
 class Net {
   static getNonAuthed() {
