@@ -65,9 +65,6 @@ async function onEvent(request) {
 }
 
 async function makeProxyRequest(request) {
-  const region = request.headers.get("cf-ipcountry").toUpperCase();
-  const ip_address = request.headers.get("cf-connecting-ip");
-
   let response = null;
   let url = new URL(request.url);
   let url_host = url.host;
