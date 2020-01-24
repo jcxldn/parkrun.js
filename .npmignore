@@ -92,3 +92,14 @@ jsdoc.json
 # test files
 
 *.i.js
+
+# CF Workers (for the Web Proxy)
+
+.cf-workers/
+
+# Build files
+*.webpack.config.js
+webpack.config.js
+
+dist/*
+!dist/parkrun.browser.min.js

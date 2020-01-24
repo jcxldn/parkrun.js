@@ -7,13 +7,13 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 module.exports = {
   entry: ["@babel/polyfill", "./src/classes/parkrun.js"],
   output: {
-    filename: "parkrun.js",
+    filename: "parkrun.browser.min.js",
     path: path.resolve(__dirname, "dist"),
     library: "Parkrun"
   },
   resolve: {
     alias: {
-      "@hapi/joi": path.resolve(__dirname, "dist/joi-browser.min.js")
+      "@hapi/joi": path.resolve(__dirname, "dist/joi.browser.min.js")
     }
   },
   // Loaders
