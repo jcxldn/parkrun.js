@@ -30,4 +30,8 @@ module.exports = {
   "../src/classes/parkrun": { exports: "global:Parkrun" }
 };
 
-console.log(module.exports);
+console.log(
+  `\nSource Files: ${classArr.length}\nBase Paths: ${
+    basePaths.length
+  }\nTotal Rules: ${Object.keys(module.exports).length}`
+);
