@@ -106,4 +106,4 @@ dist/*
 
 # Web test files
 
-tests/*.tmp.js
+tests/platform-web/*.tmp.js

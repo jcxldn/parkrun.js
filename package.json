@@ -6,9 +6,9 @@
   "browser": "dist/parkrun.browser.min.js",
   "scripts": {
     "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
-    "test": "node tests/pre_ensure_env.js && npm run test:run",
-    "test:run": "mocha --timeout 20000 --require @babel/register tests/**/*.js --exit --exclude tests/pre_ensure_env.js --exclude tests/*.tmp.js",
-    "test:web:build": "cross-env-shell browserify tests/core.js tests/live.js tests/enums.js -o tests/web_bundle.tmp.js -t [ envify --ID $ID --PASS $PASS ]",
+    "test": "node tests/platform-all/pre_ensure_env.js && npm run test:run",
+    "test:run": "mocha --timeout 20000 --require @babel/register tests/*.js --exit",
+    "test:web:build": "node tests/platform-all/pre_ensure_env.js && node tests/platform-web/builder.js",
     "coverage:all": "npm run coverage:test && npm run coverage:report && npm run coverage:send",
     "coverage:test": "nyc npm test",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
@@ -37,7 +37,8 @@
   "homepage": "https://github.com/Prouser123/parkrun.js#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "axios": "^0.19.1"
+    "axios": "^0.19.1",
+    "url-parse": "^1.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -53,6 +54,7 @@
     "cross-env": "^6.0.3",
     "docdash": "^1.1.1",
     "envify": "^4.1.0",
+    "glob": "^7.1.6",
     "jsdoc": "^3.6.3",
     "mocha": "^7.0.0",
     "nyc": "^15.0.0",
@@ -63,22 +65,5 @@
   "engines": {
     "node": ">=8.10"
   },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
-  },
-  "browserify-shim": {
-    "../src/classes/parkrun": "global:Parkrun",
-    "../src/classes/ClientUser": "global:Parkrun.ClassList.ClientUser",
-    "../src/classes/Country": "global:Parkrun.ClassList.Country",
-    "../src/classes/Event": "global:Parkrun.ClassList.Event",
-    "../src/classes/EventNewsPost": "global:Parkrun.ClassList.EventNewsPost",
-    "../src/classes/FreedomRunResult": "global:Parkrun.ClassList.FreedomRunResult",
-    "../src/classes/HomeRun": "global:Parkrun.ClassList.HomeRun",
-    "../src/classes/RosterVolunteer": "global:Parkrun.ClassList.RosterVolunteer",
-    "../src/classes/RunResult": "global:Parkrun.ClassList.RunResult",
-    "chai": "global:chai",
-    "describe": "global:describe"
-  }
+  "browserify-shim": "tests/platform-web/shim_config.js"
 }

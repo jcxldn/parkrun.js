@@ -113,4 +113,4 @@ dist/
 
 # Web tests temp file
 
-tests/*.tmp.js
+tests/**/*.tmp.js

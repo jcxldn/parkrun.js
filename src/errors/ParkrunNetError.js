@@ -1,4 +1,4 @@
-const Constants = require("../constants");
+const URL = require("url-parse");
 
 /**
  * Error class for Networking-related errors.
@@ -10,7 +10,7 @@ class ParkrunNetError extends Error {
     const message = `HTTP Error ${err.response.status} (${
       err.response.statusText
     }) on ${err.response.config.method.toString().toUpperCase()} request to '${
-      err.response.config.url.toString().split(Constants.api_base)[1]
+      new URL(err.response.config.url).pathname
     }'`;
 
     super(message);
