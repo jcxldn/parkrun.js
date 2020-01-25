@@ -3,6 +3,8 @@ const chai = require("chai");
 
 const { version, license } = require("../package.json");
 
+const UserPassError = require("../src/errors/ParkrunUserPassError");
+
 chai.should();
 describe("Core", () => {
   describe("Login (live creds)", () => {
@@ -16,6 +18,18 @@ describe("Core", () => {
 
     it("Promise-Based Login (await)", async () => {
       await Parkrun.authSync(process.env.ID, process.env.PASS);
+    });
+  });
+
+  describe("Login (invalid creds) - expecting UserPassError", () => {
+    it("Promise-Based Login (.then)", done => {
+      Parkrun.authSync("A124", "fakePassword")
+        .then(() => done(new Error()))
+        .catch(err => {
+          chai.assert(err instanceof UserPassError);
+          chai.expect(err.message).to.eql("invalid username or password!");
+          done();
+        });
     });
   });
 
