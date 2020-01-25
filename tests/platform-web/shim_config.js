@@ -6,13 +6,21 @@ const classArr = glob.sync("./src/classes/**/*js", {
   ignore: "./src/classes/parkrun.js"
 });
 
-classArr.forEach((v, i) => {
-  classes[v.replace("./", "../").replace(".js", "")] = {
-    exports: `global:Parkrun.ClassList.${v
-      .split("/")
-      .splice(-1)[0]
-      .replace(".js", "")}`
-  };
+const basePaths = [
+  ["./", "../"],
+  ["./src/", "../"],
+  ["./src/", "./"]
+];
+
+basePaths.forEach(path => {
+  classArr.forEach((v, i) => {
+    classes[v.replace(path[0], path[1]).replace(".js", "")] = {
+      exports: `global:Parkrun.ClassList.${v
+        .split("/")
+        .splice(-1)[0]
+        .replace(".js", "")}`
+    };
+  });
 });
 
 module.exports = {
