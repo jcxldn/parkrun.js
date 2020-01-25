@@ -4,7 +4,7 @@ const TokensData = require("../classes/TokensData");
 
 const SearchParams = require("./SearchParams");
 
-const ExpiredRefreshError = require("../errors/ParkrunExpiredRefreshError");
+const RefreshExpiredError = require("../errors/ParkrunRefreshExpiredError");
 
 module.exports = async refreshToken => {
   const params = new SearchParams([
@@ -29,7 +29,7 @@ module.exports = async refreshToken => {
       // At this point, we either have an expired or invalid refresh token.
 
       if (err.response.data.error_description == "Refresh token has expired") {
-        throw new ExpiredRefreshError("Refresh token has expired");
+        throw new RefreshExpiredError("Refresh token has expired");
       }
 
       if (err.response.data.error_description == "Invalid refresh token") {

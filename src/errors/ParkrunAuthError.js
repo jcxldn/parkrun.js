@@ -1,5 +1,10 @@
 const NetError = require("./ParkrunNetError");
 
+/**
+ * A general error class for any authentication-related error.
+ *
+ * @extends {ParkrunNetError}
+ */
 class ParkrunAuthError extends NetError {
   constructor(message) {
     super();
