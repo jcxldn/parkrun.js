@@ -51,6 +51,9 @@ class Parkrun {
   /**
    * Asynchronously authenticate a user via id/password
    *
+   * @throws {ParkrunAuthError} (Unexpected) error during authentication flow.
+   * @throws {ParkrunUserPassError} Error thrown when the username or password is incorrect.
+   *
    * @static
    * @param {String} id
    * @param {String} password
@@ -72,6 +75,9 @@ class Parkrun {
 
   /**
    * Synchronously authenticate a user via id/password
+   *
+   * @throws {ParkrunAuthError} (Unexpected) error during authentication flow.
+   * @throws {ParkrunUserPassError} Error thrown when the username or password is incorrect.
    *
    * @static
    * @param {String} id
