@@ -5,6 +5,7 @@ const NetError = require("../src/errors/ParkrunNetError");
 
 const AuthError = require("../src/errors/ParkrunAuthError");
 const UserPassError = require("../src/errors/ParkrunUserPassError");
+const RefreshExpiredError = require("../src/errors/ParkrunRefreshExpiredError");
 
 chai.should();
 describe("Errors", () => {
@@ -55,6 +56,18 @@ describe("Errors", () => {
     chai.expect(err.name).to.eql(UserPassError.name);
 
     chai.assert(err instanceof UserPassError);
+    chai.assert(err instanceof NetError);
+    chai.assert(err instanceof Error);
+
+    done();
+  });
+
+  it("RefreshExpiredError", done => {
+    const err = new RefreshExpiredError("RefreshExpired error test");
+    chai.expect(err.message).to.eql("RefreshExpired error test");
+    chai.expect(err.name).to.eql(RefreshExpiredError.name);
+
+    chai.assert(err instanceof RefreshExpiredError);
     chai.assert(err instanceof NetError);
     chai.assert(err instanceof Error);
 
