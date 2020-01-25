@@ -6,6 +6,8 @@ const FreedomRunResult = require("../src/classes/FreedomRunResult");
 const Country = require("../src/classes/Country");
 const Event = require("../src/classes/Event");
 
+const DataNotAvailableError = require("../src/errors/ParkrunDataNotAvailableError");
+
 const SeriesDayAssert = data => {
   return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
 };
@@ -644,6 +646,44 @@ describe("Live", () => {
       });
     });
 
+    // Test items such as getTotalCount() that only work directly and so will not here
+    describe("getAllEvents() (.then) - Get single event for Indirect Error Testing", () => {
+      let event = null;
+      before(done => {
+        country.getAllEvents().then(arr => {
+          event = arr[0];
+          done();
+        });
+      });
+
+      it(`getOfficeEmail() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getOfficeEmail();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+
+      it(`getHelperEmail() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getHelperEmail();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+
+      it(`getTotalCount() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getTotalCount();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+    });
+
     // [ROOT].getAllEventNamesByCountry() cast
     it(`getAllEventNames() (.then)`, done => {
       country.getAllEventNames().then(data => {
@@ -725,7 +765,7 @@ describe("Live", () => {
 
       // Expect each item in the array to be an instance of Country
       for (var i = 0, len = data.length; i < len; i++) {
-        chai.expect(data[i]).to.be.a("string")
+        chai.expect(data[i]).to.be.a("string");
       }
 
       done();
