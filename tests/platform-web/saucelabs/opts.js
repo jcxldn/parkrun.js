@@ -60,8 +60,12 @@ const makeDriver = _caps => {
   return { driver, builder: null };
 };
 
-const run = ({ driver, builder }) => {
+const run = async ({ driver, builder }) => {
   console.log("DRIVER RUNNING - ID "); //+ builder.sessionID);
+
+  await new Promise(v => setTimeout(v, 5000));
+
+  console.log("DONE");
 
   /*
   await driver.get("http://web_tests.nr.jcx.ovh:3000");
