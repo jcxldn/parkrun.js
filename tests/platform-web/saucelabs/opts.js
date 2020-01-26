@@ -2,6 +2,13 @@ const webdriver = require("selenium-webdriver");
 
 const browsers = require("sauce-browsers");
 
+const Saucelabs = require("saucelabs");
+
+//const saucelabs = new Saucelabs.default({
+//  username: process.env.SAUCE_USERNAME,
+//  password: process.env.SAUCE_ACCESS_KEY
+//});
+
 const constant_caps = Object.freeze({
   "tunnel-identifier": process.env.TRAVIS_JOB_NUMBER,
   "sauce:options": {
@@ -53,13 +60,36 @@ const makeDriver = _caps => {
   return { driver, builder: null };
 };
 
-const run = driver => {
-  console.log("DRIVER RUNNING - ID "); //+ driver.builder.sessionID);
-  //await driver.get("http://web_tests.nr.jcx.ovh:3000");
+const run = ({ driver, builder }) => {
+  console.log("DRIVER RUNNING - ID "); //+ builder.sessionID);
 
-  return 0;
+  /*
+  await driver.get("http://web_tests.nr.jcx.ovh:3000");
+
+  
+  await builder.wait(
+    new webdriver.WebElementCondition(
+      "Wait for tests to finish",
+      webdriver => webdriver.executeScript("window.TESTS_COMPLETE", "") == true
+    )
+  );
+
+  const num_passed = Number.parseInt(await builder.executeScript("window.TESTS_PASSED", ""));
+  const num_failed = Number.parseInt(await builder.executeScript("window.TESTS_FAILED", ""));
+
+  postRun({ driver, builder, num_passed, num_failed });
+  */
 };
 
+/*
+const postRun = ({ driver, builder, num_passed, num_failed }) => {
+  saucelabs.updateJob(
+    builder.sessionID,
+    { passed: true, "custom-data": { passed: num_passed, failed: num_failed } },
+    null
+  );
+  driver.quit();
+};*/
 module.exports = {
   getBrowsers,
   makeDriver,
