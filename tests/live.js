@@ -375,7 +375,7 @@ describe("Live", () => {
 
   describe("Event", () => {
     let event = null;
-    const eventID = 953;
+    const eventID = 191; // Gunnersbury Parkrun, London, UK. Quite popular.
     before(async () => {
       event = await client.getEvent(eventID);
     });
