@@ -1,6 +1,6 @@
 # parkrun.js
 
-![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js?label=tests)
+![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js/master?label=tests)
 ![Codecov](https://img.shields.io/codecov/c/gh/prouser123/parkrun.js)
 ![docs build status](https://img.shields.io/github/workflow/status/prouser123/parkrun.js/docs?label=docs)
 
