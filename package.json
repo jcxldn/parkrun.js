@@ -51,7 +51,7 @@
     "browserify-shim": "^3.8.14",
     "chai": "^4.2.0",
     "codecov": "^3.6.2",
-    "docdash": "^1.1.1",
+    "docdash": "^1.2.0",
     "envify": "^4.1.0",
     "glob": "^7.1.6",
     "jsdoc": "^3.6.3",
