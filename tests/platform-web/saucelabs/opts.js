@@ -2,6 +2,8 @@ const webdriver = require("selenium-webdriver");
 
 const browsers = require("sauce-browsers");
 
+const axios = require("axios").default;
+
 const constant_caps = Object.freeze({
   "sauce:options": {
     username: process.env.SAUCE_USERNAME,
@@ -46,40 +48,25 @@ const makeDriver = _caps => {
 
   const builder = driver.build();
 
-  //builder.getSession().then(function(sessionid) {
-  //  builder.sessionID = sessionid.id_;
-  //});
-
   return { driver, builder };
 };
 
 const run = async ({ driver, builder }) => {
   builder.sessionID = (await builder.getSession()).getId();
 
-  console.log("DRIVER RUNNING - ID " + builder.sessionID);
-
-  await new Promise(v => setTimeout(v, 5000));
-
-  console.log("DONE");
+  console.log(`[${builder.sessionID}] Driver started.`);
 
   await builder.get("http://web_tests.nr.jcx.ovh:3000/tests/platform-web/web");
 
   await builder.wait(async webdriver => {
-    console.debug("ELLO");
-    let a = await webdriver.executeScript("return window.TESTS_COMPLETE");
-    console.log(a);
-    return a == true;
+    return (
+      (await webdriver.executeScript("return window.TESTS_COMPLETE")) == true
+    );
   });
-  /*
-  await builder.wait(
-    new webdriver.WebElementCondition("Wait for tests to finish", webdriver => {
-      return webdriver.executeScript("return window.TESTS_COMPLETE") == true;
-    })
-  );*/
 
-  console.log("TDONE");
+  console.log(`[${builder.sessionID}] Tests finished!`);
 
-  await builder.takeScreenshot();
+  // await builder.takeScreenshot()
 
   const num_passed = Number.parseInt(
     await builder.executeScript("return window.TESTS_PASSED")
@@ -88,21 +75,18 @@ const run = async ({ driver, builder }) => {
     await builder.executeScript("return window.TESTS_FAILED")
   );
 
-  /*await saucelabs.updateTest(
-    builder.sessionID,
-    JSON.stringify({
-      passed: true,
-      "custom-data": { passed: num_passed, failed: num_failed }
-    })
-  );*/
-
-  const axios = require("axios").default;
+  console.log(
+    `[${builder.sessionID}] Passed: ${num_passed} || Failed: ${num_failed}`
+  );
 
   await axios.put(
     `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/jobs/${builder.sessionID}`,
     {
       passed: true,
-      "custom-data": { passed: num_passed, failed: num_failed }
+      "custom-data": {
+        passed: num_passed,
+        failed: num_failed
+      }
     },
     {
       auth: {
@@ -121,4 +105,4 @@ module.exports = {
   run
 };
 
-console.log(getBrowsers().then(a => console.log(a)));
+getBrowsers().then(a => console.log(a));
