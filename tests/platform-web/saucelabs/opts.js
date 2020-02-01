@@ -1,7 +1,5 @@
 const webdriver = require("selenium-webdriver");
 
-const browsers = require("sauce-browsers");
-
 const axios = require("axios").default;
 
 const constant_caps = Object.freeze({
@@ -18,20 +16,31 @@ const server_url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";
 const getBrowsers = () => {
   return [
     // ----- CHROME -----
-    _makeBrowserItem(), // defaults
-    //_makeBrowserItem(undefined, "27.0"),
+    _makeBrowserItem(), // Chrome latest, Windows 10 - defaults
+    _makeBrowserItem(undefined, "75.0"), // released June '19
 
     // ----- FIREFOX -----
-    _makeBrowserItem("firefox"),
-    //_makeBrowserItem("firefox", "15.0"),
+    _makeBrowserItem("firefox"), // Latest
+    _makeBrowserItem("firefox", "69.0"), // released Sept '19
+
+    // Firefox 68 [esr] is not compatible - error during auth flow (12/2)
 
     // ----- EDGE -----
-    _makeBrowserItem("MicrosoftEdge"),
-    _makeBrowserItem("MicrosoftEdge", "79.0") // Edge Chromium 1
-    //_makeBrowserItem("MicrosoftEdge", "15.15063") // Edge Classic - Oldest Available
+    _makeBrowserItem("MicrosoftEdge"), // Latest
+    _makeBrowserItem("MicrosoftEdge", "79.0"), // Edge Chromium 1
+    // Edge 1X.X (before chrome) is not compatible. (10/4)
 
     // ----- IE ------
-    //_makeBrowserItem("internet explorer")
+    // IE is not compatible (10/4)
+
+    // ----- MAC | SAFARI -----
+    // Safari 8 (osx10.10) Fails to start
+    // Safari 9 (osx10.11) Fails to start
+    // Safari 10 (osx10.11) Fails to start
+    // Safari 11 (macOS 10.12) Fails to start
+    // Safari 12 (macOS 10.14) is not compatible - error during auth flow (12/2)
+
+    _makeBrowserItem("safari", "13.0", "macOS 10.15")
   ];
 };
 
@@ -86,7 +95,7 @@ const run = async ({ driver, builder }) => {
   await axios.put(
     `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/jobs/${builder.sessionID}`,
     {
-      passed: true,
+      passed: num_failed == 0,
       "custom-data": {
         passed: num_passed,
         failed: num_failed
