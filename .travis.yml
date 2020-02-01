@@ -20,7 +20,9 @@ jobs:
   include:
     - stage: Sauce Labs
       node_js: 10
-      script: npm run test:web:saucelabs
+      script:
+        - chmod +x .github/ci/install-sauceconnect.sh
+        - npm run test:web:saucelabs
 
     - stage: Coverage
       node_js: 10
