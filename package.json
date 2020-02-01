@@ -9,7 +9,7 @@
     "test": "node tests/platform-all/pre_ensure_env.js && npm run test:run",
     "test:run": "mocha --timeout 20000 --require @babel/register tests/*.js --exit",
     "test:web:build": "node tests/platform-all/pre_ensure_env.js && node tests/platform-web/builder.js",
-    "test:web:saucelabs": "run-s build build:web test:web:saucelabs:install test:web:saucelabs:run",
+    "test:web:saucelabs": "run-s build test:web:saucelabs:install test:web:saucelabs:run",
     "test:web:saucelabs:install": ".\\.github\\ci\\install-sauceconnect.sh",
     "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
     "test:web:saucelabs:run:main": "cross-env-shell node tests/platform-web/saucelabs/runner.js",
