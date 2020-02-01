@@ -18,14 +18,14 @@ const serverTerm = createHttpTerminator({ server });
 server.listen(3000, () => console.log("Webserver listening on *:3000."));
 
 const runner = async () => {
-  const browsers = await opts.getBrowsers();
+  const browsers = opts.getBrowsers();
 
   const out = [];
 
   browsers.forEach((value, index) => {
     out.push(async function() {
       console.log(
-        `Browser #${index} - ${value.browserName}@${value.version} under ${value.platform}`
+        `Browser #${index} - ${value.browserName}@${value.browserVersion} under ${value.platformName}`
       );
       const driver = opts.makeDriver(value);
       await opts.run(driver);

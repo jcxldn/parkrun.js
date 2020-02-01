@@ -15,28 +15,32 @@ const constant_caps = Object.freeze({
 
 const server_url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";
 
-const getBrowsers = async () => {
-  return (
-    await new browsers([
-      //{ name: "android", version: ["oldest", "latest"] },
-      { name: "chrome", version: ["oldest", "latest"] }
-      //{ name: "firefox", version: ["oldest", "latest"] },
-      //{ name: "internet explorer", version: "oldest..latest" },
-      //{ name: "iphone", version: ["oldest", "latest"] },
-      //{ name: "safari", version: "oldest..latest" },
-      //{ name: "microsoftedge", version: "oldest..latest" }
-    ])
-  ).map(platform => {
-    const ret = {
-      browserName: platform.api_name,
-      version: platform.short_version,
-      platform: platform.os
-    };
+const getBrowsers = () => {
+  return [
+    // ----- CHROME -----
+    _makeBrowserItem(), // defaults
+    //_makeBrowserItem(undefined, "27.0"),
 
-    if (ret.browserName === "android") ret.deviceName = platform.long_name;
+    // ----- FIREFOX -----
+    _makeBrowserItem("firefox"),
+    //_makeBrowserItem("firefox", "15.0"),
 
-    return ret;
-  });
+    // ----- EDGE -----
+    _makeBrowserItem("MicrosoftEdge"),
+    _makeBrowserItem("MicrosoftEdge", "79.0") // Edge Chromium 1
+    //_makeBrowserItem("MicrosoftEdge", "15.15063") // Edge Classic - Oldest Available
+
+    // ----- IE ------
+    //_makeBrowserItem("internet explorer")
+  ];
+};
+
+const _makeBrowserItem = (browser, version, platform) => {
+  return {
+    browserName: browser || "chrome",
+    browserVersion: version || "latest",
+    platformName: platform || "Windows 10"
+  };
 };
 
 const makeDriver = _caps => {
@@ -105,4 +109,4 @@ module.exports = {
   run
 };
 
-getBrowsers().then(a => console.log(a));
+console.log(getBrowsers());
