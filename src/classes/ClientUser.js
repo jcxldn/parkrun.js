@@ -34,6 +34,8 @@ class ClientUser extends User {
     this._base2_wheelchair = new Boolean(data.WheelchairAthlete);
     this._email = data.eMailID;
 
+    this._sex = data.Sex;
+
     this._core = core;
   }
 
@@ -131,6 +133,15 @@ class ClientUser extends User {
     }
 
     return out;
+  }
+
+  /**
+   * Get the user's gender.
+   *
+   * @returns {String} gender
+   */
+  getSex() {
+    return this._sex;
   }
 }
 
