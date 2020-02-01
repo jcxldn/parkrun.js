@@ -25,3 +25,7 @@ We have several dependencies (as well as some code) that uses newer features, su
 - mocha 7 (chokidar, `>8.10`)
 
 However, as of January 2020, Node.js 8.X is no longer supported for any use case, and so you should really upgrade anyway.
+
+## Acknowledgments
+
+<img src="https://parkrun.js.org/powered-by-saucelabs-red.svg" height="100" />
