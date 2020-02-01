@@ -28,4 +28,4 @@ However, as of January 2020, Node.js 8.X is no longer supported for any use case
 
 ## Acknowledgments
 
-<img src="https://parkrun.js.org/powered-by-saucelabs-red.svg" height="100" />
+<img src=".github/powered-by-saucelabs-red.svg" height="100" />
