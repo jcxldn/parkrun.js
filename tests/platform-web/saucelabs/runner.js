@@ -20,6 +20,12 @@ const runner = async () => {
   return out;
 };
 
-runner().then(arr => {
-  parallel(arr, () => console.log("done"));
-});
+console.log("Waiting 30 seconds for the proxy to start...");
+
+setTimeout(
+  () =>
+    runner().then(arr => {
+      parallel(arr, () => console.log("done"));
+    }),
+  30000
+);

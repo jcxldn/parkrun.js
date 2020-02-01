@@ -1,7 +1,7 @@
 language: node_js
 
 addons:
-  sauce_connect: true # SAUCE_USERNAME & SAUCE_ACCESS_KEY env variables set in UI
+  #sauce_connect: true # SAUCE_USERNAME & SAUCE_ACCESS_KEY env variables set in UI
 
   hosts:
     - web_tests.nr.jcx.ovh

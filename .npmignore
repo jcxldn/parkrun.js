@@ -107,3 +107,7 @@ dist/*
 # Web test files
 
 tests/platform-web/*.tmp.js
+
+# CI files
+
+.ci_tmp/*

@@ -114,3 +114,8 @@ dist/
 # Web tests temp file
 
 tests/**/*.tmp.js
+
+
+# CI files
+
+.ci_tmp/*
