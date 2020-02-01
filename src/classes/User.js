@@ -100,10 +100,14 @@ class User {
   /**
    * Get the user's gender.
    *
-   * @returns {String} gender
+   * @deprecated As of #33 (Feb '20), this endpoint is no longer supported by Parkrun and will now result in an error.
+   * @throws {ParkrunDataNotAvailableError}
+   * @see https://github.com/Prouser123/parkrun.js/issues/33
    */
   getSex() {
-    return this._sex;
+    throw new DataNotAvailableError(
+      "getSex() - removed upstream as of Febuary 2020, see issue #33."
+    );
   }
 
   /**

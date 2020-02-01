@@ -6,6 +6,8 @@ const FreedomRunResult = require("../src/classes/FreedomRunResult");
 const Country = require("../src/classes/Country");
 const Event = require("../src/classes/Event");
 
+const DataNotAvailableError = require("../src/errors/ParkrunDataNotAvailableError");
+
 const SeriesDayAssert = data => {
   return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
 };
@@ -134,10 +136,18 @@ describe("Live", () => {
       done();
     });
 
-    it("getSex()", done => {
-      data = athlete.getSex();
-      chai.expect(data).to.be.a("string");
-      done();
+    it("getSex() [DEPRECATED FUNCTION]", done => {
+      try {
+        data = athlete.getSex();
+      } catch (err) {
+        chai.assert(err instanceof DataNotAvailableError);
+        chai
+          .expect(err.message)
+          .to.eql(
+            "no data available for getSex() - removed upstream as of Febuary 2020, see issue #33."
+          );
+        done();
+      }
     });
 
     it("getFullName()", done => {
@@ -371,11 +381,17 @@ describe("Live", () => {
         done();
       });
     });
+
+    it("getSex()", done => {
+      data = athlete.getSex();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
   });
 
   describe("Event", () => {
     let event = null;
-    const eventID = 953;
+    const eventID = 191; // Gunnersbury Parkrun, London, UK. Quite popular.
     before(async () => {
       event = await client.getEvent(eventID);
     });
@@ -725,7 +741,7 @@ describe("Live", () => {
 
       // Expect each item in the array to be an instance of Country
       for (var i = 0, len = data.length; i < len; i++) {
-        chai.expect(data[i]).to.be.a("string")
+        chai.expect(data[i]).to.be.a("string");
       }
 
       done();

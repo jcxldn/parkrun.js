@@ -1,6 +1,6 @@
 # parkrun.js
 
-![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js?label=tests)
+![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js/master?label=tests)
 ![Codecov](https://img.shields.io/codecov/c/gh/prouser123/parkrun.js)
 ![docs build status](https://img.shields.io/github/workflow/status/prouser123/parkrun.js/docs?label=docs)
 
@@ -25,3 +25,7 @@ We have several dependencies (as well as some code) that uses newer features, su
 - mocha 7 (chokidar, `>8.10`)
 
 However, as of January 2020, Node.js 8.X is no longer supported for any use case, and so you should really upgrade anyway.
+
+## Acknowledgments
+
+<img src="https://raw.githubusercontent.com/Prouser123/parkrun.js/master/.github/powered-by-saucelabs-red.svg?sanitize=true" height="100" />
