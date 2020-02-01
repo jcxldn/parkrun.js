@@ -2,13 +2,6 @@ const webdriver = require("selenium-webdriver");
 
 const browsers = require("sauce-browsers");
 
-const Saucelabs = require("saucelabs");
-
-const saucelabs = new Saucelabs.default({
-  username: process.env.SAUCE_USERNAME,
-  password: process.env.SAUCE_ACCESS_KEY
-});
-
 const constant_caps = Object.freeze({
   "sauce:options": {
     username: process.env.SAUCE_USERNAME,
@@ -127,3 +120,5 @@ module.exports = {
   makeDriver,
   run
 };
+
+console.log(getBrowsers().then(a => console.log(a)));
