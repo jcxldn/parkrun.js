@@ -6,6 +6,9 @@ const classArr = glob.sync("./src/classes/**/*js", {
   ignore: "./src/classes/parkrun.js"
 });
 
+const commonArr = glob.sync("./src/common/**/*js");
+const errorsArr = glob.sync("./src/errors/**/*js");
+
 const basePaths = [
   ["./", "../"],
   ["./src/", "../"],
@@ -21,6 +24,24 @@ basePaths.forEach(path => {
         .replace(".js", "")}`
     };
   });
+
+  commonArr.forEach((v, i) => {
+    classes[v.replace(path[0], path[1]).replace(".js", "")] = {
+      exports: `global:Parkrun.ClassList._common.${v
+        .split("/")
+        .splice(-1)[0]
+        .replace(".js", "")}`
+    };
+  });
+
+  errorsArr.forEach((v, i) => {
+    classes[v.replace(path[0], path[1]).replace(".js", "")] = {
+      exports: `global:Parkrun.ClassList._errors.${v
+        .split("/")
+        .splice(-1)[0]
+        .replace(".js", "")}`
+    };
+  });
 });
 
 module.exports = {
@@ -31,7 +52,9 @@ module.exports = {
 };
 
 console.log(
-  `\nSource Files: ${classArr.length}\nBase Paths: ${
-    basePaths.length
-  }\nTotal Rules: ${Object.keys(module.exports).length}`
+  `\nSource Files: ${classArr.length +
+    commonArr.length +
+    errorsArr.length}\nBase Paths: ${basePaths.length}\nTotal Rules: ${
+    Object.keys(module.exports).length
+  }`
 );
