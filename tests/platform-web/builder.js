@@ -3,7 +3,7 @@ const browserify = require("browserify");
 
 const arr = glob.sync("./tests/*js");
 
-console.log(arr);
+console.log(`----- Stats -----\nTest Files: ${arr.length}`);
 
 const file = browserify(arr, {
   transform: [
@@ -23,5 +23,3 @@ const stream = require("fs").createWriteStream(
 );
 
 file.bundle().pipe(stream);
-
-file.on("end", () => console.log("DONE"));

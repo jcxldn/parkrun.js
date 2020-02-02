@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const path = require("path");
 
 module.exports = {
-  entry: ["@babel/polyfill", "./src/classes/parkrun.js"],
+  entry: ["regenerator-runtime", "./src/classes/parkrun.js"],
   output: {
     filename: "parkrun.browser.min.js",
     path: path.resolve(__dirname, "dist"),
@@ -23,7 +23,9 @@ module.exports = {
               [
                 "@babel/preset-env",
                 {
-                  targets: "> 0.25%, not dead"
+                  targets: "> 0.25%, not dead",
+                  useBuiltIns: "entry",
+                  corejs: "3.6.4"
                   //"modules": "umd"
                 }
               ]

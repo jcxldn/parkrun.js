@@ -4,6 +4,9 @@ const Tokens = require("./classes/Tokens");
 
 const SearchParams = require("./common/SearchParams");
 
+const AuthError = require("./errors/ParkrunAuthError");
+const UserPassError = require("./errors/ParkrunUserPassError");
+
 const auth = async (id, password) => {
   // ID checking here
 
@@ -28,11 +31,11 @@ const auth = async (id, password) => {
     if (error.response != undefined) {
       // A request was made and the server responsed with a non 2xx status code.
       if (error.response.status == 400) {
-        throw new Error("invalid username or password!");
+        throw new UserPassError("invalid username or password!");
       }
     } else {
       console.error(error);
-      throw new Error("unspecified error during auth flow");
+      throw new AuthError("unspecified error during auth flow");
     }
   }
 };

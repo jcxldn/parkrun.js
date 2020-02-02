@@ -16,12 +16,8 @@ module.exports = Joi.object({
         HomeRunLocation: Joi.string().required(),
         HomeRunName: Joi.string().required(),
         LastName: Joi.string().required(),
-        // 'OrgSubTypeID' is null in normal responses
-        OrgSubTypeID: Joi.any().forbidden(),
-        OrganisationID: Joi.number().required(),
-        Sex: Joi.string()
-          .length(1)
-          .required()
+        // 'OrgSubTypeID' is null in normal responses, ignoring...
+        OrganisationID: Joi.number().required()
       })
       .required()
   }).required()

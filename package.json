@@ -46,10 +46,9 @@
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.3",
+    "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
-    "@babel/polyfill": "^7.8.3",
-    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
     "@babel/register": "^7.8.3",
     "async": "^3.1.1",
     "babel-loader": "^8.0.6",
@@ -66,7 +65,8 @@
     "mocha": "^7.0.1",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.0.0",
-    "rimraf": "^3.0.0",
+    "regenerator-runtime": "^0.13.3",
+    "rimraf": "^3.0.1",
     "selenium-webdriver": "^4.0.0-alpha.5",
     "serve": "^11.3.0",
     "webpack": "^4.41.5",

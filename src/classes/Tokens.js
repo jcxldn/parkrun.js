@@ -72,9 +72,10 @@ class Tokens {
   /**
    * Get a VALID API Access Token, issuing a new token if needed.
    *
-   * @todo What *could* this throw?
-   *
    * @returns {Promise<String>} A promise containing a valid access token.
+   *
+   * @throws {Error} General error during token refresh
+   * @throws {ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
    */
   async getValidAccessToken() {
     if (!this.isValid()) await this.getNewTokens();
@@ -82,6 +83,16 @@ class Tokens {
   }
 
   // Use the refresh token to get a new access token
+  /**
+   * Get a new access token using the current refresh token.
+   *
+   * Upon fulfilment of this promise the new token will be accessed as before.
+   *
+   * @returns {Promise<void>}
+   *
+   * @throws {Error} General error during token refresh
+   * @throws {ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
+   */
   async getNewTokens() {
     console.log("GET_NEW_TOKENS");
     const newData = await Refresh(this.getRefreshToken());

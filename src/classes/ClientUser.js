@@ -17,8 +17,7 @@ const FreedomRunResult = require("./FreedomRunResult");
  */
 class ClientUser extends User {
   constructor(res, authedNet, core) {
-    const data = Validate(res, ClientAthleteExpandedExtra).value.data
-      .Athletes[0];
+    const data = Validate(res, ClientAthleteExpandedExtra).data.Athletes[0];
     // Set the base objects
     super(res, authedNet);
 
