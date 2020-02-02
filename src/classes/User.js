@@ -25,9 +25,11 @@ class User {
    * @param {*} res the API response
    * @param {AxiosInstance} authedNet parkrun.js networking instance
    * @returns {User} the new user class
+   *
+   * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
    */
   constructor(res, authedNet) {
-    const data = Validate(res, AthleteExpandedSchema).value.data.Athletes[0];
+    const data = Validate(res, AthleteExpandedSchema).data.Athletes[0];
 
     this._athleteID = Number.parseInt(data.AthleteID);
     this._avatar = data.Avatar;

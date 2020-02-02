@@ -113,6 +113,7 @@ class Parkrun {
    * @param {Number} id athlete id of the user you wish to get.
    * @returns {Promise<User>} User object of the specified athlete.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
    */
   async getAthlete(id) {
     const res = await this._getAuthedNet()
@@ -155,6 +156,7 @@ class Parkrun {
    *
    * @returns {Promise<ClientUser>} Your ClientUser object.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
    */
   async getMe() {
     const res = await this._getAuthedNet()
