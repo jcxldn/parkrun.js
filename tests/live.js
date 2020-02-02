@@ -136,10 +136,18 @@ describe("Live", () => {
       done();
     });
 
-    it("getSex()", done => {
-      data = athlete.getSex();
-      chai.expect(data).to.be.a("string");
-      done();
+    it("getSex() [DEPRECATED FUNCTION]", done => {
+      try {
+        data = athlete.getSex();
+      } catch (err) {
+        chai.assert(err instanceof DataNotAvailableError);
+        chai
+          .expect(err.message)
+          .to.eql(
+            "no data available for getSex() - removed upstream as of Febuary 2020, see issue #33."
+          );
+        done();
+      }
     });
 
     it("getFullName()", done => {
@@ -373,11 +381,17 @@ describe("Live", () => {
         done();
       });
     });
+
+    it("getSex()", done => {
+      data = athlete.getSex();
+      chai.expect(data).to.be.a("string");
+      done();
+    });
   });
 
   describe("Event", () => {
     let event = null;
-    const eventID = 953;
+    const eventID = 191; // Gunnersbury Parkrun, London, UK. Quite popular.
     before(async () => {
       event = await client.getEvent(eventID);
     });
