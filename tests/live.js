@@ -660,6 +660,44 @@ describe("Live", () => {
       });
     });
 
+    // Test items such as getTotalCount() that only work directly and so will not here
+    describe("getAllEvents() (.then) - Get single event for Indirect Error Testing", () => {
+      let event = null;
+      before(done => {
+        country.getAllEvents().then(arr => {
+          event = arr[0];
+          done();
+        });
+      });
+
+      it(`getOfficeEmail() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getOfficeEmail();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+
+      it(`getHelperEmail() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getHelperEmail();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+
+      it(`getTotalCount() (via getAllEvents[0], expecting DataNotAvailableError)`, done => {
+        try {
+          event.getTotalCount();
+        } catch (err) {
+          chai.assert(err instanceof DataNotAvailableError);
+          done();
+        }
+      });
+    });
+
     // [ROOT].getAllEventNamesByCountry() cast
     it(`getAllEventNames() (.then)`, done => {
       country.getAllEventNames().then(data => {
