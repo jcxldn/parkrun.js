@@ -39,7 +39,6 @@ class User {
       data.HomeRunName
     );
     this._lastName = data.LastName;
-    this._sex = data.Sex;
     this._authedNet = authedNet;
   }
 
