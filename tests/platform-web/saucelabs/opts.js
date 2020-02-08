@@ -2,6 +2,9 @@ const webdriver = require("selenium-webdriver");
 
 const axios = require("axios").default;
 
+const fs = require("fs");
+const path = require("path").resolve(".ci_tmp/images");
+
 const constant_caps = Object.freeze({
   "sauce:options": {
     username: process.env.SAUCE_USERNAME,
@@ -27,7 +30,7 @@ const getBrowsers = () => {
 
     // ----- EDGE -----
     _makeBrowserItem("MicrosoftEdge"), // Latest
-    _makeBrowserItem("MicrosoftEdge", "79.0"), // Edge Chromium 1
+    _makeBrowserItem("MicrosoftEdge", "79.0") // Edge Chromium 1
     // Edge 1X.X (before chrome) is not compatible. (10/4)
 
     // ----- IE ------
@@ -40,7 +43,7 @@ const getBrowsers = () => {
     // Safari 11 (macOS 10.12) Fails to start
     // Safari 12 (macOS 10.14) is not compatible - error during auth flow (12/2)
 
-    _makeBrowserItem("safari", "13.0", "macOS 10.15")
+    // _makeBrowserItem("safari", "13.0", "macOS 10.15") Saucelabs application crash
   ];
 };
 
@@ -88,6 +91,18 @@ const run = async ({ driver, builder }) => {
     await builder.executeScript("return window.TESTS_FAILED")
   );
 
+  fs.writeFileSync(
+    `${path}/${builder.sessionID}.json`,
+    JSON.stringify({
+      image: await builder.executeScript("return window.IMAGE_B64"),
+      num_passed,
+      num_failed,
+      browser: driver.getCapabilities().getBrowserName(),
+      version: driver.getCapabilities().getBrowserVersion(),
+      platform: driver.getCapabilities().getPlatform()
+    })
+  );
+
   console.log(
     `[${builder.sessionID}] Passed: ${num_passed} || Failed: ${num_failed}`
   );
@@ -119,3 +134,5 @@ module.exports = {
 };
 
 console.log(getBrowsers());
+
+fs.mkdirSync(path);

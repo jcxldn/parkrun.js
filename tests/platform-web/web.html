@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
 
     <title>Parkrun.JS</title>
-    <script src="https://www.chaijs.com/chai.js"></script>
+
+    <script src="https://unpkg.com/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
 
     <script src="https://unpkg.com/chai/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
@@ -39,7 +40,23 @@
       });
 
       runner.on("end", function() {
-        window.TESTS_COMPLETE = true;
+        // Take a screenshot.
+        domtoimage
+          .toBlob(document.getElementById("mocha-report"))
+          .then(blob => {
+            reader = new FileReader();
+
+            reader.addEventListener(
+              "load",
+              function() {
+                window.IMAGE_B64 = reader.result;
+                window.TESTS_COMPLETE = true;
+              },
+              false
+            );
+
+            reader.readAsDataURL(blob);
+          });
       });
     </script>
   </body>
