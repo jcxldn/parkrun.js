@@ -30,7 +30,7 @@ const getBrowsers = () => {
 
     // ----- EDGE -----
     _makeBrowserItem("MicrosoftEdge"), // Latest
-    _makeBrowserItem("MicrosoftEdge", "79.0"), // Edge Chromium 1
+    _makeBrowserItem("MicrosoftEdge", "79.0") // Edge Chromium 1
     // Edge 1X.X (before chrome) is not compatible. (10/4)
 
     // ----- IE ------
@@ -43,7 +43,7 @@ const getBrowsers = () => {
     // Safari 11 (macOS 10.12) Fails to start
     // Safari 12 (macOS 10.14) is not compatible - error during auth flow (12/2)
 
-    _makeBrowserItem("safari", "13.0", "macOS 10.15")
+    // _makeBrowserItem("safari", "13.0", "macOS 10.15") Saucelabs application crash
   ];
 };
 

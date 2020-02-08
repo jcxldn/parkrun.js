@@ -24,7 +24,7 @@ jobs:
         - chmod +x .github/ci/install-sauceconnect.sh
         - npm run test:web:saucelabs
       after_success:
-        - npm install --no-save backblaze-b2@1.5.0 @octokit/rest@16.43.1 @octokit/auth-app@2.4.2
+        - npm install --no-save backblaze-b2@1.5.0 @octokit/app@4.1.1 @octokit/request@5.3.1
         - node ./.github/ci/saucelabs_bot_travis.js
 
     - stage: Coverage
