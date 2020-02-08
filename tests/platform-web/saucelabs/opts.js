@@ -17,7 +17,34 @@ const constant_caps = Object.freeze({
 const server_url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";
 
 const getBrowsers = () => {
-  return [_makeBrowserItem()];
+  return [
+    // ----- CHROME -----
+    _makeBrowserItem(), // Chrome latest, Windows 10 - defaults
+    _makeBrowserItem(undefined, "75.0"), // released June '19
+
+    // ----- FIREFOX -----
+    _makeBrowserItem("firefox"), // Latest
+    _makeBrowserItem("firefox", "69.0"), // released Sept '19
+
+    // Firefox 68 [esr] is not compatible - error during auth flow (12/2)
+
+    // ----- EDGE -----
+    _makeBrowserItem("MicrosoftEdge"), // Latest
+    _makeBrowserItem("MicrosoftEdge", "79.0"), // Edge Chromium 1
+    // Edge 1X.X (before chrome) is not compatible. (10/4)
+
+    // ----- IE ------
+    // IE is not compatible (10/4)
+
+    // ----- MAC | SAFARI -----
+    // Safari 8 (osx10.10) Fails to start
+    // Safari 9 (osx10.11) Fails to start
+    // Safari 10 (osx10.11) Fails to start
+    // Safari 11 (macOS 10.12) Fails to start
+    // Safari 12 (macOS 10.14) is not compatible - error during auth flow (12/2)
+
+    _makeBrowserItem("safari", "13.0", "macOS 10.15")
+  ];
 };
 
 const _makeBrowserItem = (browser, version, platform) => {
@@ -65,8 +92,15 @@ const run = async ({ driver, builder }) => {
   );
 
   fs.writeFileSync(
-    `${path}/${builder.sessionID}.png.b64`,
-    await builder.executeScript("return window.IMAGE_B64")
+    `${path}/${builder.sessionID}.json`,
+    JSON.stringify({
+      image: await builder.executeScript("return window.IMAGE_B64"),
+      num_passed,
+      num_failed,
+      browser: driver.getCapabilities().getBrowserName(),
+      version: driver.getCapabilities().getBrowserVersion(),
+      platform: driver.getCapabilities().getPlatform()
+    })
   );
 
   console.log(

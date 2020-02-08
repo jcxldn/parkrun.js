@@ -1,5 +1,8 @@
 const B2 = require("backblaze-b2");
 
+const { App } = require("@octokit/app");
+const { request } = require("@octokit/request");
+
 const fs = require("fs");
 const path = require("path");
 
@@ -51,34 +54,130 @@ function readFiles(dirname) {
   });
 }
 
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 const b2 = new B2({
   applicationKeyId: process.env.B2_KEY_ID,
   applicationKey: process.env.B2_KEY
 });
 
-b2.authorize().then(() => {
-  b2.getUploadUrl({ bucketId: "78255b6afd71142360e20419" }).then(res => {
-    readFiles(path.resolve(".ci_tmp/images")).then(files => {
-      console.log(`Loaded ${files.length} images.`);
-      files.forEach(file => {
-        b2.uploadFile({
-          uploadUrl: res.data.uploadUrl,
-          uploadAuthToken: res.data.authorizationToken,
-          fileName:
-            "parkrunjs_/saucelabs_img/" + file.filename.replace(".b64", ""),
-          mime: "image/png",
-          data: Buffer.from(
-            file.contents.replace(/^data:image\/png;base64,/, ""),
-            "base64"
-          )
-        }).then(a => {
-          console.log(
-            "https://dl-f0.jcx.ovh/file/jcx-pub-dl/" + a.data.fileName
-          );
-          console.log(file.filename.split(".")[0]); // ID
-          console.log("Uploaded!");
-        });
-      });
-    });
-  });
+const octo = new App({
+  id: 53420,
+  privateKey: Buffer.from(process.env.GITHUB_PEM, "base64").toString()
 });
+const jwt = octo.getSignedJsonWebToken();
+
+async function uploadB2() {
+  const output = [];
+
+  await b2.authorize();
+
+  const { uploadUrl, authorizationToken } = (
+    await b2.getUploadUrl({
+      bucketId: "78255b6afd71142360e20419"
+    })
+  ).data;
+
+  const files = await readFiles(path.resolve(".ci_tmp/images"));
+
+  console.log(`Loaded ${files.length} images.`);
+
+  await asyncForEach(files, async file => {
+    const data = JSON.parse(file.contents);
+
+    const upload = await b2.uploadFile({
+      uploadUrl,
+      uploadAuthToken: authorizationToken,
+      fileName:
+        "parkrunjs_/saucelabs_img/" + file.filename.replace(".json", ".png"),
+      mime: "image/png",
+      data: Buffer.from(
+        data.image.replace(/^data:image\/png;base64,/, ""),
+        "base64"
+      )
+    });
+
+    console.log(
+      "https://dl-f0.jcx.ovh/file/jcx-pub-dl/" + upload.data.fileName
+    );
+    console.log(file.filename.split(".")[0]); // ID
+    console.log("Uploaded!");
+
+    output.push(
+      Object.assign(data, { image: undefined, id: file.filename.split(".")[0] })
+    );
+  });
+
+  return output;
+}
+
+function createSubset(item) {
+  return `<details>
+<summary>${item.num_failed == 0 ? ":heavy_check_mark:" : ":x:"} ${
+    item.browser
+  }@${item.version} (${item.platform.toString().toLowerCase()})</summary>
+<br>
+
+:heavy_check_mark: **${item.num_passed}**
+
+:x: **${item.num_failed}**
+
+<br>
+
+## Output
+
+[Saucelabs Output](https://app.eu-central-1.saucelabs.com/tests/${item.id})
+
+<img src="https://dl-f0.jcx.ovh/file/jcx-pub-dl/parkrunjs_/saucelabs_img/${
+    item.id
+  }.png"/>
+</details>`;
+}
+
+async function OctokitCheck(arr, token, check_passing) {
+  let summary = "";
+
+  await asyncForEach(arr, item => {
+    summary += createSubset(item);
+  });
+
+  await request("POST /repos/Prouser123/parkrun.js/check-runs", {
+    name: "ci/web",
+    head_sha: process.env.TRAVIS_COMMIT, // DYN
+    status: "completed",
+    conclusion: check_passing ? "success" : "failure", // DYN
+    output: {
+      title: "Saucelabs Results",
+      summary
+    },
+    headers: {
+      authorization: `token ${token}`,
+      accept: "application/vnd.github.antiope-preview+json"
+    }
+  });
+}
+
+async function getInstallationToken() {
+  return (
+    await request("POST /app/installations/6675355/access_tokens", {
+      headers: {
+        authorization: `Bearer ${jwt}`,
+        accept: "application/vnd.github.machine-man-preview+json"
+      }
+    })
+  ).data.token;
+}
+
+// Main function
+(async () => {
+  const arr = await uploadB2();
+  const check_passing = arr.every(i => i.num_failed == 0);
+  await OctokitCheck(arr, await getInstallationToken(), check_passing);
+})();
+
+// TODO ADD BACKBLAZE ERR/RETRY
+// https://www.backblaze.com/blog/b2-503-500-server-error/
