@@ -62,7 +62,14 @@ async function asyncForEach(array, callback) {
 
 const b2 = new B2({
   applicationKeyId: process.env.B2_KEY_ID,
-  applicationKey: process.env.B2_KEY
+  applicationKey: process.env.B2_KEY,
+  // https://www.backblaze.com/blog/b2-503-500-server-error/
+  retry: {
+    retries: 5,
+    retryDelay: function noDelay() {
+      return 1000;
+    } // 1 second -- ref: https://github.com/softonic/axios-retry/blob/40e3f0797b9ef9b6728dd4e7639b5ff0bd8644b9/es/index.js#L67
+  }
 });
 
 const octo = new App({
@@ -178,6 +185,3 @@ async function getInstallationToken() {
   const check_passing = arr.every(i => i.num_failed == 0);
   await OctokitCheck(arr, await getInstallationToken(), check_passing);
 })();
-
-// TODO ADD BACKBLAZE ERR/RETRY
-// https://www.backblaze.com/blog/b2-503-500-server-error/
