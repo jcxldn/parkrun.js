@@ -4,7 +4,8 @@
     <meta charset="utf-8" />
 
     <title>Parkrun.JS</title>
-    <script src="https://www.chaijs.com/chai.js"></script>
+
+    <script src="https://unpkg.com/dom-to-image@2.6.0/dist/dom-to-image.min.js"></script>
 
     <script src="https://unpkg.com/chai/chai.js"></script>
     <script src="https://unpkg.com/mocha/mocha.js"></script>
@@ -19,15 +20,44 @@
     <div id="mocha"></div>
 
     <script class="mocha-init">
-      mocha.timeout(20000);
+      mocha.timeout(30000); // 30s timeout
       mocha.setup("bdd");
       // mocha.checkLeaks(); - not currently used in the CLI either.
+
+      window.TESTS_COMPLETE = false;
+      window.TESTS_PASSED = 0;
+      window.TESTS_FAILED = 0;
     </script>
 
     <script src="web-tests.tmp.js"></script>
 
     <script class="mocha-exec">
-      mocha.run();
+      var runner = mocha.run();
+
+      runner.on("test end", function(test) {
+        if (test.state === "passed") window.TESTS_PASSED++;
+        else window.TESTS_FAILED++;
+      });
+
+      runner.on("end", function() {
+        // Take a screenshot.
+        domtoimage
+          .toBlob(document.getElementById("mocha-report"))
+          .then(blob => {
+            reader = new FileReader();
+
+            reader.addEventListener(
+              "load",
+              function() {
+                window.IMAGE_B64 = reader.result;
+                window.TESTS_COMPLETE = true;
+              },
+              false
+            );
+
+            reader.readAsDataURL(blob);
+          });
+      });
     </script>
   </body>
 </html>

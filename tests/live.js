@@ -140,7 +140,6 @@ describe("Live", () => {
       try {
         data = athlete.getSex();
       } catch (err) {
-        chai.assert(err instanceof DataNotAvailableError);
         chai
           .expect(err.message)
           .to.eql(

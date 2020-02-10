@@ -1,5 +1,9 @@
 language: node_js
 
+addons:
+  hosts:
+    - web_tests.nr.jcx.ovh # For saucelabs connect
+
 node_js:
   # Supported Versions
   - "8.10" # Min version
@@ -14,6 +18,15 @@ install:
   - npm install
 jobs:
   include:
+    - stage: Sauce Labs
+      node_js: 10
+      script:
+        - chmod +x .github/ci/install-sauceconnect.sh
+        - npm run test:web:saucelabs
+      after_success:
+        - npm install --no-save backblaze-b2@1.5.0 @octokit/app@4.1.1 @octokit/request@5.3.1
+        - node ./.github/ci/saucelabs_bot_travis.js
+
     - stage: Coverage
       node_js: 10
       script: npm run coverage:all
