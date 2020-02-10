@@ -1,5 +1,7 @@
 const B2 = require("backblaze-b2");
 
+const retry = require("promise-retry");
+
 const { App } = require("@octokit/app");
 const { request } = require("@octokit/request");
 
@@ -96,16 +98,24 @@ async function uploadB2() {
   await asyncForEach(files, async file => {
     const data = JSON.parse(file.contents);
 
-    const upload = await b2.uploadFile({
-      uploadUrl,
-      uploadAuthToken: authorizationToken,
-      fileName:
-        "parkrunjs_/saucelabs_img/" + file.filename.replace(".json", ".png"),
-      mime: "image/png",
-      data: Buffer.from(
-        data.image.replace(/^data:image\/png;base64,/, ""),
-        "base64"
-      )
+    const upload = await retry((retry, number) => {
+      console.log(`Uploading to B2: ${file.filename} (attempt ${number})`);
+      return b2
+        .uploadFile({
+          uploadUrl,
+          uploadAuthToken: authorizationToken,
+          fileName:
+            "parkrunjs_/saucelabs_img/" +
+            file.filename.replace(".json", ".png"),
+          mime: "image/png",
+          data: Buffer.from(
+            data.image.replace(/^data:image\/png;base64,/, ""),
+            "base64"
+          )
+        })
+        .catch(err => {
+          retry(err);
+        });
     });
 
     console.log(

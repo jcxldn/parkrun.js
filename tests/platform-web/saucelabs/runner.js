@@ -48,7 +48,9 @@ setTimeout(
         console.log("Webserver terminated.");
 
         // Use axios / saucelabs API to shutdown the SauceConnect proxy
-        const data = await axios.get(
+
+        // Get a list of all active tunnels
+        const tunnelList = await axios.get(
           `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/tunnels`,
           {
             auth: {
@@ -58,10 +60,10 @@ setTimeout(
           }
         );
 
-        data.data.forEach(async tunnel => {
-          console.log("Shutting down Tunnel: " + tunnel);
-          await axios.delete(
-            `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/tunnels/${tunnel}`,
+        tunnelList.data.forEach(async tunnelID => {
+          // Get the details for the selected tunnel
+          const tunnelDetails = await axios.get(
+            `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/tunnels/${tunnelID}`,
             {
               auth: {
                 username: process.env.SAUCE_USERNAME,
@@ -69,6 +71,27 @@ setTimeout(
               }
             }
           );
+
+          // If the tunnel identifier matches the env var, close it.
+          if (
+            tunnelDetails.data.tunnel_identifier ==
+            process.env.TRAVIS_JOB_NUMBER
+          ) {
+            // Close the tunnel
+            console.log(
+              `Shutting down tunnel ${tunnelID} (for job ${tunnelDetails.data.tunnel_identifier})`
+            );
+
+            await axios.delete(
+              `https://eu-central-1.saucelabs.com/rest/v1/${process.env.SAUCE_USERNAME}/tunnels/${tunnelID}`,
+              {
+                auth: {
+                  username: process.env.SAUCE_USERNAME,
+                  password: process.env.SAUCE_ACCESS_KEY
+                }
+              }
+            );
+          }
         });
       });
     }),
