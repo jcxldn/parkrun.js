@@ -30,3 +30,13 @@ jobs:
     - stage: Coverage
       node_js: 10
       script: npm run coverage:all
+
+# Deploy on tags
+
+deploy:
+  provider: npm
+  email: $NPME
+  api_key: $NPMP
+  on:
+    tags: true
+    node_js: 10
