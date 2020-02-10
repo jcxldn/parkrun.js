@@ -39,6 +39,7 @@ deploy:
   provider: npm
   email: $NPME
   api_key: $NPMP
+  edge: true # opt in to dpl v2
   on:
     # Only deploy on a tagged commit
     tags: true
