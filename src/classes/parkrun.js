@@ -85,22 +85,26 @@ class Parkrun {
    * @param {authCallback} callback the callback to run once login has completed. The first paramater is the Parkrun client.
    * @example
    * const Parkrun = require("parkrun.js")
-   * Parkrun.auth("A1234567", "password", function(client) {
-   *  // ...
+   * Parkrun.auth("A1234567", "password", function(client, err) {
+   *  if (!err) {
+   *    // no errors, continue
+   *  }
    * })
    * @example
    * // Alternative example using ES6
    *
    * const Parkrun = require("parkrun.js")
-   * Parkrun.auth("A1234567", "password", (client) => {
-   *  // ...
+   * Parkrun.auth("A1234567", "password", (client, err) => {
+   *  if (!err) {
+   *    // no errors, continue
+   *  }
    * })
    */
   static auth(id, password, callback) {
     //return new Parkrun(await authSync(id, password));
-    authSync(id, password).then(tokens => {
-      callback(new Parkrun(tokens));
-    });
+    authSync(id, password)
+      .then(tokens => callback(new Parkrun(tokens)))
+      .catch(err => callback(undefined, err));
   }
 
   _getAuthedNet() {
