@@ -21,9 +21,19 @@ describe("Core", () => {
     it("Promise-Based Login (await)", async () => {
       await Parkrun.authSync(process.env.ID, process.env.PASS);
     });
+
+    it("Callback-Based Login", done => {
+      Parkrun.auth(process.env.ID, process.env.PASS, (client, err) => {
+        if (err) {
+          done(err);
+        } else {
+          done();
+        }
+      });
+    });
   });
 
-  it("Login (invalid account user/pass)", done => {
+  it("Login [Sync] (invalid account user/pass)", done => {
     Parkrun.authSync("A124", "fakePassword")
       .then(() => done(new Error()))
       .catch(err => {
@@ -31,6 +41,18 @@ describe("Core", () => {
         chai.expect(err.message).to.eql("invalid username or password!");
         done();
       });
+  });
+
+  it("Login [Callback] (invalid account user/pass)", done => {
+    Parkrun.auth("A124", "fakePassword", (client, err) => {
+      if (err) {
+        chai.assert(err instanceof UserPassError);
+        chai.expect(err.message).to.eql("invalid username or password!");
+        done();
+      } else {
+        done(new Error());
+      }
+    });
   });
 
   it("Refresh (invalid user token)", done => {
