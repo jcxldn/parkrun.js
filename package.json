@@ -1,6 +1,6 @@
 {
   "name": "parkrun.js",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
   "main": "src/classes/parkrun.js",
   "browser": "dist/parkrun.browser.min.js",
@@ -35,11 +35,11 @@
     "api"
   ],
   "author": "James Cahill <npm@jcx.ovh>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Prouser123/parkrun.js/issues"
   },
-  "homepage": "https://github.com/Prouser123/parkrun.js#readme",
+  "homepage": "https://parkrun.js.org/",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1",

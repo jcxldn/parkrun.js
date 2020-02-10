@@ -6,6 +6,14 @@
 
 A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app.
 
+## Installation
+
+`npm i parkrun.js`
+
+Or alternatively...
+
+`npm i prouser123/parkrun.js` (bleeding from master, will be buggy)
+
 ## FAQ
 
 ### Upstream API Limitations

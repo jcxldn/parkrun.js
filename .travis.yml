@@ -30,3 +30,18 @@ jobs:
     - stage: Coverage
       node_js: 10
       script: npm run coverage:all
+      env:
+        - STAGE=COV
+
+# Deploy on tags
+
+deploy:
+  provider: npm
+  email: $NPME
+  api_key: $NPMP
+  on:
+    # Only deploy on a tagged commit
+    tags: true
+    # Deploy on the coverage stage only
+    condition: "$STAGE = COV"
+    node_js: 10
