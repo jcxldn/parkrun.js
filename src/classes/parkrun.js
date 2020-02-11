@@ -107,6 +107,34 @@ class Parkrun {
       .catch(err => callback(undefined, err));
   }
 
+  /**
+   * Recreate a client based on previous authentication details.
+   *
+   * @static
+   * @param {String} access access token
+   * @param {String} refresh refresh token
+   * @param {Number} access_expiry_date access token expiry date (as epoch)
+   * @param {String} [type=bearer] OPTIONAL - token type, usually 'bearer'
+   * @param {String} [scope=app] OPTIONAL - token scope, usally 'app'
+   * @returns {Parkrun}
+   */
+  static authTokens({
+    access,
+    refresh,
+    access_expiry_date,
+    type = "bearer",
+    scope = "app"
+  }) {
+    const tokens = new Tokens(
+      { access_token: access, refresh_token: refresh, token_type: type, scope },
+      0
+    );
+
+    tokens._data._date_end = access_expiry_date;
+
+    return new Parkrun(tokens);
+  }
+
   _getAuthedNet() {
     return this._net_authed.getAuthed();
   }
