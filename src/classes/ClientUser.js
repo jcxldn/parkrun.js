@@ -10,6 +10,8 @@ const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
 
 const FreedomRunResult = require("./FreedomRunResult");
 
+const SearchParams = require("../common/SearchParams");
+
 /**
  * A class representing the currently-logged in user.
  *
@@ -141,6 +143,62 @@ class ClientUser extends User {
    */
   getSex() {
     return this._sex;
+  }
+
+  _hasNumOfDigits(numberOfDigits, number) {
+    return number.toString().length == numberOfDigits;
+  }
+
+  /**
+   * Create a new freedom run, given the event number, run year, month, day and time of completion.
+   *
+   * @param {Number} eventNumber
+   * @param {String} runYear The year of the run (4 digits)
+   * @param {String} runMonth The month of the run. (2 digits)
+   * @param {String} runDay The day of the run. (2 digits)
+   * @param {String} runTime The time of the run (hh:mm:ss)
+   *
+   * @returns {Promise<Number>} The newly created Freedom Run ID.
+   *
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   * @throws {Error} Input data error.
+   *
+   * @example
+   * const user = [...]
+   *
+   * await user.createFreedomRun(953, "2020", "02", "15", "00:15:45")
+   * // example output - 166164059
+   */
+  async createFreedomRun(eventNumber, runYear, runMonth, runDay, runTime) {
+    if (
+      this._hasNumOfDigits(4, runYear) &&
+      this._hasNumOfDigits(2, runMonth) &&
+      this._hasNumOfDigits(2, runDay) &&
+      runMonth <= 12 // haha works because quirky nodejs
+    ) {
+      const params = new SearchParams([
+        ["AthleteID", this._athleteID],
+        ["EventNumber", eventNumber],
+        ["RunDate", runYear + runMonth + runDay],
+        ["RunTime", runTime]
+      ]);
+
+      const res = await this._authedNet
+        .post("/v1/freedomruns", params.get(), {
+          params: {
+            expandedDetails: undefined,
+            scope: "app"
+          }
+        })
+        .catch(err => {
+          throw new NetError(err);
+        });
+
+      return Number.parseInt(res.data.data.FreedomRuns.freedomID);
+    } else {
+      // unexpected lengths
+      throw new Error("Invalid input!");
+    }
   }
 }
 
