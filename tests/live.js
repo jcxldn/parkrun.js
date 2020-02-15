@@ -370,21 +370,72 @@ describe("Live", () => {
       done();
     });
 
-    it("getFreedomRuns() (.then)", done => {
-      athlete.getFreedomRuns().then(data => {
-        chai.expect(data).to.be.an("array");
-
-        // If this user has data available, assert that too.
-        if (data.length != 0) chai.assert(data[0] instanceof FreedomRunResult);
-
-        done();
-      });
-    });
-
     it("getSex()", done => {
       data = athlete.getSex();
       chai.expect(data).to.be.a("string");
       done();
+    });
+
+    describe("Freedom Runs", () => {
+      let runs = null;
+      before(async () => {
+        runs = await athlete.getFreedomRuns();
+
+        // If no runs are available then just create one
+        if (runs.length == 0) {
+          await athlete.createFreedomRun(953, "2020", "02", "15", "00:15:45");
+          runs = await athlete.getFreedomRuns();
+        }
+
+        chai.expect(runs).to.be.an("array");
+        for (var i = 0, len = runs.length; i < len; i++) {
+          chai.assert(runs[i] instanceof FreedomRunResult);
+        }
+      });
+
+      it("getID() [0]", done => {
+        const data = runs[0].getID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getEvent() (.then) [0]", done => {
+        runs[0].getEvent().then(data => {
+          chai.expect(data).to.be.instanceOf(Event);
+          chai.expect(data.getName()).to.eql(runs[0].getEventName());
+          done();
+        });
+      });
+
+      it("getEventName() [0]", done => {
+        const data = runs[0].getEventName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getFinishTime() [0]", done => {
+        const data = runs[0].getFinishTime();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it("getRunDate() [0]", done => {
+        const data = runs[0].getRunDate();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
+
+      it("getAthleteID() [0]", done => {
+        const data = runs[0].getAthleteID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
+
+      it("getEventID() [0]", done => {
+        const data = runs[0].getEventID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
     });
   });
 
