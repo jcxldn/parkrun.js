@@ -86,7 +86,16 @@ describe("Core", () => {
   it("Refresh Token Authentication (.then, valid token)", done => {
     Parkrun.authSync(process.env.ID, process.env.PASS).then(client => {
       Parkrun.authRefresh({ token: client.getTokens().getRefreshToken() })
-        .then(done())
+        .then(c => {
+          chai.assert(c instanceof Parkrun);
+
+          // Sanity check - make sure the token and response instance works
+          c.getMe()
+            .then(() => {
+              done();
+            })
+            .catch(err => done(err));
+        })
         .catch(err => done(err));
     });
   });

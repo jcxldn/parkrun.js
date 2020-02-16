@@ -112,12 +112,15 @@ class Parkrun {
    *
    * Please note that **no authentication** checks are handled here.
    *
+   * @see {Parkrun#authRefresh} instead for an actual authentication method.
+   *
    * @static
-   * @param {String} access access token
-   * @param {String} refresh refresh token
-   * @param {Number} access_expiry_date access token expiry date (as epoch)
-   * @param {String} [type=bearer] OPTIONAL - token type, usually 'bearer'
-   * @param {String} [scope=app] OPTIONAL - token scope, usally 'app'
+   * @param {Object} data
+   * @param {String} data.access access token
+   * @param {String} data.refresh refresh token
+   * @param {Number} data.access_expiry_date access token expiry date (as epoch)
+   * @param {String} [data.type=bearer] OPTIONAL - token type, usually 'bearer'
+   * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
    * @returns {Parkrun}
    */
   static recreateTokens({
@@ -137,6 +140,21 @@ class Parkrun {
     return new Parkrun(tokens);
   }
 
+  /**
+   * Authenticate a client based on a previous refresh token.
+   *
+   * @throws {ParkrunAuthError} Error thrown if the refresh token is invalid.
+   * @throws {ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
+   * @throws {Error} General authentication flow error.
+   *
+   * @static
+   * @param {Object} data
+   * @param {String} data.refresh refresh token
+   * @param {String} [data.type=bearer] OPTIONAL - token type, usually 'bearer'
+   * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
+   *
+   * @returns {Promise<Parkrun>}
+   */
   static async authRefresh({ token, type = "bearer", scope = "app" }) {
     const tokens = new Tokens({
       refresh_token: token,
@@ -144,7 +162,11 @@ class Parkrun {
       scope
     });
 
+    // use this method to test the validity of the refresh token provided.
+    // it will automatically reject if needed.
     await tokens.getValidAccessToken();
+
+    return new Parkrun(tokens);
   }
 
   _getAuthedNet() {
