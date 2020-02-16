@@ -155,6 +155,8 @@ class ClientUser extends User {
   /**
    * Create a new freedom run, given the event number, run year, month, day and time of completion.
    *
+   * **Please note that Freedom Runs CANNOT be deleted.**
+   *
    * @param {Number} eventNumber
    * @param {String} runYear The year of the run (4 digits)
    * @param {String} runMonth The month of the run. (2 digits)
