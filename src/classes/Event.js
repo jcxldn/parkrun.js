@@ -30,7 +30,7 @@ class Event {
     this._isActive = new Boolean(res.StatusLive);
     // Skipping res.AnniversarySaturdayOfMonth as we can calculate that from the series ID.
     this._status = res.EventStatus;
-    // Skipping res.UserFavourite for now, waiting on issue #4.
+    // Skipping res.UserFavourite for now, waiting on issue #4. - note that seems to return null when using Athlete Events?
 
     this._officeEmail = res.EventOfficeEmail; // undefined handled in getter
     this._helperEmail = res.EventHelpersEmail; // undefined handled in getter
