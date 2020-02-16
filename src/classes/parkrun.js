@@ -156,7 +156,7 @@ class Parkrun {
         throw new NetError(err);
       });
 
-    return new User(res.data, this._getAuthedNet());
+    return new User(res.data, this);
   }
 
   /**
@@ -197,7 +197,7 @@ class Parkrun {
         throw new NetError(err);
       });
 
-    return new ClientUser(res.data, this._getAuthedNet(), this);
+    return new ClientUser(res.data, this);
   }
 
   /**
@@ -395,8 +395,16 @@ class Parkrun {
     return output.sort();
   }
 
-  async _getEventClassArrayOfAllEventsUsingURL(url) {
-    const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(url);
+  async _getEventClassArrayOfAllEventsUsingURL(
+    url,
+    athleteId = undefined,
+    expandedDetails = true
+  ) {
+    const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(
+      url,
+      athleteId,
+      expandedDetails
+    );
 
     const output = [];
 
@@ -407,14 +415,23 @@ class Parkrun {
     return output;
   }
 
-  async _getArrayOfAllEventsUsingURL(url) {
+  async _getArrayOfAllEventsUsingURL(
+    url,
+    athleteId = undefined,
+    expandedDetails = true
+  ) {
     // Note that the parkrun API will return a max of 100 items per request.
 
     // Create the events array for responses.
     let events = [];
 
     // Make the first request with a default offset of 0.
-    const requestOne = await this._makeSearchEventsRequest(url);
+    const requestOne = await this._makeSearchEventsRequest(
+      url,
+      undefined,
+      athleteId,
+      expandedDetails
+    );
 
     // Save the Range object (this tells us how many more requests we have to make)
     let range = requestOne.range;
@@ -427,7 +444,9 @@ class Parkrun {
       // Make another request with a higher offset
       const res = await this._makeSearchEventsRequest(
         url,
-        Number.parseInt(range.last)
+        Number.parseInt(range.last),
+        athleteId,
+        expandedDetails
       );
 
       // Concat the response to the array
@@ -446,11 +465,18 @@ class Parkrun {
     return events;
   }
 
-  async _makeSearchEventsRequest(url = `/v1/searchEvents`, offset = 0) {
+  async _makeSearchEventsRequest(
+    url = `/v1/searchEvents`,
+    offset = 0,
+    athleteId = undefined,
+    expandedDetails = true
+  ) {
     const res = await this._getAuthedNet()
       .get(url, {
         params: {
-          offset
+          expandedDetails: expandedDetails ? true : undefined,
+          offset,
+          athleteId
         }
       })
       .catch(err => {
@@ -461,6 +487,25 @@ class Parkrun {
       arr: res.data.data.Events,
       range: res.data["Content-Range"].EventsRange[0]
     };
+  }
+
+  /**
+   * Get an array of @see Event objects for each parkrun that the specified athlete has run, in alphabetical order.
+   *
+   * (Needed for freedomRuns)
+   *
+   * @param {Number} athleteID The athlete ID for which to get results for.
+   * @returns {Promise<Array<Event>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getAthleteParkruns(athleteID) {
+    return (
+      await this._getEventClassArrayOfAllEventsUsingURL(
+        "/v1/events",
+        athleteID,
+        false
+      )
+    ).sort((a, b) => a.getName().localeCompare(b.getName()));
   }
 }
 
