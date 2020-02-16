@@ -186,7 +186,8 @@ class ClientUser extends User {
         ["RunTime", runTime]
       ]);
 
-      const res = await this._authedNet
+      const res = await this._core
+        ._getAuthedNet()
         .post("/v1/freedomruns", params.get(), {
           params: {
             expandedDetails: undefined,
