@@ -43,7 +43,6 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1",
-    "fast-text-encoding": "^1.0.0",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
@@ -60,6 +59,7 @@
     "cross-env": "^7.0.0",
     "docdash": "^1.2.0",
     "envify": "^4.1.0",
+    "fast-text-encoding": "^1.0.0",
     "glob": "^7.1.6",
     "http-terminator": "^2.0.1",
     "jsdoc": "^3.6.3",
