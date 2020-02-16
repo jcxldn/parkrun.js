@@ -318,6 +318,25 @@ describe("Live", () => {
         })
         .catch(err => done(err));
     });
+
+    it("getEvents() (.then)", done => {
+      athlete.getEvents().then(data => {
+        // Make sure it returns an array
+        chai.expect(data).to.be.an("array");
+
+        // Make sure every item in the array is an instance of Event.
+        for (var i = 0, len = data.length; i < len; i++) {
+          chai.assert(data[i] instanceof Event);
+        }
+        // Make sure that the array was sorted properly
+        chai
+          .expect(data)
+          .to.eql(data.sort((a, b) => a.getName().localeCompare(b.getName())));
+
+        // Finish the test
+        done();
+      });
+    });
   });
 
   describe("Client User (Athlete)", () => {

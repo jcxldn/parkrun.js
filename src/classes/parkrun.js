@@ -124,7 +124,7 @@ class Parkrun {
         throw new NetError(err);
       });
 
-    return new User(res.data, this._getAuthedNet());
+    return new User(res.data, this);
   }
 
   /**
@@ -165,7 +165,7 @@ class Parkrun {
         throw new NetError(err);
       });
 
-    return new ClientUser(res.data, this._getAuthedNet(), this);
+    return new ClientUser(res.data, this);
   }
 
   /**

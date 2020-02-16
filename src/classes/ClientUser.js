@@ -18,10 +18,10 @@ const SearchParams = require("../common/SearchParams");
  * @extends {User}
  */
 class ClientUser extends User {
-  constructor(res, authedNet, core) {
+  constructor(res, core) {
     const data = Validate(res, ClientAthleteExpandedExtra).data.Athletes[0];
     // Set the base objects
-    super(res, authedNet);
+    super(res, core);
 
     // Set the client-only objects
     this._clubID = Number.parseInt(data.ClubID);
@@ -123,9 +123,12 @@ class ClientUser extends User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getFreedomRuns() {
-    const res = await this._authedNet.get(`/v1/freedomruns`).catch(err => {
-      throw new NetError(err);
-    });
+    const res = await this._core
+      ._getAuthedNet()
+      .get(`/v1/freedomruns`)
+      .catch(err => {
+        throw new NetError(err);
+      });
 
     const out = [];
 

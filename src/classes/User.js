@@ -17,18 +17,20 @@ const capitalize = str =>
 
 /**
  * A class representing a Parkrun User.
+ *
+ * @borrows Parkrun#getAthleteParkruns as getEvents
  */
 class User {
   /**
    * Create a new User class from the API responses.
    *
    * @param {*} res the API response
-   * @param {AxiosInstance} authedNet parkrun.js networking instance
+   * @param {Parkrun} core parkrun.js instance
    * @returns {User} the new user class
    *
    * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
    */
-  constructor(res, authedNet) {
+  constructor(res, core) {
     const data = Validate(res, AthleteExpandedSchema).data.Athletes[0];
 
     this._athleteID = Number.parseInt(data.AthleteID);
@@ -41,7 +43,8 @@ class User {
       data.HomeRunName
     );
     this._lastName = data.LastName;
-    this._authedNet = authedNet;
+
+    this._core = core;
   }
 
   /**
@@ -127,7 +130,8 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRunCount() {
-    const res = await this._authedNet
+    const res = await this._core
+      ._getAuthedNet()
       .get("/v1/hasrun/count/Run", {
         params: { athleteId: this._athleteID, offset: 0 }
       })
@@ -145,7 +149,8 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRuns() {
-    const res = await this._authedNet
+    const res = await this._core
+      ._getAuthedNet()
       .get("/v1/results", {
         params: {
           athleteId: this._athleteID,
@@ -189,7 +194,8 @@ class User {
    */
   async getClubs() {
     // We are using /v1/results (from getRuns() as it returns all club statuses at once.)
-    const res = await this._authedNet
+    const res = await this._core
+      ._getAuthedNet()
       .get(`/v1/results`, {
         params: {
           athleteId: this._athleteID,
@@ -208,6 +214,17 @@ class User {
       JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],
       VolunteerClub: ClubsEnums._volnFromCount(data.volcount)
     };
+  }
+  /**
+   * Get an array of @see Event objects for each parkrun that the athlete has run, in alphabetical order.
+   *
+   * @see Parkrun#getAthleteParkruns
+   *
+   * @returns {Promise<Array<Event>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
+  async getEvents() {
+    return this._core.getAthleteParkruns(this._athleteID);
   }
 }
 
