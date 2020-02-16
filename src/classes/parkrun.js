@@ -439,7 +439,6 @@ class Parkrun {
     athleteId = undefined,
     expandedDetails = true
   ) {
-    console.log(`URL: ${url}, OFFSET: ${offset}, AID: ${athleteId}`);
     const res = await this._getAuthedNet()
       .get(url, {
         params: {
@@ -449,8 +448,6 @@ class Parkrun {
         }
       })
       .catch(err => {
-        console.log(err.response.data);
-        console.log(err);
         throw new NetError(err);
       });
 

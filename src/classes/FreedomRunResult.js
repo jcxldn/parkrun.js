@@ -5,7 +5,6 @@
  */
 class FreedomRunResult {
   constructor(res, core) {
-    console.log(res);
     this._id = Number.parseInt(res.freedomID);
     this._time = res.runTime;
     this._date = new Date(res.runDate);
