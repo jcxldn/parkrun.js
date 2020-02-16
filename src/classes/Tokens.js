@@ -91,6 +91,7 @@ class Tokens {
    * @returns {Promise<void>}
    *
    * @throws {Error} General error during token refresh
+   * @throws {ParkrunAuthError} Error thrown then the current refresh token is invalid.
    * @throws {ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
    */
   async getNewTokens() {

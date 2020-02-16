@@ -110,6 +110,8 @@ class Parkrun {
   /**
    * Recreate a client based on previous authentication details.
    *
+   * Please note that **no authentication** checks are handled here.
+   *
    * @static
    * @param {String} access access token
    * @param {String} refresh refresh token
@@ -118,7 +120,7 @@ class Parkrun {
    * @param {String} [scope=app] OPTIONAL - token scope, usally 'app'
    * @returns {Parkrun}
    */
-  static authTokens({
+  static recreateTokens({
     access,
     refresh,
     access_expiry_date,
@@ -133,6 +135,16 @@ class Parkrun {
     tokens._data._date_end = access_expiry_date;
 
     return new Parkrun(tokens);
+  }
+
+  static async authRefresh({ token, type = "bearer", scope = "app" }) {
+    const tokens = new Tokens({
+      refresh_token: token,
+      token_type: type,
+      scope
+    });
+
+    await tokens.getValidAccessToken();
   }
 
   _getAuthedNet() {

@@ -4,6 +4,7 @@ const chai = require("chai");
 const { version, license } = require("../package.json");
 
 const UserPassError = require("../src/errors/ParkrunUserPassError");
+const AuthError = require("../src/errors/ParkrunAuthError");
 
 const refresh = require("../src/common/refresh");
 
@@ -59,10 +60,35 @@ describe("Core", () => {
     refresh("invalid")
       .then(() => done(new Error()))
       .catch(err => {
-        chai.assert(err instanceof Error);
-        chai.expect(err.message).to.eql("Invalid refresh token");
+        chai.assert(err instanceof AuthError);
+        chai.expect(err.message).to.eql("invalid refresh token");
         done();
       });
+  });
+
+  it("Token Client Recreation (invalid token)", done => {
+    Parkrun.recreateTokens({
+      access: "access",
+      refresh: "refresh",
+      access_expiry_date: "1519211809934" // this epoch is in ms, as is done in NodeJS.
+    });
+    done();
+  });
+
+  it("Refresh Token Authentication (.then, invalid token)", done => {
+    Parkrun.authRefresh({ token: "invalid" }).catch(err => {
+      chai.assert(err instanceof AuthError);
+      chai.expect(err.message).to.eql("invalid refresh token");
+      done();
+    });
+  });
+
+  it("Refresh Token Authentication (.then, valid token)", done => {
+    Parkrun.authSync(process.env.ID, process.env.PASS).then(client => {
+      Parkrun.authRefresh({ token: client.getTokens().getRefreshToken() })
+        .then(done())
+        .catch(err => done(err));
+    });
   });
 
   describe("Static variables", () => {
