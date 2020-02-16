@@ -85,22 +85,88 @@ class Parkrun {
    * @param {authCallback} callback the callback to run once login has completed. The first paramater is the Parkrun client.
    * @example
    * const Parkrun = require("parkrun.js")
-   * Parkrun.auth("A1234567", "password", function(client) {
-   *  // ...
+   * Parkrun.auth("A1234567", "password", function(client, err) {
+   *  if (!err) {
+   *    // no errors, continue
+   *  }
    * })
    * @example
    * // Alternative example using ES6
    *
    * const Parkrun = require("parkrun.js")
-   * Parkrun.auth("A1234567", "password", (client) => {
-   *  // ...
+   * Parkrun.auth("A1234567", "password", (client, err) => {
+   *  if (!err) {
+   *    // no errors, continue
+   *  }
    * })
    */
   static auth(id, password, callback) {
     //return new Parkrun(await authSync(id, password));
-    authSync(id, password).then(tokens => {
-      callback(new Parkrun(tokens));
+    authSync(id, password)
+      .then(tokens => callback(new Parkrun(tokens)))
+      .catch(err => callback(undefined, err));
+  }
+
+  /**
+   * Recreate a client based on previous authentication details.
+   *
+   * Please note that **no authentication** checks are handled here.
+   *
+   * @see {Parkrun#authRefresh} instead for an actual authentication method.
+   *
+   * @static
+   * @param {Object} data
+   * @param {String} data.access access token
+   * @param {String} data.refresh refresh token
+   * @param {Number} data.access_expiry_date access token expiry date (as epoch)
+   * @param {String} [data.type=bearer] OPTIONAL - token type, usually 'bearer'
+   * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
+   * @returns {Parkrun}
+   */
+  static recreateTokens({
+    access,
+    refresh,
+    access_expiry_date,
+    type = "bearer",
+    scope = "app"
+  }) {
+    const tokens = new Tokens(
+      { access_token: access, refresh_token: refresh, token_type: type, scope },
+      0
+    );
+
+    tokens._data._date_end = access_expiry_date;
+
+    return new Parkrun(tokens);
+  }
+
+  /**
+   * Authenticate a client based on a previous refresh token.
+   *
+   * @throws {ParkrunAuthError} Error thrown if the refresh token is invalid.
+   * @throws {ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
+   * @throws {Error} General authentication flow error.
+   *
+   * @static
+   * @param {Object} data
+   * @param {String} data.refresh refresh token
+   * @param {String} [data.type=bearer] OPTIONAL - token type, usually 'bearer'
+   * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
+   *
+   * @returns {Promise<Parkrun>}
+   */
+  static async authRefresh({ token, type = "bearer", scope = "app" }) {
+    const tokens = new Tokens({
+      refresh_token: token,
+      token_type: type,
+      scope
     });
+
+    // use this method to test the validity of the refresh token provided.
+    // it will automatically reject if needed.
+    await tokens.getValidAccessToken();
+
+    return new Parkrun(tokens);
   }
 
   _getAuthedNet() {

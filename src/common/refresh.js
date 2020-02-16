@@ -5,6 +5,7 @@ const TokensData = require("../classes/TokensData");
 const SearchParams = require("./SearchParams");
 
 const RefreshExpiredError = require("../errors/ParkrunRefreshExpiredError");
+const AuthError = require("../errors/ParkrunAuthError");
 
 module.exports = async refreshToken => {
   const params = new SearchParams([
@@ -29,11 +30,11 @@ module.exports = async refreshToken => {
       // At this point, we either have an expired or invalid refresh token.
 
       if (err.response.data.error_description == "Refresh token has expired") {
-        throw new RefreshExpiredError("Refresh token has expired");
+        throw new RefreshExpiredError("refresh token has expired");
       }
 
       if (err.response.data.error_description == "Invalid refresh token") {
-        throw new Error("Invalid refresh token");
+        throw new AuthError("invalid refresh token");
       }
 
       throw new Error("server returned http code 400");
