@@ -72,6 +72,8 @@ class Tokens {
   /**
    * Get a VALID API Access Token, issuing a new token if needed.
    *
+   * When resolved, the new token (if needed) is also saved to getCurrentAccessToken()
+   *
    * @returns {Promise<String>} A promise containing a valid access token.
    *
    * @throws {Error} General error during token refresh
