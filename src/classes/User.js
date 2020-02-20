@@ -17,8 +17,6 @@ const capitalize = str =>
 
 /**
  * A class representing a Parkrun User.
- *
- * @borrows Parkrun#getAthleteParkruns as getEvents
  */
 class User {
   /**
@@ -216,9 +214,9 @@ class User {
     };
   }
   /**
-   * Get an array of @see Event objects for each parkrun that the athlete has run, in alphabetical order.
+   * Get an array of {@link Event} objects for each parkrun that the athlete has run, in alphabetical order.
    *
-   * @see Parkrun#getAthleteParkruns
+   * @see (Borrows from {@link Parkrun#getAthleteParkruns})
    *
    * @returns {Promise<Array<Event>>}
    * @throws {ParkrunNetError} ParkrunJS Networking Error.

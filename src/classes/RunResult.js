@@ -1,6 +1,6 @@
 const { getDisplayName } = require("../common/AgeGradeEnums");
 
-const SeriesID = require("../common/SeriesID")
+const SeriesID = require("../common/SeriesID");
 
 /*
 
@@ -206,7 +206,7 @@ class RunResult {
    * Get weather this run was a PB.
    *
    * @returns {Boolean} Was PB?
-   * @see getWasGenuinePB() for a more accurate result.
+   * @see {@link RunResult#getWasGenuinePB} for a more accurate result.
    */
   getWasPB() {
     return this._was_pb;
@@ -214,12 +214,12 @@ class RunResult {
 
   /**
    * Get the numerical series ID for this run / event.
-   * 
-   * @see getEventDay for this value as a string.
+   *
+   * @see {@link RunResult#getEventDay} for this value as a string.
    * @returns {Number} Series ID.
    */
   getSeriesID() {
-    return this._series_id
+    return this._series_id;
   }
 
   /**
@@ -228,7 +228,7 @@ class RunResult {
    * @returns {"Saturday" | "Sunday" | "Unknown"} String day.
    */
   getEventDay() {
-    return SeriesID.getDayOfWeek(this.getSeriesID())
+    return SeriesID.getDayOfWeek(this.getSeriesID());
   }
 }
 

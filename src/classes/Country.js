@@ -1,9 +1,5 @@
 /**
  * A class representing a parkrun country.
- *
- *
- * @borrows Parkrun#getAllEventsByCountry as getAllEvents
- * @borrows Parkrun#getAllEventNamesByCountry() as getAllEventNames
  */
 class Country {
   constructor(res, core) {
@@ -23,8 +19,8 @@ class Country {
    * Get an array of all the events in this country.
    *
    *
-   * @see Parkrun#getAllEventsByCountry()
-   * @see Parkrun#getAllEvents()
+   * @see (Borrows from {@link Parkrun#getAllEventsByCountry})
+   * @see Parkrun#getAllEvents
    *
    * @returns {Promise<Array<Event>>}
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
@@ -36,8 +32,8 @@ class Country {
   /**
    * Get an array with the names of all parkrun events in this country, in alphabetical order.
    *
-   * @see Parkrun#getAllEventNames()
-   * @see Parkrun#getAllEventNamesByCountry()
+   * @see (Borrows from {@link Parkrun#getAllEventNamesByCountry})
+   * @see Parkrun#getAllEventNames
    *
    * @returns {Promise<Array<String>>}
    * @throws {ParkrunNetError} ParkrunJS Networking Error.

@@ -26,7 +26,7 @@ class Tokens {
    *
    * This function is __not recommended__ for use as the response may be invalid. No checks are peformed here.
    *
-   * @see getValidAccessToken() to get a valid access token.
+   * @see {@link Tokens#getValidAccessToken} to get a valid access token.
    *
    * @returns {String} Access token.
    */
@@ -72,7 +72,7 @@ class Tokens {
   /**
    * Get a VALID API Access Token, issuing a new token if needed.
    *
-   * When resolved, the new token (if needed) is also saved to getCurrentAccessToken()
+   * When resolved, the new token (if needed) is also saved to {@link Tokens#getCurrentAccessToken}
    *
    * @returns {Promise<String>} A promise containing a valid access token.
    *

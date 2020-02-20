@@ -23,8 +23,6 @@ const ClassList = require("../class_list");
 
 /**
  * The main hub for interacting with the Parkrun API.
- *
- * @module ParkrunJS
  */
 class Parkrun {
   /**
@@ -109,7 +107,7 @@ class Parkrun {
    *
    * Please note that **no authentication** checks are handled here.
    *
-   * @see {Parkrun#authRefresh} instead for an actual authentication method.
+   * @see {@link Parkrun.authRefresh} instead for an actual authentication method.
    *
    * @deprecated This method was meant for legacy users, and has a better alternative available. However, it will be included for the forseeable future.
    *
@@ -419,7 +417,13 @@ class Parkrun {
   async getAllEventNames() {
     return await this._getArrayOfAllEventNamesUsingURL("/v1/searchEvents");
   }
-
+  /**
+   * Get an array with the names of all parkrun events in the specified country, in alphabetical order.
+   *
+   * @param {Number} countryID Country ID.
+   * @returns {Promise<Array<String>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
   async getAllEventNamesByCountry(countryID) {
     return await this._getArrayOfAllEventNamesUsingURL(
       `/v1/countries/${countryID}/searchEvents`
@@ -536,7 +540,7 @@ class Parkrun {
   }
 
   /**
-   * Get an array of @see Event objects for each parkrun that the specified athlete has run, in alphabetical order.
+   * Get an array of {@link Event} objects for each parkrun that the specified athlete has run, in alphabetical order.
    *
    * (Needed for freedomRuns)
    *
