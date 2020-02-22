@@ -1,7 +1,5 @@
 /**
  * A class representing the Results of a Freedom Run.
- *
- * @borrows Parkrun#getEvent as getEvent
  */
 class FreedomRunResult {
   constructor(res, core) {
@@ -31,7 +29,7 @@ class FreedomRunResult {
   /**
    * Get the event object for the event this took place at.
    *
-   * @see Parkrun#getEvent()
+   * @see (Borrows from {@link Parkrun#getEvent})
    *
    * @returns {Promise<Event>} Array of news posts.
    * @throws {ParkrunNetError} ParkrunJS Networking Error.

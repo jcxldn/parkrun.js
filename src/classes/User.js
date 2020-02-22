@@ -17,8 +17,6 @@ const capitalize = str =>
 
 /**
  * A class representing a Parkrun User.
- *
- * @borrows Parkrun#getAthleteParkruns as getEvents
  */
 class User {
   /**
@@ -170,10 +168,27 @@ class User {
     return out;
   }
 
+  // TypeDef for getClubs()
+  /**
+   * @typedef {Object} clubsResult
+   *
+   * @property {Object} ParkrunClub
+   * @property {String} ParkrunClub.id
+   * @property {String} ParkrunClub.name
+   *
+   * @property {Object} JuniorClub
+   * @property {String} JuniorClub.id
+   * @property {String} JuniorClub.name
+   *
+   * @property {Object} VolunteerClub
+   * @property {String} VolunteerClub.id
+   * @property {String} VolunteerClub.name
+   */
+
   /**
    * Get the user's Parkrun Clubs (for milestone runs / duties)
    *
-   * @returns {Promise<Object>}
+   * @returns {Promise<clubsResult>}
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
    *
@@ -216,9 +231,9 @@ class User {
     };
   }
   /**
-   * Get an array of @see Event objects for each parkrun that the athlete has run, in alphabetical order.
+   * Get an array of {@link Event} objects for each parkrun that the athlete has run, in alphabetical order.
    *
-   * @see Parkrun#getAthleteParkruns
+   * @see (Borrows from {@link Parkrun#getAthleteParkruns})
    *
    * @returns {Promise<Array<Event>>}
    * @throws {ParkrunNetError} ParkrunJS Networking Error.

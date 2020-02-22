@@ -26,6 +26,9 @@
         "href": "https://github.com/Prouser123/parkrun.js",
         "target": "_blank",
         "class": "menu-item"
+      },
+      "<h3>Main Class</h3></a></h2><ul><li><a href='./parkrun.html'>Parkrun</a></li></ul>": {
+        "href": "./parkrun.html"
       }
     }
   }

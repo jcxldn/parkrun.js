@@ -23,8 +23,6 @@ const ClassList = require("../class_list");
 
 /**
  * The main hub for interacting with the Parkrun API.
- *
- * @module ParkrunJS
  */
 class Parkrun {
   /**
@@ -34,9 +32,6 @@ class Parkrun {
    */
   constructor(tokens) {
     this._tokens = tokens;
-
-    this._net_authed = new Net(tokens.getCurrentAccessToken());
-    this._net_params = this._net_authed._params;
   }
 
   /**
@@ -112,7 +107,9 @@ class Parkrun {
    *
    * Please note that **no authentication** checks are handled here.
    *
-   * @see {Parkrun#authRefresh} instead for an actual authentication method.
+   * @see {@link Parkrun.authRefresh} instead for an actual authentication method.
+   *
+   * @deprecated This method was meant for legacy users, and has a better alternative available. However, it will be included for the forseeable future.
    *
    * @static
    * @param {Object} data
@@ -141,7 +138,7 @@ class Parkrun {
   }
 
   /**
-   * Authenticate a client based on a previous refresh token.
+   * (Asynchronously) Authenticate a client based on a previous refresh token.
    *
    * @throws {ParkrunAuthError} Error thrown if the refresh token is invalid.
    * @throws {ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
@@ -170,7 +167,18 @@ class Parkrun {
   }
 
   _getAuthedNet() {
-    return this._net_authed.getAuthed();
+    // Create the Parkrun Net class instance.
+    // We do this every call in case the token has been renewed since the program's init. (this will happen with getNewTokens())
+    const net = new Net(this._tokens.getCurrentAccessToken());
+
+    // Get the Axios [Static] instance from the Net class.
+    const authed = net.getAuthed();
+
+    // Add ._params object to the axios class from the net class.
+    authed._params = net._params;
+
+    // Return the newly-customized Axios [Static] instance.
+    return authed;
   }
 
   /**
@@ -182,9 +190,10 @@ class Parkrun {
    * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
    */
   async getAthlete(id) {
-    const res = await this._getAuthedNet()
+    const net = this._getAuthedNet();
+    const res = await net
       .get(`/v1/athletes/${id}`, {
-        params: { limit: 100, ...this._net_params }
+        params: { limit: 100, ...net._params }
       })
       .catch(err => {
         throw new NetError(err);
@@ -201,9 +210,10 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getNews(eventID) {
-    const res = await this._getAuthedNet()
+    const net = this._getAuthedNet();
+    const res = await net
       .get(`/v1/news/${eventID}`, {
-        params: { offset: 0, ...this._net_params }
+        params: { offset: 0, ...net._params }
       })
       .catch(err => {
         throw new NetError(err);
@@ -407,7 +417,13 @@ class Parkrun {
   async getAllEventNames() {
     return await this._getArrayOfAllEventNamesUsingURL("/v1/searchEvents");
   }
-
+  /**
+   * Get an array with the names of all parkrun events in the specified country, in alphabetical order.
+   *
+   * @param {Number} countryID Country ID.
+   * @returns {Promise<Array<String>>}
+   * @throws {ParkrunNetError} ParkrunJS Networking Error.
+   */
   async getAllEventNamesByCountry(countryID) {
     return await this._getArrayOfAllEventNamesUsingURL(
       `/v1/countries/${countryID}/searchEvents`
@@ -524,7 +540,7 @@ class Parkrun {
   }
 
   /**
-   * Get an array of @see Event objects for each parkrun that the specified athlete has run, in alphabetical order.
+   * Get an array of {@link Event} objects for each parkrun that the specified athlete has run, in alphabetical order.
    *
    * (Needed for freedomRuns)
    *
