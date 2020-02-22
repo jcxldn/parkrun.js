@@ -1,6 +1,6 @@
 {
   "name": "parkrun.js",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
   "main": "src/classes/parkrun.js",
   "browser": "dist/parkrun.browser.min.js",
