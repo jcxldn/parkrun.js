@@ -147,24 +147,31 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRuns() {
-    const res = await this._core
-      ._getAuthedNet()
-      .get("/v1/results", {
-        params: {
-          athleteId: this._athleteID,
-          orderBy: "EventDate", // The app uses this, but it does not return in order.
-          limit: 1000,
-          offset: 0
-        }
-      })
-      .catch(err => {
-        throw new NetError(err);
-      });
+    const res = await this._core._multiGet(
+      "/v1/results",
+      {
+        params: { athleteId: this._athleteID }
+      },
+      "Results",
+      "ResultsRange"
+    );
 
     const out = [];
-    for (var i = 0, len = res.data.data.Results.length; i < len; i++) {
-      out.push(new RunResult(res.data.data.Results[i]));
+
+    console.log(
+      res.map(i => {
+        return i.EventDate;
+      })
+    );
+    for (var i = 0, len = res.length; i < len; i++) {
+      out.push(new RunResult(res[i]));
     }
+
+    console.log(
+      out.map(i => {
+        return i.getEventDate();
+      })
+    );
     return out;
   }
 

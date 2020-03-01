@@ -1,5 +1,7 @@
 // TODO: Rename to 'Client'
 
+const merge = require("lodash.merge");
+
 const Net = require("./Net");
 const User = require("./User");
 const ClientUser = require("./ClientUser");
@@ -556,6 +558,63 @@ class Parkrun {
         false
       )
     ).sort((a, b) => a.getName().localeCompare(b.getName()));
+  }
+
+  async _multiGet(url, options, dataName, rangeName) {
+    // Create an array for the responses
+    let data = [];
+
+    /*
+      Create the first request.
+
+      From this we can get the first 100 results and the total amount of results.
+    */
+    const firstRequest = await this._makeMultiGetRequest(
+      url,
+      merge({ params: { offset: 0 } }, options)
+    );
+
+    // Save the range object to a variable
+    let range = firstRequest.range[rangeName][0];
+
+    // Set the response array - this is the first request; no need to concat.
+    data = firstRequest.data[dataName];
+
+    console.log(range);
+    console.log("FIRST REQUEST DONE");
+
+    // While we still have more requests to make...
+    while (Number.parseInt(range.last) < Number.parseInt(range.max)) {
+      console.log("NEW REQ");
+      // Make another request with a higher offset
+      const res = await this._makeMultiGetRequest(
+        url,
+        merge({ params: { offset: Number.parseInt(range.last) } }, options)
+      );
+
+      // Concat the response to the array
+      data = data.concat(firstRequest.data[dataName]);
+
+      // Change the range to the newly-returned range (will be higher than last)
+      range = res.range[rangeName][0];
+    }
+
+    console.log("[parkrun._multiGet] found " + data.length + " items.");
+
+    // We now return the FULL array.
+    return data;
+  }
+
+  async _makeMultiGetRequest(url, options) {
+    console.log(options.params.offset);
+    const res = await this._getAuthedNet()
+      .get(url, options)
+      .catch(err => {
+        console.log(err);
+        throw new NetError(err);
+      });
+
+    return { data: res.data.data, range: res.data["Content-Range"] };
   }
 }
 
