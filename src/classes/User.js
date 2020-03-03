@@ -12,6 +12,8 @@ const AthleteExpandedSchema = require("../schemas/AthleteExpanded");
 // Importing for IntelliSense
 const AxiosInstance = require("axios").default;
 
+const SubsetEmitter = require("../common/SubsetEmitter");
+
 const capitalize = str =>
   str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
@@ -173,6 +175,35 @@ class User {
       })
     );
     return out;
+  }
+
+  getRunsSubset() {
+    const emitter = new SubsetEmitter();
+
+    emitter.on("request", async (amount = 100, offset = 0) => {
+      console.log("amount: " + amount);
+      console.log("offset: " + offset);
+
+      // Make the offset request
+      const res = await this._core._makeMultiGetRequest("/v1/results", {
+        params: { athleteId: this._athleteID, limit: amount, offset }
+      });
+
+      //console.log(res.data.Results.length); // data len
+      //console.log(data.range.ResultsRange[0]); // range
+
+      const data = [];
+
+      for (var i = 0, len = res.data.Results.length; i < len; i++) {
+        data.push(new RunResult(res.data.Results[i]));
+      }
+
+      emitter.emit("data", data);
+    });
+
+    emitter.on("data", data => console.log("got data len " + data.length));
+
+    return emitter;
   }
 
   // TypeDef for getClubs()
