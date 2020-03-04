@@ -7,6 +7,9 @@ const SearchParams = require("./common/SearchParams");
 const AuthError = require("./errors/ParkrunAuthError");
 const UserPassError = require("./errors/ParkrunUserPassError");
 
+const Validate = require("./validate");
+const AuthSchema = require("./schemas/AuthSchema");
+
 const auth = async (id, password) => {
   // ID checking here
 
@@ -21,13 +24,24 @@ const auth = async (id, password) => {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     });
 
-    // Success, continue
+    // HTTP Success, continue
     if (res.status == 200) {
+      /*
+       * Validate the response data against a Joi Schema.
+       *
+       * Will throw a ParkrunValidationError if the check fails.
+       */
+      Validate(res.data, AuthSchema);
+
       // Login successful, tokens recieved
       //return new Parkrun(new Tokens(res.data, res.headers.date));
       return new Tokens(res.data, res.headers.date);
     }
   } catch (error) {
+    // Validation errors
+    if (error.name == "ParkrunValidationError") throw error;
+
+    // Response errors
     if (error.response != undefined) {
       // A request was made and the server responsed with a non 2xx status code.
       if (error.response.status == 400) {

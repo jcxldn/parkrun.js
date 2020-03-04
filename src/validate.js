@@ -14,7 +14,7 @@ const options = {
 module.exports = (data, schema) => {
   const res = schema.validate(data, options);
   if (res.error) {
-    throw new ValidationError(res.error);
+    throw new ValidationError("Error validating api response :: " + res.error);
   } else {
     return res.value;
   }
