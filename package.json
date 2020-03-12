@@ -8,7 +8,7 @@
     "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
     "test": "node tests/platform-all/pre_ensure_env.js && npm run test:run",
     "test:run": "mocha --timeout 20000 --require @babel/register tests/*.js --exit",
-    "test:web:build": "node tests/platform-all/pre_ensure_env.js && node tests/platform-web/builder.js",
+    "test:web:build": "node tests/platform-all/pre_ensure_env.js && webpack --config web-tests.webpack.config.js --mode production --display-modules",
     "test:web:saucelabs": "run-s build test:web:build test:web:saucelabs:install test:web:saucelabs:run",
     "test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
     "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
@@ -20,7 +20,7 @@
     "coverage:report:html": "nyc report --reporter=html",
     "coverage:send": "codecov",
     "build": "rimraf dist/ && npm run build:web",
-    "build:web": "webpack --config webpack.config.js --mode production",
+    "build:web": "webpack --config webpack.config.js --mode production --display-modules",
     "prepublishOnly": "npm run build",
     "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
     "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
@@ -52,8 +52,6 @@
     "@babel/register": "^7.8.3",
     "async": "^3.1.1",
     "babel-loader": "^8.0.6",
-    "browserify": "^16.5.0",
-    "browserify-shim": "^3.8.14",
     "chai": "^4.2.0",
     "codecov": "^3.6.4",
     "cross-env": "^7.0.0",
@@ -76,6 +74,5 @@
   },
   "engines": {
     "node": ">=8.10"
-  },
-  "browserify-shim": "tests/platform-web/shim_config.js"
+  }
 }

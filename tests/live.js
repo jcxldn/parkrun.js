@@ -1,12 +1,11 @@
 const Parkrun = require("../src/classes/parkrun");
+
 const chai = require("chai");
 
-const RunResult = require("../src/classes/RunResult");
-const FreedomRunResult = require("../src/classes/FreedomRunResult");
-const Country = require("../src/classes/Country");
-const Event = require("../src/classes/Event");
+const { RunResult, FreedomRunResult, Country, Event } = Parkrun.ClassList;
 
-const DataNotAvailableError = require("../src/errors/ParkrunDataNotAvailableError");
+const DataNotAvailableError =
+  Parkrun.ClassList._errors.ParkrunDataNotAvailableError;
 
 const SeriesDayAssert = data => {
   return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
