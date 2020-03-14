@@ -566,12 +566,12 @@ class Parkrun {
 
     /*
       Create the first request.
-
-      From this we can get the first 100 results and the total amount of results.
+      We enforce a limit of 0 to lower request time.
+      From this request we now know the total amount of runs.
     */
     const firstRequest = await this._makeMultiGetRequest(
       url,
-      merge({ params: { offset: 0 } }, options)
+      merge({ params: { offset: 0, limit: 0 } }, options)
     );
 
     // Save the range object to a variable
