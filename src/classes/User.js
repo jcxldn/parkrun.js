@@ -158,20 +158,10 @@ class User {
 
     const out = [];
 
-    console.log(
-      res.map(i => {
-        return i.EventDate;
-      })
-    );
     for (var i = 0, len = res.length; i < len; i++) {
       out.push(new RunResult(res[i]));
     }
 
-    console.log(
-      out.map(i => {
-        return i.getEventDate();
-      })
-    );
     return out;
   }
 
