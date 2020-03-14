@@ -583,21 +583,36 @@ class Parkrun {
     console.log(range);
     console.log("FIRST REQUEST DONE");
 
-    // While we still have more requests to make...
-    while (Number.parseInt(range.last) < Number.parseInt(range.max)) {
-      console.log("NEW REQ");
-      // Make another request with a higher offset
-      const res = await this._makeMultiGetRequest(
-        url,
-        merge({ params: { offset: Number.parseInt(range.last) } }, options)
+    let amountDownloaded = Number.parseInt(range.last);
+    const amountTotal = Number.parseInt(range.max);
+    const amountRemaining = Number.parseInt(amountTotal - amountDownloaded);
+
+    const amountOfPullsRequired = Math.ceil(amountRemaining / 100);
+
+    console.log("Pulls Required: " + amountOfPullsRequired);
+
+    const parallelRequests = [];
+
+    for (let i = 1; i <= amountOfPullsRequired; i++) {
+      console.log(`Step #${i} - Offset: ${amountDownloaded} (limit 100)`);
+
+      parallelRequests.push(
+        this._makeMultiGetRequest(
+          url,
+          merge({ params: { offset: amountDownloaded } }, options)
+        )
       );
 
-      // Concat the response to the array
-      data = data.concat(firstRequest.data[dataName]);
-
-      // Change the range to the newly-returned range (will be higher than last)
-      range = res.range[rangeName][0];
+      amountDownloaded += 100;
     }
+
+    // Run them in promise.all
+    const responsesArr = await Promise.all(parallelRequests);
+
+    responsesArr.forEach(response => {
+      console.log(response.range.ResultsRange[0]);
+      data = data.concat(response.data[dataName]);
+    });
 
     console.log("[parkrun._multiGet] found " + data.length + " items.");
 
@@ -606,7 +621,6 @@ class Parkrun {
   }
 
   async _makeMultiGetRequest(url, options) {
-    console.log(options.params.offset);
     const res = await this._getAuthedNet()
       .get(url, options)
       .catch(err => {
