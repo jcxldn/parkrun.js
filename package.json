@@ -43,6 +43,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "axios": "^0.19.1",
+    "lodash.merge": "^4.6.2",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {

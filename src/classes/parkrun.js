@@ -1,5 +1,7 @@
 // TODO: Rename to 'Client'
 
+const merge = require("lodash.merge");
+
 const Net = require("./Net");
 const User = require("./User");
 const ClientUser = require("./ClientUser");
@@ -393,8 +395,13 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventsByCountry(countryID) {
-    const url = `/v1/countries/${countryID}/searchEvents`;
-    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+    const res = await this._multiGetEventsRaw({
+      url: `/v1/countries/${countryID}/searchEvents`
+    });
+
+    return res.map(i => {
+      return new Event(i);
+    });
   }
 
   /**
@@ -404,8 +411,11 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEvents() {
-    const url = "/v1/searchEvents";
-    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+    const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
+
+    return res.map(i => {
+      return new Event(i);
+    });
   }
 
   /**
@@ -415,7 +425,11 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNames() {
-    return await this._getArrayOfAllEventNamesUsingURL("/v1/searchEvents");
+    const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
+
+    return res.map(i => {
+      return i.EventLongName;
+    });
   }
   /**
    * Get an array with the names of all parkrun events in the specified country, in alphabetical order.
@@ -425,118 +439,13 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNamesByCountry(countryID) {
-    return await this._getArrayOfAllEventNamesUsingURL(
-      `/v1/countries/${countryID}/searchEvents`
-    );
-  }
+    const res = await this._multiGetEventsRaw({
+      url: `/v1/countries/${countryID}/searchEvents`
+    });
 
-  async _getArrayOfAllEventNamesUsingURL(url) {
-    // Get an array of parkrun events using the specified url
-    const respArr = await this._getArrayOfAllEventsUsingURL(url);
-
-    const output = [];
-
-    // Create a new array with the names of those events
-    for (var i = 0, len = respArr.length; i < len; i++) {
-      output.push(respArr[i].EventLongName);
-    }
-
-    // Return the array list in alphabetical order
-    return output.sort();
-  }
-
-  async _getEventClassArrayOfAllEventsUsingURL(
-    url,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(
-      url,
-      athleteId,
-      expandedDetails
-    );
-
-    const output = [];
-
-    for (var i = 0, len = EventsObjectArray.length; i < len; i++) {
-      output.push(new Event(EventsObjectArray[i], this));
-    }
-
-    return output;
-  }
-
-  async _getArrayOfAllEventsUsingURL(
-    url,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    // Note that the parkrun API will return a max of 100 items per request.
-
-    // Create the events array for responses.
-    let events = [];
-
-    // Make the first request with a default offset of 0.
-    const requestOne = await this._makeSearchEventsRequest(
-      url,
-      undefined,
-      athleteId,
-      expandedDetails
-    );
-
-    // Save the Range object (this tells us how many more requests we have to make)
-    let range = requestOne.range;
-
-    // Concat the response to the existing array.
-    events = events.concat(requestOne.arr);
-
-    // While we still have more requests to make...
-    while (Number.parseInt(range.last) < Number.parseInt(range.max)) {
-      // Make another request with a higher offset
-      const res = await this._makeSearchEventsRequest(
-        url,
-        Number.parseInt(range.last),
-        athleteId,
-        expandedDetails
-      );
-
-      // Concat the response to the array
-      events = events.concat(res.arr);
-      // Change the range to the newly-returned range (will be higher than last)
-      range = res.range;
-
-      console.log(res.range);
-    }
-
-    // Now we have made enough requests to gather all the data.
-
-    console.log(`RETURN LEN: ${events.length}`);
-
-    // We now return the FULL array.
-    return events;
-  }
-
-  async _makeSearchEventsRequest(
-    url = `/v1/searchEvents`,
-    offset = 0,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    const res = await this._getAuthedNet()
-      .get(url, {
-        params: {
-          expandedDetails: expandedDetails ? true : undefined,
-          offset,
-          athleteId
-        }
-      })
-      .catch(err => {
-        throw new NetError(err);
-      });
-
-    return {
-      arr: res.data.data.Events,
-      range: res.data["Content-Range"].EventsRange[0]
-    };
+    return res.map(i => {
+      return i.EventLongName;
+    });
   }
 
   /**
@@ -549,13 +458,100 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAthleteParkruns(athleteID) {
-    return (
-      await this._getEventClassArrayOfAllEventsUsingURL(
-        "/v1/events",
-        athleteID,
-        false
-      )
-    ).sort((a, b) => a.getName().localeCompare(b.getName()));
+    const res = await this._multiGetEventsRaw({
+      params: { athleteID, expandedDetails: false }
+    });
+
+    return res
+      .map(i => {
+        return new Event(i);
+      })
+      .sort((a, b) => a.getName().localeCompare(b.getName()));
+  }
+
+  async _multiGet(url, options, dataName, rangeName) {
+    // Create an array for the responses
+    let data = [];
+
+    /*
+      Create the first request.
+      We enforce a limit of 0 to lower request time.
+      From this request we now know the total amount of runs.
+    */
+    const firstRequest = await this._makeMultiGetRequest(
+      url,
+      merge({ params: { offset: 0, limit: 0 } }, options)
+    );
+
+    // Save the range object to a variable
+    let range = firstRequest.range[rangeName][0];
+
+    // Set the response array - this is the first request; no need to concat.
+    data = firstRequest.data[dataName];
+
+    console.log(range);
+    console.log("FIRST REQUEST DONE");
+
+    let amountDownloaded = Number.parseInt(range.last);
+    const amountTotal = Number.parseInt(range.max);
+    const amountRemaining = Number.parseInt(amountTotal - amountDownloaded);
+
+    const amountOfPullsRequired = Math.ceil(amountRemaining / 100);
+
+    console.log("Pulls Required: " + amountOfPullsRequired);
+
+    const parallelRequests = [];
+
+    for (let i = 1; i <= amountOfPullsRequired; i++) {
+      console.log(`Step #${i} - Offset: ${amountDownloaded} (limit 100)`);
+
+      parallelRequests.push(
+        this._makeMultiGetRequest(
+          url,
+          merge({ params: { offset: amountDownloaded } }, options)
+        )
+      );
+
+      amountDownloaded += 100;
+    }
+
+    // Run them in promise.all
+    const responsesArr = await Promise.all(parallelRequests);
+
+    responsesArr.forEach(response => {
+      console.log(response.range[rangeName][0]);
+      data = data.concat(response.data[dataName]);
+    });
+
+    console.log("[parkrun._multiGet] found " + data.length + " items.");
+
+    // We now return the FULL array.
+    return data;
+  }
+
+  async _makeMultiGetRequest(url, options) {
+    const res = await this._getAuthedNet()
+      .get(url, options)
+      .catch(err => {
+        console.log(err);
+        throw new NetError(err);
+      });
+
+    return { data: res.data.data, range: res.data["Content-Range"] };
+  }
+
+  async _multiGetEventsRaw({
+    url = "/v1/events",
+    params = { expandedDetails: true }
+  }) {
+    return await this._multiGet(
+      url,
+      {
+        params
+      },
+      "Events",
+      "EventsRange"
+    );
   }
 }
 

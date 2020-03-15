@@ -123,20 +123,16 @@ class ClientUser extends User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getFreedomRuns() {
-    const res = await this._core
-      ._getAuthedNet()
-      .get(`/v1/freedomruns`)
-      .catch(err => {
-        throw new NetError(err);
-      });
+    const res = await this._core._multiGet(
+      "/v1/freedomruns",
+      {},
+      "FreedomRuns",
+      "FreedomRunsRange"
+    );
 
-    const out = [];
-
-    for (var i = 0, len = res.data.data.FreedomRuns.length; i < len; i++) {
-      out.push(new FreedomRunResult(res.data.data.FreedomRuns[i], this._core));
-    }
-
-    return out;
+    return res.map(i => {
+      return new FreedomRunResult(i, this._core);
+    });
   }
 
   /**
