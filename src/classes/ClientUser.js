@@ -131,7 +131,7 @@ class ClientUser extends User {
     );
 
     return res.map(i => {
-      return new FreedomRunResult(i);
+      return new FreedomRunResult(i, this._core);
     });
   }
 

@@ -395,8 +395,18 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventsByCountry(countryID) {
-    const url = `/v1/countries/${countryID}/searchEvents`;
-    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+    const res = await this._multiGet(
+      `/v1/countries/${countryID}/searchEvents`,
+      {
+        params: { expandedDetails: true }
+      },
+      "Events",
+      "EventsRange"
+    );
+
+    return res.map(i => {
+      return new Event(i);
+    });
   }
 
   /**
@@ -460,115 +470,6 @@ class Parkrun {
     return res.map(i => {
       return i.EventLongName;
     });
-  }
-
-  async _getArrayOfAllEventNamesUsingURL(url) {
-    // Get an array of parkrun events using the specified url
-    const respArr = await this._getArrayOfAllEventsUsingURL(url);
-
-    const output = [];
-
-    // Create a new array with the names of those events
-    for (var i = 0, len = respArr.length; i < len; i++) {
-      output.push(respArr[i].EventLongName);
-    }
-
-    // Return the array list in alphabetical order
-    return output.sort();
-  }
-
-  async _getEventClassArrayOfAllEventsUsingURL(
-    url,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    const EventsObjectArray = await this._getArrayOfAllEventsUsingURL(
-      url,
-      athleteId,
-      expandedDetails
-    );
-
-    const output = [];
-
-    for (var i = 0, len = EventsObjectArray.length; i < len; i++) {
-      output.push(new Event(EventsObjectArray[i], this));
-    }
-
-    return output;
-  }
-
-  async _getArrayOfAllEventsUsingURL(
-    url,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    // Note that the parkrun API will return a max of 100 items per request.
-
-    // Create the events array for responses.
-    let events = [];
-
-    // Make the first request with a default offset of 0.
-    const requestOne = await this._makeSearchEventsRequest(
-      url,
-      undefined,
-      athleteId,
-      expandedDetails
-    );
-
-    // Save the Range object (this tells us how many more requests we have to make)
-    let range = requestOne.range;
-
-    // Concat the response to the existing array.
-    events = events.concat(requestOne.arr);
-
-    // While we still have more requests to make...
-    while (Number.parseInt(range.last) < Number.parseInt(range.max)) {
-      // Make another request with a higher offset
-      const res = await this._makeSearchEventsRequest(
-        url,
-        Number.parseInt(range.last),
-        athleteId,
-        expandedDetails
-      );
-
-      // Concat the response to the array
-      events = events.concat(res.arr);
-      // Change the range to the newly-returned range (will be higher than last)
-      range = res.range;
-
-      console.log(res.range);
-    }
-
-    // Now we have made enough requests to gather all the data.
-
-    console.log(`RETURN LEN: ${events.length}`);
-
-    // We now return the FULL array.
-    return events;
-  }
-
-  async _makeSearchEventsRequest(
-    url = `/v1/searchEvents`,
-    offset = 0,
-    athleteId = undefined,
-    expandedDetails = true
-  ) {
-    const res = await this._getAuthedNet()
-      .get(url, {
-        params: {
-          expandedDetails: expandedDetails ? true : undefined,
-          offset,
-          athleteId
-        }
-      })
-      .catch(err => {
-        throw new NetError(err);
-      });
-
-    return {
-      arr: res.data.data.Events,
-      range: res.data["Content-Range"].EventsRange[0]
-    };
   }
 
   /**
