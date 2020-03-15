@@ -610,7 +610,7 @@ class Parkrun {
     const responsesArr = await Promise.all(parallelRequests);
 
     responsesArr.forEach(response => {
-      console.log(response.range.ResultsRange[0]);
+      console.log(response.range[rangeName][0]);
       data = data.concat(response.data[dataName]);
     });
 
