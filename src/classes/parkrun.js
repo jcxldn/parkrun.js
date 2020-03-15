@@ -395,14 +395,9 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventsByCountry(countryID) {
-    const res = await this._multiGet(
-      `/v1/countries/${countryID}/searchEvents`,
-      {
-        params: { expandedDetails: true }
-      },
-      "Events",
-      "EventsRange"
-    );
+    const res = await this._multiGetEventsRaw({
+      url: `/v1/countries/${countryID}/searchEvents`
+    });
 
     return res.map(i => {
       return new Event(i);
@@ -416,14 +411,7 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEvents() {
-    const res = await this._multiGet(
-      "/v1/searchEvents",
-      {
-        params: { expandedDetails: true }
-      },
-      "Events",
-      "EventsRange"
-    );
+    const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
     return res.map(i => {
       return new Event(i);
@@ -437,14 +425,7 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNames() {
-    const res = await this._multiGet(
-      "/v1/searchEvents",
-      {
-        params: { expandedDetails: true }
-      },
-      "Events",
-      "EventsRange"
-    );
+    const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
     return res.map(i => {
       return i.EventLongName;
@@ -458,14 +439,9 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNamesByCountry(countryID) {
-    const res = await this._multiGet(
-      `/v1/countries/${countryID}/searchEvents`,
-      {
-        params: { expandedDetails: true }
-      },
-      "Events",
-      "EventsRange"
-    );
+    const res = await this._multiGetEventsRaw({
+      url: `/v1/countries/${countryID}/searchEvents`
+    });
 
     return res.map(i => {
       return i.EventLongName;
@@ -482,14 +458,9 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAthleteParkruns(athleteID) {
-    const res = await this._multiGet(
-      "/v1/events",
-      {
-        params: { athleteID, expandedDetails: false }
-      },
-      "Events",
-      "EventsRange"
-    );
+    const res = await this._multiGetEventsRaw({
+      params: { athleteID, expandedDetails: false }
+    });
 
     return res
       .map(i => {
@@ -567,6 +538,20 @@ class Parkrun {
       });
 
     return { data: res.data.data, range: res.data["Content-Range"] };
+  }
+
+  async _multiGetEventsRaw({
+    url = "/v1/events",
+    params = { expandedDetails: true }
+  }) {
+    return await this._multiGet(
+      url,
+      {
+        params
+      },
+      "Events",
+      "EventsRange"
+    );
   }
 }
 
