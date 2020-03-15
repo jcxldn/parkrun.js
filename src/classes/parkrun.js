@@ -448,9 +448,18 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNamesByCountry(countryID) {
-    return await this._getArrayOfAllEventNamesUsingURL(
-      `/v1/countries/${countryID}/searchEvents`
+    const res = await this._multiGet(
+      `/v1/countries/${countryID}/searchEvents`,
+      {
+        params: { expandedDetails: true }
+      },
+      "Events",
+      "EventsRange"
     );
+
+    return res.map(i => {
+      return i.EventLongName;
+    });
   }
 
   async _getArrayOfAllEventNamesUsingURL(url) {
