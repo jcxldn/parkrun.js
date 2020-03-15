@@ -581,13 +581,20 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAthleteParkruns(athleteID) {
-    return (
-      await this._getEventClassArrayOfAllEventsUsingURL(
-        "/v1/events",
-        athleteID,
-        false
-      )
-    ).sort((a, b) => a.getName().localeCompare(b.getName()));
+    const res = await this._multiGet(
+      "/v1/events",
+      {
+        params: { athleteID, expandedDetails: false }
+      },
+      "Events",
+      "EventsRange"
+    );
+
+    return res
+      .map(i => {
+        return new Event(i);
+      })
+      .sort((a, b) => a.getName().localeCompare(b.getName()));
   }
 
   async _multiGet(url, options, dataName, rangeName) {
