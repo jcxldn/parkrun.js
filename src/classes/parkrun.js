@@ -406,8 +406,18 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEvents() {
-    const url = "/v1/searchEvents";
-    return await this._getEventClassArrayOfAllEventsUsingURL(url);
+    const res = await this._multiGet(
+      "/v1/searchEvents",
+      {
+        params: { expandedDetails: true }
+      },
+      "Events",
+      "EventsRange"
+    );
+
+    return res.map(i => {
+      return new Event(i);
+    });
   }
 
   /**
@@ -417,7 +427,18 @@ class Parkrun {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getAllEventNames() {
-    return await this._getArrayOfAllEventNamesUsingURL("/v1/searchEvents");
+    const res = await this._multiGet(
+      "/v1/searchEvents",
+      {
+        params: { expandedDetails: true }
+      },
+      "Events",
+      "EventsRange"
+    );
+
+    return res.map(i => {
+      return i.EventLongName;
+    });
   }
   /**
    * Get an array with the names of all parkrun events in the specified country, in alphabetical order.
