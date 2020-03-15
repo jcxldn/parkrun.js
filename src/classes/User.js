@@ -128,6 +128,11 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRunCount() {
+    /*
+     * We could use '/v1/hasrun/count/Run' or use '/v1/runs' (limit 1, offset 0).
+     *
+     * There is no visible benefit outside the margin of error at this time.
+     */
     const res = await this._core
       ._getAuthedNet()
       .get("/v1/hasrun/count/Run", {
