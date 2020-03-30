@@ -128,6 +128,11 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRunCount() {
+    /*
+     * We could use '/v1/hasrun/count/Run' or use '/v1/runs' (limit 1, offset 0).
+     *
+     * There is no visible benefit outside the margin of error at this time.
+     */
     const res = await this._core
       ._getAuthedNet()
       .get("/v1/hasrun/count/Run", {
@@ -147,25 +152,19 @@ class User {
    * @throws {ParkrunNetError} ParkrunJS Networking Error.
    */
   async getRuns() {
-    const res = await this._core
-      ._getAuthedNet()
-      .get("/v1/results", {
-        params: {
-          athleteId: this._athleteID,
-          orderBy: "EventDate", // The app uses this, but it does not return in order.
-          limit: 1000,
-          offset: 0
-        }
-      })
-      .catch(err => {
-        throw new NetError(err);
-      });
+    const res = await this._core._multiGet(
+      "/v1/results",
+      {
+        params: { athleteId: this._athleteID }
+      },
+      "Results",
+      "ResultsRange"
+    );
 
-    const out = [];
-    for (var i = 0, len = res.data.data.Results.length; i < len; i++) {
-      out.push(new RunResult(res.data.data.Results[i]));
-    }
-    return out;
+    return res.map(i => {
+      return new RunResult(i);
+    });
+    // v2-e1f - [up to] 2x as fast as for loop for this kind of data.
   }
 
   // TypeDef for getClubs()
