@@ -4,6 +4,25 @@ const nock = require("nock");
 
 const ValidationError = require("../src/errors/ParkrunValidationError");
 const UserPassError = require("../src/errors/ParkrunUserPassError");
+const RefreshExpiredError = require("../src/errors/ParkrunRefreshExpiredError");
+const AuthError = require("../src/errors/ParkrunAuthError");
+
+const refresh = require("../src/common/refresh");
+
+const getFakeInstance = (callback) => {
+  // Get a fake instance
+  nock("https://api.parkrun.com").post("/user_auth.php").reply(200, {
+    access_token: "access_token",
+    expires_in: "7200",
+    token_type: "bearer",
+    scope: "app",
+    refresh_token: "refresh_token",
+  });
+
+  Parkrun.authSync("user", "pass").then((parkrun) => {
+    callback(parkrun);
+  });
+};
 
 chai.should();
 describe("Mock", () => {
@@ -77,15 +96,7 @@ describe("Mock", () => {
         date = new Date();
 
         // Get a fake instance
-        nock("https://api.parkrun.com").post("/user_auth.php").reply(200, {
-          access_token: "access_token",
-          expires_in: "7200",
-          token_type: "bearer",
-          scope: "app",
-          refresh_token: "refresh_token",
-        });
-
-        Parkrun.authSync("user", "pass").then((parkrun) => {
+        getFakeInstance((parkrun) => {
           // Get a fake roster
           nock("https://api.parkrun.com")
             .get(
@@ -169,6 +180,108 @@ describe("Mock", () => {
         chai.expect(data).to.eql("Volunteer");
         done();
       });
+    });
+  });
+
+  describe("Refresh", () => {
+    it("HTTP 200 OK, no response data", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(200);
+      refresh("token")
+        .then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
+        .catch((err) => {
+          if (
+            err instanceof Error &&
+            err.message == "server did not return any response data!"
+          ) {
+            done();
+          } else {
+            done(err);
+          }
+        });
+    });
+
+    it("HTTP 200 OK, valid response data", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(200, {
+        access_token: "access",
+        token_type: "fake",
+        scope: "none",
+        expires_in: 3600,
+      });
+      refresh("token").then((data) => {
+        done();
+      });
+    });
+
+    it("HTTP 400 Bad Request, invalid grant, expired Refresh token", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(400, {
+        error: "invalid_grant",
+        error_description: "Refresh token has expired",
+      });
+      refresh("token")
+        .then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
+        .catch((err) => {
+          if (
+            err instanceof RefreshExpiredError &&
+            err.message == "refresh token has expired"
+          ) {
+            done();
+          } else {
+            done(err);
+          }
+        });
+    });
+
+    it("HTTP 400 Bad Request, invalid grant, invalid refresh token", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(400, {
+        error: "invalid_grant",
+        error_description: "Invalid refresh token",
+      });
+      refresh("token")
+        .then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
+        .catch((err) => {
+          if (
+            err instanceof AuthError &&
+            err.message == "invalid refresh token"
+          ) {
+            done();
+          } else {
+            done(err);
+          }
+        });
+    });
+
+    it("HTTP 400 Bad Request, invalid grant, unknown error details", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(400, {
+        error: "invalid_grant",
+      });
+      refresh("token")
+        .then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
+        .catch((err) => {
+          if (
+            err instanceof Error &&
+            err.message == "server returned http code 400, invalid grant"
+          ) {
+            done();
+          } else {
+            done(err);
+          }
+        });
+    });
+
+    it("HTTP 400 Bad Request, no response data", (done) => {
+      nock("https://api.parkrun.com").post("/auth/refresh").reply(400);
+      refresh("token")
+        .then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
+        .catch((err) => {
+          if (
+            err instanceof Error &&
+            err.message == "unspecified error during token refresh"
+          ) {
+            done();
+          } else {
+            done(err);
+          }
+        });
     });
   });
 });
