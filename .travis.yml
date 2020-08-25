@@ -22,7 +22,7 @@ script:
   # Report live-only coverage to github.
   - npx nyc report --reporter=text | node .github/ci/mock-reporter.js
   # Run mocked tests
-  - npm run test:run:mocked
+  - npm run test:run:mock
   # Report live-only coverage to github.
   - npx nyc report --reporter=text | node .github/ci/live-reporter.js
   # Report all tests to codecov
@@ -36,6 +36,8 @@ jobs:
         - npm run test:web:saucelabs
       after_success:
         - node ./.github/ci/saucelabs_bot_travis.js
+       env:
+        - STAGE=SAUCELABS
 
 # Deploy on tags
 deploy:
@@ -46,4 +48,6 @@ deploy:
   on:
     # Only deploy on a tagged commit
     tags: true
+    # Don't deploy on the saucelabs stage.
+    condition: "$STAGE != SAUCELABS"
     node_js: 10
