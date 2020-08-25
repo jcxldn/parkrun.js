@@ -3,10 +3,10 @@
  */
 class FreedomRunResult {
   constructor(res, core) {
-    this._id = Number.parseInt(res.freedomID);
-    this._time = res.runTime;
-    this._date = new Date(res.runDate);
-    this._athlete = Number.parseInt(res.athleteID);
+    this._id = Number.parseInt(res.FreedomID);
+    this._time = res.RunTime;
+    this._date = new Date(res.RunDate);
+    this._athlete = Number.parseInt(res.AthleteID);
     this._event = Number.parseInt(res.EventNumber);
 
     this._event_name = res.EventLongName;

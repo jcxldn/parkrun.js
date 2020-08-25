@@ -3,10 +3,9 @@ const chai = require("chai");
 
 const { version, license } = require("../package.json");
 
-const UserPassError = require("../src/errors/ParkrunUserPassError");
-const AuthError = require("../src/errors/ParkrunAuthError");
+const { ParkrunUserPassError, ParkrunAuthError } = Parkrun.ClassList._errors;
 
-const refresh = require("../src/common/refresh");
+const { refresh } = Parkrun.ClassList._common;
 
 chai.should();
 describe("Core", () => {
@@ -38,7 +37,7 @@ describe("Core", () => {
     Parkrun.authSync("A124", "fakePassword")
       .then(() => done(new Error()))
       .catch(err => {
-        chai.assert(err instanceof UserPassError);
+        chai.assert(err instanceof ParkrunUserPassError);
         chai.expect(err.message).to.eql("invalid username or password!");
         done();
       });
@@ -47,7 +46,7 @@ describe("Core", () => {
   it("Login [Callback] (invalid account user/pass)", done => {
     Parkrun.auth("A124", "fakePassword", (client, err) => {
       if (err) {
-        chai.assert(err instanceof UserPassError);
+        chai.assert(err instanceof ParkrunUserPassError);
         chai.expect(err.message).to.eql("invalid username or password!");
         done();
       } else {
@@ -60,7 +59,7 @@ describe("Core", () => {
     refresh("invalid")
       .then(() => done(new Error()))
       .catch(err => {
-        chai.assert(err instanceof AuthError);
+        chai.assert(err instanceof ParkrunAuthError);
         chai.expect(err.message).to.eql("invalid refresh token");
         done();
       });
@@ -77,7 +76,7 @@ describe("Core", () => {
 
   it("Refresh Token Authentication (.then, invalid token)", done => {
     Parkrun.authRefresh({ token: "invalid" }).catch(err => {
-      chai.assert(err instanceof AuthError);
+      chai.assert(err instanceof ParkrunAuthError);
       chai.expect(err.message).to.eql("invalid refresh token");
       done();
     });

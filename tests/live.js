@@ -1,12 +1,11 @@
 const Parkrun = require("../src/classes/parkrun");
+
 const chai = require("chai");
 
-const RunResult = require("../src/classes/RunResult");
-const FreedomRunResult = require("../src/classes/FreedomRunResult");
-const Country = require("../src/classes/Country");
-const Event = require("../src/classes/Event");
+const { RunResult, FreedomRunResult, Country, Event } = Parkrun.ClassList;
 
-const DataNotAvailableError = require("../src/errors/ParkrunDataNotAvailableError");
+const DataNotAvailableError =
+  Parkrun.ClassList._errors.ParkrunDataNotAvailableError;
 
 const SeriesDayAssert = (data) => {
   return chai.assert(["Saturday", "Sunday", "Unknown"].includes(data));
@@ -521,60 +520,70 @@ describe("Live", () => {
         roster = (await event.getRoster())[0];
       });
 
-      // COVID-19 Hotfix: Only run RosterVolunteer tests if available!
-      if (roster != null) {
-        it(`getEventNumber()`, (done) => {
-          const data = roster.getEventNumber();
-          chai.expect(data).to.be.a("number");
+      const skipIfNeeded = (done) => {
+        if (!roster) {
+          console.error(
+            "[Covid-19 Hotfix] No data available! Skipping test..."
+          );
           done();
-        });
+        }
+      };
 
-        it(`getEventDate()`, (done) => {
-          const data = roster.getEventDate();
-          chai.expect(data).to.be.a("date");
-          done();
-        });
+      it(`getEventNumber()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getEventNumber();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
 
-        it(`getVolunteerID()`, (done) => {
-          const data = roster.getVolunteerID();
-          chai.expect(data).to.be.a("number");
-          done();
-        });
+      it(`getEventDate()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getEventDate();
+        chai.expect(data).to.be.a("date");
+        done();
+      });
 
-        it(`getTaskID()`, (done) => {
-          const data = roster.getTaskID();
-          chai.expect(data).to.be.a("number");
-          done();
-        });
+      it(`getVolunteerID()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getVolunteerID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
 
-        it(`getRosterID()`, (done) => {
-          const data = roster.getRosterID();
-          chai.expect(data).to.be.a("number");
-          done();
-        });
+      it(`getTaskID()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getTaskID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
 
-        it(`getTaskName()`, (done) => {
-          const data = roster.getTaskName();
-          chai.expect(data).to.be.a("string");
-          done();
-        });
+      it(`getRosterID()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getRosterID();
+        chai.expect(data).to.be.a("number");
+        done();
+      });
 
-        it(`getVolunteerFirstName()`, (done) => {
-          const data = roster.getVolunteerFirstName();
-          chai.expect(data).to.be.a("string");
-          done();
-        });
+      it(`getTaskName()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getTaskName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
 
-        it(`getVolunteerLastName()`, (done) => {
-          const data = roster.getVolunteerLastName();
-          chai.expect(data).to.be.a("string");
-          done();
-        });
-      } else {
-        console.error(
-          "RosterVolunteer results not available! Skipping tests..."
-        );
-      }
+      it(`getVolunteerFirstName()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getVolunteerFirstName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
+
+      it(`getVolunteerLastName()`, (done) => {
+        skipIfNeeded(done); // COVID-19 Hotfix
+        const data = roster.getVolunteerLastName();
+        chai.expect(data).to.be.a("string");
+        done();
+      });
     });
 
     // getStatsByEvent() cast

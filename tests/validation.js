@@ -1,9 +1,10 @@
+const Parkrun = require("../src/classes/parkrun");
+
 const chai = require("chai");
 
-const ClientUser = require("../src/classes/ClientUser");
-const User = require("../src/classes/User");
+const { ClientUser, User } = Parkrun.ClassList;
 
-const ValidationError = require("../src/errors/ParkrunValidationError");
+const ValidationError = Parkrun.ClassList._errors.ParkrunValidationError;
 
 chai.should();
 describe("Validation", () => {

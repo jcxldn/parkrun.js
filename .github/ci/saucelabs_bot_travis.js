@@ -2,8 +2,7 @@ const B2 = require("backblaze-b2");
 
 const retry = require("promise-retry");
 
-const { App } = require("@octokit/app");
-const { request } = require("@octokit/request");
+const { makeCheck } = require("./checks-api");
 
 const fs = require("fs");
 const path = require("path");
@@ -14,10 +13,10 @@ const path = require("path");
  */
 function promiseAllP(items, block) {
   var promises = [];
-  items.forEach(function(item, index) {
+  items.forEach(function (item, index) {
     promises.push(
-      (function(item, i) {
-        return new Promise(function(resolve, reject) {
+      (function (item, i) {
+        return new Promise(function (resolve, reject) {
           return block.apply(this, [item, index, resolve, reject]);
         });
       })(item, index)
@@ -35,10 +34,10 @@ function promiseAllP(items, block) {
  */
 function readFiles(dirname) {
   return new Promise((resolve, reject) => {
-    fs.readdir(dirname, function(err, filenames) {
+    fs.readdir(dirname, function (err, filenames) {
       if (err) return reject(err);
       promiseAllP(filenames, (filename, index, resolve, reject) => {
-        fs.readFile(path.resolve(dirname, filename), "utf-8", function(
+        fs.readFile(path.resolve(dirname, filename), "utf-8", function (
           err,
           content
         ) {
@@ -46,10 +45,10 @@ function readFiles(dirname) {
           return resolve({ filename: filename, contents: content });
         });
       })
-        .then(results => {
+        .then((results) => {
           return resolve(results);
         })
-        .catch(error => {
+        .catch((error) => {
           return reject(error);
         });
     });
@@ -70,15 +69,9 @@ const b2 = new B2({
     retries: 5,
     retryDelay: function noDelay() {
       return 1000;
-    } // 1 second -- ref: https://github.com/softonic/axios-retry/blob/40e3f0797b9ef9b6728dd4e7639b5ff0bd8644b9/es/index.js#L67
-  }
+    }, // 1 second -- ref: https://github.com/softonic/axios-retry/blob/40e3f0797b9ef9b6728dd4e7639b5ff0bd8644b9/es/index.js#L67
+  },
 });
-
-const octo = new App({
-  id: 53420,
-  privateKey: Buffer.from(process.env.GITHUB_PEM, "base64").toString()
-});
-const jwt = octo.getSignedJsonWebToken();
 
 async function uploadB2() {
   const output = [];
@@ -87,7 +80,7 @@ async function uploadB2() {
 
   const { uploadUrl, authorizationToken } = (
     await b2.getUploadUrl({
-      bucketId: "78255b6afd71142360e20419"
+      bucketId: "78255b6afd71142360e20419",
     })
   ).data;
 
@@ -95,7 +88,7 @@ async function uploadB2() {
 
   console.log(`Loaded ${files.length} images.`);
 
-  await asyncForEach(files, async file => {
+  await asyncForEach(files, async (file) => {
     const data = JSON.parse(file.contents);
 
     const upload = await retry((retry, number) => {
@@ -111,9 +104,9 @@ async function uploadB2() {
           data: Buffer.from(
             data.image.replace(/^data:image\/png;base64,/, ""),
             "base64"
-          )
+          ),
         })
-        .catch(err => {
+        .catch((err) => {
           retry(err);
         });
     });
@@ -155,43 +148,25 @@ function createSubset(item) {
 </details>`;
 }
 
-async function OctokitCheck(arr, token, check_passing) {
+async function OctokitCheck(arr, check_passing) {
   let summary = "";
 
-  await asyncForEach(arr, item => {
+  await asyncForEach(arr, (item) => {
     summary += createSubset(item);
   });
 
-  await request("POST /repos/Prouser123/parkrun.js/check-runs", {
+  await makeCheck({
     name: "ci/web",
-    head_sha: process.env.TRAVIS_COMMIT, // DYN
     status: "completed",
-    conclusion: check_passing ? "success" : "failure", // DYN
-    output: {
-      title: "Saucelabs Results",
-      summary
-    },
-    headers: {
-      authorization: `token ${token}`,
-      accept: "application/vnd.github.antiope-preview+json"
-    }
+    conclusion: check_passing ? "success" : "failure", // Dynamic
+    title: "Saucelabs Results",
+    summary,
   });
-}
-
-async function getInstallationToken() {
-  return (
-    await request("POST /app/installations/6675355/access_tokens", {
-      headers: {
-        authorization: `Bearer ${jwt}`,
-        accept: "application/vnd.github.machine-man-preview+json"
-      }
-    })
-  ).data.token;
 }
 
 // Main function
 (async () => {
   const arr = await uploadB2();
-  const check_passing = arr.every(i => i.num_failed == 0);
-  await OctokitCheck(arr, await getInstallationToken(), check_passing);
+  const check_passing = arr.every((i) => i.num_failed == 0);
+  await OctokitCheck(arr, check_passing);
 })();

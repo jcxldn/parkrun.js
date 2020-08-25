@@ -7,6 +7,7 @@ const User = require("./User");
 const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtra");
 
 const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
+const NetError = require("../errors/ParkrunNetError");
 
 const FreedomRunResult = require("./FreedomRunResult");
 
@@ -130,7 +131,7 @@ class ClientUser extends User {
       "FreedomRunsRange"
     );
 
-    return res.map(i => {
+    return res.map((i) => {
       return new FreedomRunResult(i, this._core);
     });
   }
@@ -181,7 +182,7 @@ class ClientUser extends User {
         ["AthleteID", this._athleteID],
         ["EventNumber", eventNumber],
         ["RunDate", runYear + runMonth + runDay],
-        ["RunTime", runTime]
+        ["RunTime", runTime],
       ]);
 
       const res = await this._core
@@ -189,10 +190,10 @@ class ClientUser extends User {
         .post("/v1/freedomruns", params.get(), {
           params: {
             expandedDetails: undefined,
-            scope: "app"
-          }
+            scope: "app",
+          },
         })
-        .catch(err => {
+        .catch((err) => {
           throw new NetError(err);
         });
 

@@ -1,8 +1,8 @@
+const Parkrun = require("../src/classes/parkrun");
+
 const chai = require("chai");
 
-const AgeGradeEnums = require("../src/common/AgeGradeEnums");
-const ClubsEnums = require("../src/common/ClubsEnums");
-const SeriesID = require("../src/common/SeriesID");
+const { AgeGradeEnums, ClubsEnums, SeriesID } = Parkrun.ClassList._common;
 
 chai.should();
 describe("Enums", () => {
