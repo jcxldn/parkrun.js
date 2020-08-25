@@ -19,14 +19,21 @@ install:
 script:
   # Run live tests
   - npm run test:run
-  # Report live-only coverage to github.
-  - npx nyc report --reporter=text | node .github/ci/mock-reporter.js
-  # Run mocked tests
-  - npm run test:run:mock
-  # Report live-only coverage to github.
-  - npx nyc report --reporter=text | node .github/ci/live-reporter.js
-  # Report all tests to codecov
+  # Report live-only coverage to codecov.
   - nyc report --reporter=text-lcov > coverage.lcov && codecov
+  # Report live-only coverage to github if running on node 10.
+  - if [ "${TRAVIS_NODE_VERSION}" = "10" ]; then npx nyc report --reporter=text | node .github/ci/live-reporter.js; else echo "Not reporting to github..."; fi
+  # -------------------------
+  # Have nyc run an echo command to clean the output.
+  - npx nyc --silent echo ""
+  # -------------------------
+  # Run mock tests
+  - npm run test:run:mock
+  # Report mock-only coverage to codecov.
+  - nyc report --reporter=text-lcov > coverage.lcov && codecov
+  # Report live-only coverage to github if running on node 10.
+  - if [ "${TRAVIS_NODE_VERSION}" = "10" ]; then npx nyc report --reporter=text | node .github/ci/mock-reporter.js; else echo "Not reporting to github..."; fi
+
 jobs:
   include:
     - stage: Sauce Labs
