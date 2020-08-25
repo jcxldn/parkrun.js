@@ -36,7 +36,7 @@ jobs:
         - npm run test:web:saucelabs
       after_success:
         - node ./.github/ci/saucelabs_bot_travis.js
-       env:
+      env:
         - STAGE=SAUCELABS
 
 # Deploy on tags
