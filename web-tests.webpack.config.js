@@ -11,7 +11,7 @@ module.exports = {
     filename: "web-tests.tmp.js",
     path: path.resolve(__dirname, "tests/platform-web"),
     library: "ParkrunTests",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
   },
   //node: {
   //  http: true, // Polyfill stream-http as the core node 'http' module (it's the default in webpack)
@@ -20,7 +20,7 @@ module.exports = {
   externals: {
     chai: "chai",
     describe: "describe",
-    "../src/classes/parkrun": "Parkrun"
+    "../src/classes/parkrun": "Parkrun",
   },
   // Loaders
   module: {
@@ -36,24 +36,24 @@ module.exports = {
               [
                 "@babel/preset-env",
                 {
-                  targets: "> 0.25%, not dead",
+                  targets: "> 1%, not IE 11, not dead",
                   useBuiltIns: "entry",
-                  corejs: "3.6.4"
+                  corejs: "3.6.4",
                   //"modules": "umd"
-                }
-              ]
+                },
+              ],
             ],
-            plugins: ["@babel/plugin-proposal-object-rest-spread"]
-          }
-        }
-      }
-    ]
+            plugins: ["@babel/plugin-proposal-object-rest-spread"],
+          },
+        },
+      },
+    ],
   },
   // Plugins
   plugins: [
     new webpack.EnvironmentPlugin({
       ID: process.env.ID,
-      PASS: process.env.PASS
-    })
-  ]
+      PASS: process.env.PASS,
+    }),
+  ],
 };
