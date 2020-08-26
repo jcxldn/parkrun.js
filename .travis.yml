@@ -15,6 +15,7 @@ node_js:
 # Run tests
 
 install:
+  - npm install -g npm@^6.14.8 # Update npm so that node 8 has npm ci.
   - npm ci
 script:
   # Run live tests
