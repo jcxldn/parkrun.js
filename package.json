@@ -38,7 +38,7 @@
   "homepage": "https://parkrun.js.org/",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "lodash.merge": "^4.6.2",
     "url-parse": "^1.4.7"
   },
