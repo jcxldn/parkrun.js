@@ -16,9 +16,9 @@ const lines = get(3, 4);
 console.log(`Lines (Codecov metric): '${lines}' percent.`);
 
 makeCheck({
-  name: "ci/cov/mocked",
+  name: "ci/cov/live",
   status: "completed",
   conclusion: "neutral",
-  title: `${lines}% mocked-only coverage`,
+  title: `${lines}% live-only coverage`,
   summary: "```\n" + data + "\n```",
 });

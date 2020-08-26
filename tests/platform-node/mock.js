@@ -1,17 +1,17 @@
-const Parkrun = require("../src/classes/parkrun");
+const Parkrun = require("../../src/classes/parkrun");
 const chai = require("chai");
 const nock = require("nock");
 
 const _merge = require("lodash.merge");
 
-const ValidationError = require("../src/errors/ParkrunValidationError");
-const UserPassError = require("../src/errors/ParkrunUserPassError");
-const RefreshExpiredError = require("../src/errors/ParkrunRefreshExpiredError");
-const AuthError = require("../src/errors/ParkrunAuthError");
-const DataNotAvailableError = require("../src/errors/ParkrunDataNotAvailableError");
-const NetError = require("../src/errors/ParkrunNetError");
+const ValidationError = require("../../src/errors/ParkrunValidationError");
+const UserPassError = require("../../src/errors/ParkrunUserPassError");
+const RefreshExpiredError = require("../../src/errors/ParkrunRefreshExpiredError");
+const AuthError = require("../../src/errors/ParkrunAuthError");
+const DataNotAvailableError = require("../../src/errors/ParkrunDataNotAvailableError");
+const NetError = require("../../src/errors/ParkrunNetError");
 
-const refresh = require("../src/common/refresh");
+const refresh = require("../../src/common/refresh");
 
 const getFakeInstance = (callback) => {
   // Get a fake instance
