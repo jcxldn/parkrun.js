@@ -5,8 +5,7 @@ const path = require("path");
 const glob = require("glob");
 
 module.exports = {
-  // Nock does not support browsers.
-  entry: glob.sync("./tests/*js", { ignore: ["./tests/mock.js"] }),
+  entry: glob.sync("./tests/*js"),
   output: {
     filename: "web-tests.tmp.js",
     path: path.resolve(__dirname, "tests/platform-web"),
