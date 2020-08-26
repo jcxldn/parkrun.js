@@ -7,13 +7,13 @@ module.exports = {
     "./src/polyfills/btoa.js",
     "fast-text-encoding",
     "regenerator-runtime",
-    "./src/classes/parkrun.js"
+    "./src/classes/parkrun.js",
   ],
   output: {
     filename: "parkrun.browser.min.js",
     path: path.resolve(__dirname, "dist"),
     library: "Parkrun",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
   },
   // Loaders
   module: {
@@ -29,19 +29,19 @@ module.exports = {
               [
                 "@babel/preset-env",
                 {
-                  targets: "> 0.25%, not dead",
+                  targets: "> 1%, not IE 11, not dead",
                   useBuiltIns: "entry",
-                  corejs: "3.6.4"
+                  corejs: "3.6.4",
                   //"modules": "umd"
-                }
-              ]
+                },
+              ],
             ],
-            plugins: ["@babel/plugin-proposal-object-rest-spread"]
-          }
-        }
-      }
-    ]
+            plugins: ["@babel/plugin-proposal-object-rest-spread"],
+          },
+        },
+      },
+    ],
   },
   // Plugins
-  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })]
+  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })],
 };
