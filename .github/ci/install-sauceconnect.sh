@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 
 # STATIC VARIABLES
-VERSION="4.6.1"
+VERSION="4.6.2"
 
 
 # Create tmp directory
