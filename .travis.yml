@@ -15,7 +15,7 @@ node_js:
 # Run tests
 
 install:
-  - npm install
+  - npm ci
 script:
   # Run live tests
   - npm run test:run
