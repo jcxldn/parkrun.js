@@ -4,6 +4,12 @@ const path = require("path");
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
+// Generate small package.json with only 'version' and 'license'
+const { version, license } = require("./package.json")
+// Write it to a file
+require("fs").writeFileSync("dist/package.min.json", JSON.stringify({ version, license }));
+
+
 module.exports = {
   entry: [
     //"./node_modules/axios/dist/axios.min.js",
@@ -18,10 +24,13 @@ module.exports = {
     library: "Parkrun",
     libraryTarget: "umd",
   },
-  // Instead of parsing axios, use the already-parsed minified file, which also does not include Buffer.
   resolve: {
     alias: {
+      // Instead of parsing axios, use the already-parsed minified file, which also does not include Buffer.
       axios: path.resolve(__dirname, 'node_modules/axios/dist/axios.min.js'),
+
+      // Alias the original package.json to the minified one.
+      "../../package.json": path.resolve(__dirname, 'dist/package.min.json'),
     }
   },
   // Prep for webpack 5; also reduce size by not including Buffer (switched to pure js alternatives)
