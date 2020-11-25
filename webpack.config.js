@@ -2,8 +2,11 @@ const webpack = require("webpack");
 
 const path = require("path");
 
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 module.exports = {
   entry: [
+    //"./node_modules/axios/dist/axios.min.js",
     "./src/polyfills/btoa.js",
     "fast-text-encoding",
     "regenerator-runtime",
@@ -14,6 +17,17 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     library: "Parkrun",
     libraryTarget: "umd",
+  },
+  // Instead of parsing axios, use the already-parsed minified file, which also does not include Buffer.
+  resolve: {
+    alias: {
+      axios: path.resolve(__dirname, 'node_modules/axios/dist/axios.min.js'),
+    }
+  },
+  // Prep for webpack 5; also reduce size by not including Buffer (switched to pure js alternatives)
+  node: {
+    Buffer: false,
+    process: false
   },
   // Loaders
   module: {
@@ -43,5 +57,9 @@ module.exports = {
     ],
   },
   // Plugins
-  plugins: [new webpack.EnvironmentPlugin({ PLATFORM: "WEB" })],
+  plugins: [
+    new webpack.EnvironmentPlugin({ PLATFORM: "WEB" }),
+    // BundleAnalyzerPlugin - static file, don't auto open. Useful in webpack development.
+    new BundleAnalyzerPlugin({analyzerMode: "static", openAnalyzer: false})
+  ],
 };
