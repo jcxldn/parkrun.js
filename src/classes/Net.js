@@ -5,9 +5,7 @@ const { version } = require("../../package.json")
 
 const constants = require("../constants");
 // Get the initial user/pass from the raw auth data
-const authSplit = Buffer.from(constants.auth_raw, "base64")
-  .toString("utf8")
-  .split(":");
+const authSplit = constants.auth;
 
 const opts = {
   baseURL: constants.api_base,
