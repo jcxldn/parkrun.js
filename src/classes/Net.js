@@ -1,5 +1,8 @@
 const axios = require("axios").default;
 
+//const { version } = require("./parkrun") // doesn't work - possibly because of import loop?
+const { version } = require("../../package.json")
+
 const constants = require("../constants");
 // Get the initial user/pass from the raw auth data
 const authSplit = Buffer.from(constants.auth_raw, "base64")
@@ -13,7 +16,7 @@ const opts = {
     password: authSplit[1]
   },
   headers: {
-    "X-Powered-By": "Parkrun.JS"
+    "X-Powered-By": `parkrun.js/${version} (https://parkrun.js.org/)`
   }
 };
 
