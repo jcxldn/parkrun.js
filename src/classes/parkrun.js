@@ -1,7 +1,5 @@
 // TODO: Rename to 'Client'
 
-const merge = require("lodash.merge");
-
 const Net = require("./Net");
 const User = require("./User");
 const ClientUser = require("./ClientUser");
@@ -480,7 +478,7 @@ class Parkrun {
     */
     const firstRequest = await this._makeMultiGetRequest(
       url,
-      merge({ params: { offset: 0, limit: 0 } }, options)
+      Object.assign({ params: { offset: 0, limit: 0 } }, options)
     );
 
     // Save the range object to a variable
@@ -508,7 +506,7 @@ class Parkrun {
       parallelRequests.push(
         this._makeMultiGetRequest(
           url,
-          merge({ params: { offset: amountDownloaded } }, options)
+          Object.assign({ params: { offset: amountDownloaded } }, options)
         )
       );
 
