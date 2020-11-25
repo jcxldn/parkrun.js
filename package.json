@@ -39,7 +39,7 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "abab": "^2.0.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.0",
     "url-parse": "^1.4.7"
   },
   "devDependencies": {
