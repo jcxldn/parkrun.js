@@ -30,11 +30,11 @@ jobs:
     
     - name: Report live-only coverage to codecov (node 14 only)
       if: matrix.node-version == '14'
-      run: nyc report --reporter=text-lcov > coverage.lcov && codecov
+      run: npx nyc report --reporter=text-lcov > coverage.lcov && codecov
    
     - name: Report live-only coverage to github (node 14 only)
       if: matrix.node-version == '14'
-      run: nyc report --reporter=text | node .github/ci/live-reporter.js
+      run: npx nyc report --reporter=text | node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
@@ -49,11 +49,11 @@ jobs:
     
     - name: Report mocked-only coverage to codecov (node 14 only)
       if: matrix.node-version == '14'
-      run: nyc report --reporter=text-lcov > coverage.lcov && codecov
+      run: npx nyc report --reporter=text-lcov > coverage.lcov && codecov
     
     - name: Report mocked-only coverage to github (node 14 only)
       if: matrix.node-version == '14'
-      run: nyc report --reporter=text | node .github/ci/mock-reporter.js
+      run: npx nyc report --reporter=text | node .github/ci/mock-reporter.js
       # GitHub reporter needs authentication
       env:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
