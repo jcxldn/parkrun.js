@@ -74,8 +74,7 @@ setTimeout(
 
           // If the tunnel identifier matches the env var, close it.
           if (
-            tunnelDetails.data.tunnel_identifier ==
-            process.env.TRAVIS_JOB_NUMBER
+            tunnelDetails.data.tunnel_identifier == process.env.GITHUB_RUN_ID
           ) {
             // Close the tunnel
             console.log(
@@ -87,8 +86,8 @@ setTimeout(
               {
                 auth: {
                   username: process.env.SAUCE_USERNAME,
-                  password: process.env.SAUCE_ACCESS_KEY
-                }
+                  password: process.env.SAUCE_ACCESS_KEY,
+                },
               }
             );
           }
