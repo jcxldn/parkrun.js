@@ -16,7 +16,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Upgrade npm (node 8 only)
-      if: matrix.node-version == '8'
+      if: matrix.node-version == '8.10'
       run: npm i -g npm
     
     - run: npm ci --ignore-scripts
