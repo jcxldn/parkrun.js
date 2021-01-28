@@ -79,7 +79,7 @@ jobs:
         PASS: ${{ secrets.CI_PARKRUN_PASS }}
         SAUCE_USERNAME: ${{ secrets.CI_SAUCELABS_RUNNER_USERNAME }}
         SAUCE_ACCESS_KEY: ${{ secrets.CI_SAUCELABS_RUNNER_ACCESS_KEY }}
-        TRAVIS_JOB_NUMBER: ${GITHUB_RUN_NUMBER}
+        TRAVIS_JOB_NUMBER: $GITHUB_RUN_ID
     
     - name: Report saucelabs results
       run: node ./.github/ci/saucelabs_bot_travis.js
