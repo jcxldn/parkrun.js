@@ -25,11 +25,11 @@ jobs:
         PASS: ${{ secrets.CI_PARKRUN_PASS }}
     
     - name: Report live-only coverage to codecov (node 14 only)
-      if: matrix.node-version == "14"
+      if: matrix.node-version == '14'
       run: nyc report --reporter=text-lcov > coverage.lcov && codecov
    
     - name: Report live-only coverage to github (node 14 only)
-      if: matrix.node-version == "14"
+      if: matrix.node-version == '14'
       run: nyc report --reporter=text | node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
@@ -44,11 +44,11 @@ jobs:
       run: npm run test:run:mock
     
     - name: Report mocked-only coverage to codecov (node 14 only)
-      if: matrix.node-version == "14"
+      if: matrix.node-version == '14'
       run: nyc report --reporter=text-lcov > coverage.lcov && codecov
     
     - name: Report mocked-only coverage to github (node 14 only)
-      if: matrix.node-version == "14"
+      if: matrix.node-version == '14'
       run: nyc report --reporter=text | node .github/ci/mock-reporter.js
       # GitHub reporter needs authentication
       env:
