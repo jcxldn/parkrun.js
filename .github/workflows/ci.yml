@@ -30,7 +30,7 @@ jobs:
     
     - name: Report live-only coverage to codecov (node 14 only)
       if: matrix.node-version == '14'
-      run: npx nyc report --reporter=text-lcov > coverage.lcov && codecov
+      run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
    
     - name: Report live-only coverage to github (node 14 only)
       if: matrix.node-version == '14'
@@ -49,7 +49,7 @@ jobs:
     
     - name: Report mocked-only coverage to codecov (node 14 only)
       if: matrix.node-version == '14'
-      run: npx nyc report --reporter=text-lcov > coverage.lcov && codecov
+      run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
     
     - name: Report mocked-only coverage to github (node 14 only)
       if: matrix.node-version == '14'
