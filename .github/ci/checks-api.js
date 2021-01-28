@@ -3,7 +3,7 @@ const { request } = require("@octokit/request");
 
 const octo = new App({
   id: 53420,
-  privateKey: Buffer.from(process.env.GITHUB_PEM, "base64").toString(),
+  privateKey: process.env.GITHUB_PEM.toString().replace(/\\n/g, '\n'),
 });
 const jwt = octo.getSignedJsonWebToken();
 
