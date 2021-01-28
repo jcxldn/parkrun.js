@@ -3,14 +3,14 @@ const { request } = require("@octokit/request");
 
 const octo = new App({
   id: 53420,
-  privateKey: Buffer.from(process.env.GITHUB_PEM, "base64").toString(),
+  privateKey: process.env.GITHUB_PEM.toString().replace(/\\n/g, '\n'),
 });
 const jwt = octo.getSignedJsonWebToken();
 
 async function makeCheck({ name, status, conclusion, title, summary }) {
   return await request("POST /repos/Prouser123/parkrun.js/check-runs", {
     name,
-    head_sha: process.env.TRAVIS_COMMIT, // DYN
+    head_sha: process.env.GITHUB_SHA, // DYN
     status,
     conclusion, // DYN
     output: {

@@ -10,8 +10,8 @@ const constant_caps = Object.freeze({
     username: process.env.SAUCE_USERNAME,
     accessKey: process.env.SAUCE_ACCESS_KEY,
     tags: ["parkrun.js"],
-    "tunnel-identifier": process.env.TRAVIS_JOB_NUMBER
-  }
+    "tunnel-identifier": process.env.GITHUB_RUN_ID,
+  },
 });
 
 const server_url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";

@@ -1,0 +1,22 @@
+name: publish
+
+on:
+  release:
+    # Type 'created' will be triggered when a NON-draft release is created and published.
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    # Setup .npmrc file to publish to npm
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14'
+        registry-url: 'https://registry.npmjs.org'
+    - run: npm ci --ignore-scripts
+    # Publish to npm
+    - run: npm publish --access public --ignore-scripts
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.CI_NPMP }}
