@@ -14,6 +14,10 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Upgrade npm (node 8 only)
+      if: matrix.node-version == '8'
+      run: npm i -g npm
     
     - run: npm ci --ignore-scripts
    
