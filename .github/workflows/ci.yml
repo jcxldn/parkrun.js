@@ -7,17 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: ["8.10", "10", "12", "14", "15"]
+        # Add 10.12.0 test (mocha 8's min spec)
+        node-version: ["10.12.0", "10", "12", "14", "15"]
     steps:
     - uses: actions/checkout@v2
     
     - uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Upgrade npm (node 8 only)
-      if: matrix.node-version == '8.10'
-      run: npm i -g npm
     
     - run: npm ci --ignore-scripts
    
