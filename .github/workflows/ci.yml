@@ -1,0 +1,90 @@
+name: ci
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["8.10", "10", "12", "14", "15"]
+    steps:
+    - uses: actions/checkout@v2
+    
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    
+    - run: npm ci --ignore-scripts
+   
+    - name: Run tests (live)
+      run: npm run test:run
+      # Live tests need valid parkrun login details
+      env:
+        ID: ${{ secrets.CI_PARKRUN_ID }}
+        PASS: ${{ secrets.CI_PARKRUN_PASS }}
+    
+    - name: Report live-only coverage to codecov (node 14 only)
+      if: matrix.node-version = "14"
+      run: nyc report --reporter=text-lcov > coverage.lcov && codecov
+   
+    - name: Report live-only coverage to github (node 14 only)
+      if: matrix.node-version = "14"
+      run: nyc report --reporter=text | node .github/ci/live-reporter.js
+      # GitHub reporter needs authentication
+      env:
+        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
+      
+      # Have nyc run an echo command to clean the output.
+    - name: Clean up nyc output
+      run: npx nyc --silent echo ""
+    
+    - name: Run tests (mocked)
+      # Mocked tests don't require authentication
+      run: npm run test:run:mock
+    
+    - name: Report mocked-only coverage to codecov (node 14 only)
+      if: matrix.node-version = "14"
+      run: nyc report --reporter=text-lcov > coverage.lcov && codecov
+    
+    - name: Report mocked-only coverage to github (node 14 only)
+      if: matrix.node-version = "14"
+      run: nyc report --reporter=text | node .github/ci/mock-reporter.js
+      # GitHub reporter needs authentication
+      env:
+        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
+  saucelabs:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup /etc/hosts
+      # Saucelabs uses a FQDN that maps to localhost to run tests against
+      run: echo "127.0.0.1 web_tests.nr.jcx.ovh" | sudo tee -a /etc/hosts
+    
+    - uses: actions/checkout@v2
+    
+    - uses: actions/setup-node@v1
+      with:
+        node-version: "14"
+    
+    - run: npm ci --ignore-scripts
+    
+    - name: Make sauceconnect installer script executable
+      run: chmod +x .github/ci/install-sauceconnect.sh
+    
+    - name: Run saucelabs tests
+      run: npm run test:web:saucelabs
+      # Saucelabs tests need valid parkrun + saucelabs login details, as well as a job identifier
+      env:
+        ID: ${{ secrets.CI_PARKRUN_ID }}
+        PASS: ${{ secrets.CI_PARKRUN_PASS }}
+        SAUCE_USERNAME: ${{ secrets.CI_SAUCELABS_RUNNER_USERNAME }}
+        SAUCE_ACCESS_KEY: ${{ secrets.CI_SAUCELABS_RUNNER_ACCESS_KEY }}
+        TRAVIS_JOB_NUMBER: ${GITHUB_RUN_NUMBER}
+    
+    - name: Report saucelabs results
+      run: node ./.github/ci/saucelabs_bot_travis.js
+      # Saucelabs reporter needs GitHub authentication (for making checks) and BackBlaze authentication (for storing job data)
+      env:
+        B2_KEY: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY }}
+        B2_KEY_ID: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY_ID }}
+        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
