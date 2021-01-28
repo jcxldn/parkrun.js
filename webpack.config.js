@@ -1,13 +1,16 @@
 const webpack = require("webpack");
 
 const path = require("path");
+const fs = require("fs");
 
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 // Generate small package.json with only 'version' and 'license'
 const { version, license } = require("./package.json")
+// Create dist dir if it doesn't already exist
+if (!fs.existsSync("dist")) fs.mkdirSync("dist");
 // Write it to a file
-require("fs").writeFileSync("dist/package.min.json", JSON.stringify({ version, license }));
+fs.writeFileSync("dist/package.min.json", JSON.stringify({ version, license }));
 
 
 module.exports = {
