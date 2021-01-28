@@ -1,9 +1,11 @@
 # parkrun.js
 
-![Travis Tests](https://img.shields.io/travis/com/prouser123/parkrun.js/master?label=tests)
+![ci build status (master)](https://img.shields.io/github/workflow/status/Prouser123/parkrun.js/ci/master?label=tests&logo=github&logoColor=white)
+![docs build status (master)](https://img.shields.io/github/workflow/status/Prouser123/parkrun.js/docs/master?label=docs&logo=github&logoColor=white)
 ![Codecov](https://img.shields.io/codecov/c/gh/prouser123/parkrun.js)
-![docs build status](https://img.shields.io/github/workflow/status/prouser123/parkrun.js/docs?label=docs)
+![node-current](https://img.shields.io/node/v/parkrun.js)
 ![Dist Size (Brotli)](<https://img.badgesize.io/prouser123/parkrun.js/gh-pages/parkrun.browser.min.js?compression=brotli&label=dist%20size%20(brotli)>)
+![npm latest version](https://img.shields.io/npm/v/parkrun.js)
 
 A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app.
 
