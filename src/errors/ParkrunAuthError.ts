@@ -1,11 +1,11 @@
-import NetError from "./ParkrunNetError";
+import { ParkrunNetError } from "./ParkrunNetError";
 
 /**
  * A general error class for any authentication-related error.
  *
  * @extends {ParkrunNetError}
  */
-export default class ParkrunAuthError extends NetError {
+export class ParkrunAuthError extends ParkrunNetError {
   constructor(message) {
     super(message);
   }

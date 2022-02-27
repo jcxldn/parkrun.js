@@ -1,11 +1,11 @@
-import AuthError from "./ParkrunAuthError"
+import { ParkrunAuthError } from "./ParkrunAuthError"
 
 /**
  * An error class catching invalid usernames or passwords.
  *
  * @extends {ParkrunAuthError}
  */
-export default class ParkrunUserPassError extends AuthError {
+export class ParkrunUserPassError extends ParkrunAuthError {
   constructor(message) {
     super(message);
   }
