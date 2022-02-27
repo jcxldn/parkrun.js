@@ -2,6 +2,15 @@
  * A class representing a volunteer's job during a parkrun event.
  */
 export class RosterVolunteer {
+	private _eventNumber: number;
+	private _eventDate: Date;
+	private _athleteID: number;
+	private _taskID: number;
+	private _rosterID: number;
+	private _taskName: string;
+	private _athleteFirstName: string;
+	private _athleteLastName: string;
+
 	constructor(res) {
 		this._eventNumber = Number.parseInt(res.EventNumber);
 		this._eventDate = new Date(res.eventdate);
