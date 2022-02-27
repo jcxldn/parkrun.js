@@ -45,8 +45,10 @@ jobs:
       # Mocked tests don't require authentication
       run: npm run test:run:mock
     
+      # Only report to codecov on master
+      # Live tests are not being ran, so codecov will give incorrect results on other branches (eg. -50% coverage)
     - name: Report mocked-only coverage to codecov (node 14 only)
-      if: matrix.node-version == '14'
+      if: matrix.node-version == '14' && github.ref == 'refs/heads/master'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
     
     - name: Report mocked-only coverage to github (node 14 only)
