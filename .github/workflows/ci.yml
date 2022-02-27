@@ -19,6 +19,7 @@ jobs:
     - run: npm ci --ignore-scripts
    
     - name: Run tests (live)
+      if: github.ref == 'refs/heads/master'
       run: npm run test:run
       # Live tests need valid parkrun login details
       env:
@@ -26,11 +27,11 @@ jobs:
         PASS: ${{ secrets.CI_PARKRUN_PASS }}
     
     - name: Report live-only coverage to codecov (node 14 only)
-      if: matrix.node-version == '14'
+      if: matrix.node-version == '14' && github.ref == 'refs/heads/master'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
    
     - name: Report live-only coverage to github (node 14 only)
-      if: matrix.node-version == '14'
+      if: matrix.node-version == '14' && github.ref == 'refs/heads/master'
       run: npx nyc report --reporter=text | node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
@@ -56,6 +57,7 @@ jobs:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
   saucelabs:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
     steps:
     - name: Setup /etc/hosts
       # Saucelabs uses a FQDN that maps to localhost to run tests against
