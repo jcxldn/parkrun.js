@@ -1,17 +1,12 @@
 // Represents the currently logged in user
 
-const Validate = require("../validate");
-
-const User = require("./User");
-
-const ClientAthleteExpandedExtra = require("../schemas/ClientAthleteExpandedExtra");
-
-const DataNotAvailableError = require("../errors/ParkrunDataNotAvailableError");
-const NetError = require("../errors/ParkrunNetError");
-
-const FreedomRunResult = require("./FreedomRunResult");
-
-const SearchParams = require("../common/SearchParams");
+import SearchParams from "../common/SearchParams";
+import DataNotAvailableError from "../errors/ParkrunDataNotAvailableError";
+import NetError from "../errors/ParkrunNetError";
+import ClientAthleteExpandedExtra from "../schemas/ClientAthleteExpandedExtra";
+import Validate from "../validate";
+import FreedomRunResult from "./FreedomRunResult";
+import User from "./User";
 
 /**
  * A class representing the currently-logged in user.
