@@ -39,8 +39,8 @@
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "abab": "^2.0.5",
-    "axios": "^0.21.1",
-    "url-parse": "^1.4.7"
+    "axios": "^0.21.4",
+    "url-parse": "^1.5.10"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -60,7 +60,7 @@
     "fast-text-encoding": "^1.0.3",
     "glob": "^7.1.6",
     "http-terminator": "^2.0.3",
-    "jsdoc": "^3.6.6",
+    "jsdoc": "^3.6.10",
     "lodash.merge": "^4.6.2",
     "mocha": "^8.2.1",
     "nock": "^13.0.6",
