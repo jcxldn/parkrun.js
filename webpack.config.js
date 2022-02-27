@@ -36,11 +36,6 @@ module.exports = {
       "../../package.json": path.resolve(__dirname, 'dist/package.min.json'),
     }
   },
-  // Prep for webpack 5; also reduce size by not including Buffer (switched to pure js alternatives)
-  node: {
-    Buffer: false,
-    process: false
-  },
   // Loaders
   module: {
     rules: [

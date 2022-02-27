@@ -9,14 +9,14 @@
     "test": "node tests/platform-all/pre_ensure_env.js && npm run test:run && npm run test:run:mock && nyc report",
     "test:run": "nyc --silent mocha --timeout 20000 --require @babel/register tests/*.js --exit",
     "test:run:mock": "nyc --silent --no-clean mocha --timeout 20000 --require @babel/register tests/platform-node/*.js --exit",
-    "test:web:build": "node tests/platform-all/pre_ensure_env.js && webpack --config web-tests.webpack.config.js --mode production --display-modules",
+    "test:web:build": "node tests/platform-all/pre_ensure_env.js && webpack --config web-tests.webpack.config.js --mode production",
     "test:web:saucelabs": "run-s build test:web:build test:web:saucelabs:install test:web:saucelabs:run",
     "test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
     "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
     "test:web:saucelabs:run:main": "cross-env-shell node tests/platform-web/saucelabs/runner.js",
     "test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID -x https://eu-central-1.saucelabs.com/rest/v1",
     "build": "rimraf dist/ && npm run build:web",
-    "build:web": "webpack --config webpack.config.js --mode production --display-modules",
+    "build:web": "webpack --config webpack.config.js --mode production",
     "prepublishOnly": "npm run build",
     "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
     "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
@@ -71,9 +71,9 @@
     "rimraf": "^3.0.2",
     "selenium-webdriver": "^4.0.0-alpha.8",
     "serve": "^11.3.2",
-    "webpack": "^4.46.0",
-    "webpack-bundle-analyzer": "^4.4.0",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.69.1",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.2"
   },
   "engines": {
     "node": ">=10.12.0"
