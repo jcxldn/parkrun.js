@@ -1,37 +1,48 @@
 // Represents the currently logged in user
 
-import SearchParams from "../common/SearchParams";
-import DataNotAvailableError from "../errors/ParkrunDataNotAvailableError";
-import NetError from "../errors/ParkrunNetError";
-import ClientAthleteExpandedExtra from "../schemas/ClientAthleteExpandedExtra";
-import Validate from "../validate";
-import FreedomRunResult from "./FreedomRunResult";
-import User from "./User";
+import { SearchParams } from "../common/SearchParams";
+import { ParkrunDataNotAvailableError } from "../errors";
+import { ParkrunNetError } from "../errors/ParkrunNetError";
+import {
+	ClientAthleteExpandedExtra
+} from "../schemas/ClientAthleteExpandedExtra";
+import { validate } from "../validate";
+import { FreedomRunResult } from "./FreedomRunResult";
+import { Parkrun } from "./parkrun";
+import { User } from "./User";
 
 /**
  * A class representing the currently-logged in user.
  *
  * @extends {User}
  */
-class ClientUser extends User {
-	constructor(res, core) {
-		const data = Validate(res, ClientAthleteExpandedExtra).data.Athletes[0];
+export class ClientUser extends User {
+	private _clubID: number;
+	private _dob: Date;
+	private _mobileNumber: number;
+	private _base2_mail_ok: boolean;
+	private _preSignupWeeklyExerciseFrequency: number;
+	private _postcode: string;
+	private _base2_wheelchair: boolean;
+	private _email: string;
+	private _sex: string;
+
+	constructor(res: any, _core: Parkrun) {
+		const data = validate(res, ClientAthleteExpandedExtra).data.Athletes[0];
 		// Set the base objects
-		super(res, core);
+		super(res, _core);
 
 		// Set the client-only objects
 		this._clubID = Number.parseInt(data.ClubID);
 		this._dob = new Date(data.DOB);
 		this._mobileNumber = data.MobileNumber;
-		this._base2_mail_ok = new Boolean(data.OKtoMail);
+		this._base2_mail_ok = !!new Boolean(data.OKtoMail);
 		this._postcode = data.Postcode;
 		this._preSignupWeeklyExerciseFrequency = Number.parseInt(data.PreParkrunExerciseFrequency);
-		this._base2_wheelchair = new Boolean(data.WheelchairAthlete);
+		this._base2_wheelchair = !!new Boolean(data.WheelchairAthlete);
 		this._email = data.eMailID;
 
 		this._sex = data.Sex;
-
-		this._core = core;
 	}
 
 	/**
@@ -59,7 +70,7 @@ class ClientUser extends User {
 	 */
 	getMobileNumber() {
 		if (this._mobileNumber == null)
-			throw new DataNotAvailableError(
+			throw new ParkrunDataNotAvailableError(
 				`getMobileNumber, athlete ${this.getID()}, reason: mobile number not set`
 			);
 		return this._mobileNumber;
@@ -187,7 +198,7 @@ class ClientUser extends User {
 					},
 				})
 				.catch(err => {
-					throw new NetError(err);
+					throw new ParkrunNetError(err);
 				});
 
 			return Number.parseInt(res.data.data.FreedomRuns.freedomID);
@@ -197,5 +208,3 @@ class ClientUser extends User {
 		}
 	}
 }
-
-module.exports = ClientUser;

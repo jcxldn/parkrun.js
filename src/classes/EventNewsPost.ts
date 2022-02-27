@@ -2,6 +2,14 @@
  * A class representing a news post for a parkrun event.
  */
 export class EventNewsPost {
+	private _event: number;
+	private _id: number;
+	private _commentCount: number;
+	private _authorName: string;
+	private _authorAvatar: string;
+	private _date: Date;
+	private _title: string;
+
 	constructor(res) {
 		this._event = Number.parseInt(res.EventNumber);
 		this._id = Number.parseInt(res.ID);

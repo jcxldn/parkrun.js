@@ -6,7 +6,7 @@
  * @extends {Error}
  */
 export class ParkrunValidationError extends Error {
-	constructor(message) {
+	constructor(message: string) {
 		super(message);
 	}
 }

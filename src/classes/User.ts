@@ -1,12 +1,10 @@
 import axios from "axios";
 
-import ClubsEnums from "../common/ClubsEnums";
-import DataNotAvailableError from "../errors/ParkrunDataNotAvailableError";
-import NetError from "../errors/ParkrunNetError";
-import AthleteExpandedSchema from "../schemas/Athlete";
-import Validate from "../validate";
-import HomeRun from "./HomeRun";
-import RunResult from "./RunResult";
+import { ParkrunDataNotAvailableError, ParkrunNetError } from "../errors";
+import { AthleteExpandedSchema } from "../schemas/AthleteExpanded";
+import { validate } from "../validate";
+import { HomeRun } from "./HomeRun";
+import { Parkrun } from "./parkrun";
 
 const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
@@ -14,6 +12,13 @@ const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase())
  * A class representing a Parkrun User.
  */
 export class User {
+	_athleteID: number;
+	_avatar: string;
+	_clubName: string;
+	_firstName: string;
+	_homeRun: HomeRun;
+	_lastName: string;
+
 	/**
 	 * Create a new User class from the API responses.
 	 *
@@ -23,8 +28,8 @@ export class User {
 	 *
 	 * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
 	 */
-	constructor(res, core) {
-		const data = Validate(res, AthleteExpandedSchema).data.Athletes[0];
+	constructor(res: any, private readonly _core: Parkrun) {
+		const data = validate(res, AthleteExpandedSchema).data.Athletes[0];
 
 		this._athleteID = Number.parseInt(data.AthleteID);
 		this._avatar = data.Avatar;
@@ -32,8 +37,6 @@ export class User {
 		this._firstName = data.FirstName;
 		this._homeRun = new HomeRun(data.HomeRunID, data.HomeRunLocation, data.HomeRunName);
 		this._lastName = data.LastName;
-
-		this._core = core;
 	}
 
 	/**
@@ -98,7 +101,7 @@ export class User {
 	 * @see https://github.com/Prouser123/parkrun.js/issues/33
 	 */
 	getSex() {
-		throw new DataNotAvailableError(
+		throw new ParkrunDataNotAvailableError(
 			"getSex() - removed upstream as of Febuary 2020, see issue #33."
 		);
 	}
@@ -130,7 +133,7 @@ export class User {
 				params: { athleteId: this._athleteID, offset: 0 },
 			})
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 		// If the user has no runs, this will return NaN, so in that case just return 0.
 		return Number.parseInt(res.data.data.TotalRuns[0].RunTotal) || 0;
@@ -209,10 +212,11 @@ export class User {
 				},
 			})
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 		const data = res.data.data.Results[0];
-		if (data == undefined) throw new DataNotAvailableError("getClubs, athlete " + this.getID());
+		if (data == undefined)
+			throw new ParkrunDataNotAvailableError("getClubs, athlete " + this.getID());
 		return {
 			ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership],
 			JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],

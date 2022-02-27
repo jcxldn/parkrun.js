@@ -1,12 +1,14 @@
-import Refresh from "../common/refresh";
-import TokensData from "./TokensData";
+import { refreshToken } from "../common/refresh";
+import { TokensData } from "./TokensData";
 
 /**
  * A class representing the client's authentication tokens.
  *
  * @class Tokens
  */
-class Tokens {
+export class Tokens {
+	_data: TokensData;
+
 	constructor(auth_res, date_issued) {
 		this._data = new TokensData(auth_res, date_issued);
 	}
@@ -97,9 +99,7 @@ class Tokens {
 	 */
 	async getNewTokens() {
 		console.log("GET_NEW_TOKENS");
-		const newData = await Refresh(this.getRefreshToken());
+		const newData = await refreshToken(this.getRefreshToken());
 		this._data = newData;
 	}
 }
-
-module.exports = Tokens;

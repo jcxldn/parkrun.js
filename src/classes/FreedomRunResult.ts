@@ -2,7 +2,14 @@
  * A class representing the Results of a Freedom Run.
  */
 export class FreedomRunResult {
-	constructor(res, core) {
+	private _id: number;
+	private _time: string;
+	private _date: Date;
+	private _athlete: number;
+	private _event: number;
+	private _event_name: string;
+
+	constructor(res: any, private readonly _core: any) {
 		this._id = Number.parseInt(res.FreedomID);
 		this._time = res.RunTime;
 		this._date = new Date(res.RunDate);
@@ -10,8 +17,6 @@ export class FreedomRunResult {
 		this._event = Number.parseInt(res.EventNumber);
 
 		this._event_name = res.EventLongName;
-
-		this._core = core;
 
 		// Core object is the Parkrun.JS core class.
 		// Also note that there is no point in having a getAthlete() function as you can only use this with ClientUser anyway.

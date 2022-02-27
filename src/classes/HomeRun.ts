@@ -2,10 +2,10 @@
  * A class representing a user's Home Parkrun.
  */
 export class HomeRun {
-	constructor(id, loc, name) {
+	private _id: number;
+
+	constructor(id: string, private readonly _loc: any, private readonly _name: string) {
 		this._id = Number.parseInt(id);
-		this._loc = loc;
-		this._name = name;
 	}
 
 	/**

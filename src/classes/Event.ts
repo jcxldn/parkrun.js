@@ -1,13 +1,26 @@
-import SeriesID from "../common/SeriesID";
-import DataNotAvailableError from "../errors/ParkrunDataNotAvailableError";
-import EventNewsPost from "./EventNewsPost";
-import RosterVolunteer from "./RosterVolunteer";
+import { ParkrunDataNotAvailableError } from "../errors";
+import { Parkrun } from "./parkrun";
 
 /**
  *  A class representing a Parkrun event.
  */
 export class Event {
-	constructor(res, core) {
+	private _id: number;
+	private _name_internal: string;
+	private _name_short: string;
+	private _name: string;
+	private _location: string;
+	private _countryCode: number;
+	private _preferredLanguage: string;
+	private _seriesID: number;
+	private _isActive: boolean;
+	private _status: string;
+	private _officeEmail: string;
+	private _helperEmail: string;
+	private _totalEvents: number;
+	private _public: boolean;
+
+	constructor(res, private readonly _core: Parkrun) {
 		this._id = Number.parseInt(res.EventNumber);
 		this._name_internal = res.EventName;
 		this._name_short = res.EventShortName;
@@ -20,7 +33,7 @@ export class Event {
 
 		// After 08850d5, res.HomeRunSelection has been removed as it is not an accurate response.
 
-		this._isActive = new Boolean(res.StatusLive);
+		this._isActive = !!new Boolean(res.StatusLive);
 		// Skipping res.AnniversarySaturdayOfMonth as we can calculate that from the series ID.
 		this._status = res.EventStatus;
 		// Skipping res.UserFavourite for now, waiting on issue #4. - note that seems to return null when using Athlete Events?
@@ -29,9 +42,7 @@ export class Event {
 		this._helperEmail = res.EventHelpersEmail; // undefined handled in getter
 		this._totalEvents = Number.parseInt(res.TotalEventsStaged); // NaN handled in getter
 
-		this._public = new Boolean(res.AccessibleToPublic);
-
-		this._core = core;
+		this._public = !!new Boolean(res.AccessibleToPublic);
 	}
 
 	/**
@@ -188,7 +199,7 @@ export class Event {
 	 */
 	getOfficeEmail() {
 		if (this._officeEmail == undefined)
-			throw new DataNotAvailableError(
+			throw new ParkrunDataNotAvailableError(
 				"getOfficeEmail(). reason: only available when using getEvent()"
 			);
 		return this._officeEmail;
@@ -204,7 +215,7 @@ export class Event {
 	 */
 	getHelperEmail() {
 		if (this._helperEmail == undefined)
-			throw new DataNotAvailableError(
+			throw new ParkrunDataNotAvailableError(
 				"getHelperEmail(). reason: only available when using getEvent()"
 			);
 		return this._helperEmail;
@@ -220,7 +231,7 @@ export class Event {
 	 */
 	getTotalCount() {
 		if (isNaN(this._totalEvents))
-			throw new DataNotAvailableError(
+			throw new ParkrunDataNotAvailableError(
 				"getTotalCount(). reason: only available when using getEvent()"
 			);
 		return this._totalEvents;

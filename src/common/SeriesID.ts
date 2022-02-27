@@ -1,5 +1,5 @@
-const SeriesID = {
-	getDayOfWeek(seriesID) {
+export const SeriesID = {
+	getDayOfWeek(seriesID: number) {
 		switch (seriesID) {
 			case 1:
 				return "Saturday";
@@ -10,5 +10,3 @@ const SeriesID = {
 		}
 	},
 };
-
-module.exports = SeriesID;

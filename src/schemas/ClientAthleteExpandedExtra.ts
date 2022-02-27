@@ -1,9 +1,9 @@
-const Joi = require("@hapi/joi");
+import * as Joi from "joi";
 
 /**
  * Joi Schema for the extra Client Athlete (Expanded) data.
  */
-module.exports = Joi.object({
+export const ClientAthleteExpandedExtra = Joi.object({
 	data: Joi.object({
 		Athletes: Joi.array()
 			.items({

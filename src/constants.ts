@@ -4,7 +4,7 @@
  * @static
  * @readonly
  */
-module.exports = {
+export const Constants = {
 	api_base:
 		process.env.PLATFORM !== "WEB"
 			? "https://api.parkrun.com"

@@ -2,17 +2,22 @@
  * A class representing a parkrun country.
  */
 export class Country {
-	constructor(res, core) {
+	private _code: number;
+	private _name: string;
+	private _active: boolean;
+	private _site_url: string;
+	private _languageID: number;
+	private _wiki_name: string;
+	private _ccTLD: string;
+
+	constructor(res, private readonly _core) {
 		this._code = Number.parseInt(res.CountryCode);
 		this._name = res.Country;
-		this._active = new Boolean(res.Active);
+		this._active = !!new Boolean(res.Active);
 		this._site_url = res.CountrySiteUrl;
 		this._languageID = Number.parseInt(res.DefaultLanguageId);
 		this._wiki_name = res.wikiCountryName;
 		this._ccTLD = res.ccTLD;
-
-		// The core object is the core of the Parkrun API.
-		this._core = core;
 	}
 
 	/**

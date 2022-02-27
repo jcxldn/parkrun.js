@@ -1,4 +1,4 @@
-const ValidationError = require("./errors/ParkrunValidationError");
+import { ParkrunValidationError } from "./errors";
 
 const options = {
 	stripUnknown: true,
@@ -11,10 +11,10 @@ const options = {
  *
  * @throws {ParkrunValidationError} Validation error.
  */
-module.exports = (data, schema) => {
+export const validate = (data: any, schema: any) => {
 	const res = schema.validate(data, options);
 	if (res.error) {
-		throw new ValidationError("Error validating api response :: " + res.error);
+		throw new ParkrunValidationError("Error validating api response :: " + res.error);
 	} else {
 		return res.value;
 	}

@@ -1,5 +1,3 @@
-"use strict";
-
-const btoa = require("abab/lib/btoa");
+import { btoa } from "abab";
 
 global.btoa = btoa;

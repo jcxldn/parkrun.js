@@ -6,7 +6,7 @@ import { ParkrunAuthError } from "./ParkrunAuthError";
  * @extends {ParkrunAuthError}
  */
 export class ParkrunRefreshExpiredError extends ParkrunAuthError {
-	constructor(message) {
+	constructor(message: string) {
 		super(message);
 	}
 }

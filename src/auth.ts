@@ -1,16 +1,12 @@
-const net = require("./classes/Net").getNonAuthed();
+import { Net } from "./classes/Net";
+import { Tokens } from "./classes/Tokens";
+import { ParkrunAuthError, ParkrunUserPassError } from "./errors";
+import { AuthSchema } from "./schemas/AuthSchema";
+import { validate } from "./validate";
 
-const Tokens = require("./classes/Tokens");
+const net = Net.getNonAuthed();
 
-const SearchParams = require("./common/SearchParams");
-
-const AuthError = require("./errors/ParkrunAuthError");
-const UserPassError = require("./errors/ParkrunUserPassError");
-
-const Validate = require("./validate");
-const AuthSchema = require("./schemas/AuthSchema");
-
-const auth = async (id, password) => {
+export const auth = async (id: number, password: string) => {
 	// ID checking here
 
 	const params = new SearchParams([
@@ -31,7 +27,7 @@ const auth = async (id, password) => {
 			 *
 			 * Will throw a ParkrunValidationError if the check fails.
 			 */
-			Validate(res.data, AuthSchema);
+			validate(res.data, AuthSchema);
 
 			// Login successful, tokens recieved
 			//return new Parkrun(new Tokens(res.data, res.headers.date));
@@ -45,13 +41,11 @@ const auth = async (id, password) => {
 		if (error.response != undefined) {
 			// A request was made and the server responsed with a non 2xx status code.
 			if (error.response.status == 400) {
-				throw new UserPassError("invalid username or password!");
+				throw new ParkrunUserPassError("invalid username or password!");
 			}
 		} else {
 			console.error(error);
-			throw new AuthError("unspecified error during auth flow");
+			throw new ParkrunAuthError("unspecified error during auth flow");
 		}
 	}
 };
-
-module.exports = auth;

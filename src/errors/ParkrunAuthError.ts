@@ -6,7 +6,7 @@ import { ParkrunNetError } from "./ParkrunNetError";
  * @extends {ParkrunNetError}
  */
 export class ParkrunAuthError extends ParkrunNetError {
-	constructor(message) {
+	constructor(message: string) {
 		super(message);
 	}
 }

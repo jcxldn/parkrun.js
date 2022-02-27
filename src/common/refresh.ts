@@ -1,15 +1,12 @@
-const net = require("../classes/Net").getNonAuthed();
+import { Net } from "../classes/Net";
+import { TokensData } from "../classes/TokensData";
+import { ParkrunAuthError, ParkrunRefreshExpiredError } from "../errors";
 
-const TokensData = require("../classes/TokensData");
+const net = Net.getNonAuthed();
 
-const SearchParams = require("./SearchParams");
-
-const RefreshExpiredError = require("../errors/ParkrunRefreshExpiredError");
-const AuthError = require("../errors/ParkrunAuthError");
-
-module.exports = async refreshToken => {
+export const refreshToken = async (token: string) => {
 	const params = new SearchParams([
-		["refresh_token", refreshToken],
+		["refresh_token", token],
 		["grant_type", "refresh_token"],
 	]);
 
@@ -38,11 +35,11 @@ module.exports = async refreshToken => {
 			// At this point, we either have an expired or invalid refresh token.
 
 			if (err.response.data.error_description == "Refresh token has expired") {
-				throw new RefreshExpiredError("refresh token has expired");
+				throw new ParkrunRefreshExpiredError("refresh token has expired");
 			}
 
 			if (err.response.data.error_description == "Invalid refresh token") {
-				throw new AuthError("invalid refresh token");
+				throw new ParkrunAuthError("invalid refresh token");
 			}
 
 			throw new Error("server returned http code 400, invalid grant");

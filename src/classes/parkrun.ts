@@ -1,15 +1,9 @@
 // TODO: Rename to 'Client'
-import authSync from "../auth";
-import ClassList from "../class_list";
-import NetError from "../errors/ParkrunNetError";
-import ClientUser from "./ClientUser";
-import Country from "./Country";
-import Event from "./Event";
-import EventNewsPost from "./EventNewsPost";
-import Net from "./Net";
-import RosterVolunteer from "./RosterVolunteer";
-import Tokens from "./Tokens";
-import User from "./User";
+
+import { ParkrunNetError } from "../errors";
+import { Event } from "./Event";
+import { Net } from "./Net";
+import { Tokens } from "./Tokens";
 
 // Import package.json for version and license static variables
 const { version, license } = require("../../package.json");
@@ -18,6 +12,8 @@ const { version, license } = require("../../package.json");
  * The main hub for interacting with the Parkrun API.
  */
 export class Parkrun {
+	private _tokens: Tokens;
+
 	/**
 	 * Constructor from tokens.
 	 *
@@ -51,7 +47,7 @@ export class Parkrun {
 	 * const client = await Parkrun.authSync("A1234567", "password")
 	 */
 	static async authSync(id, password) {
-		return new Parkrun(await authSync(id, password));
+		return new Parkrun(await this.authSync(id, password));
 	}
 
 	// This TypeDef is for IntelliSense for end-users after using auth with callbacks.
@@ -90,7 +86,7 @@ export class Parkrun {
 	 */
 	static auth(id, password, callback) {
 		//return new Parkrun(await authSync(id, password));
-		authSync(id, password)
+		this.authSync(id, password)
 			.then(tokens => callback(new Parkrun(tokens)))
 			.catch(err => callback(undefined, err));
 	}
@@ -188,7 +184,7 @@ export class Parkrun {
 				params: { limit: 100, ...net._params },
 			})
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return new User(res.data, this);
@@ -201,14 +197,14 @@ export class Parkrun {
 	 * @returns {Promise<Array<EventNewsPost>>} Array of news posts.
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getNews(eventID) {
+	async getNews(eventID: number) {
 		const net = this._getAuthedNet();
 		const res = await net
 			.get(`/v1/news/${eventID}`, {
 				params: { offset: 0, ...net._params },
 			})
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		const output = [];
@@ -243,11 +239,11 @@ export class Parkrun {
 	 * @returns {Promise<Array<RosterVolunteer>>}
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getRoster(eventID) {
+	async getRoster(eventID: number) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${eventID}/rosters`)
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		const output = [];
@@ -270,7 +266,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}`)
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return new Event(res.data.data.Events[0], this);
@@ -289,7 +285,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get("/v1/statistics")
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return this._makeStatsResponse(res);
@@ -307,7 +303,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries/${id}/statistics`)
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return this._makeStatsResponse(res);
@@ -325,7 +321,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}/statistics`)
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return this._makeStatsResponse(res);
@@ -365,7 +361,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries`)
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		const output = [];
@@ -390,7 +386,7 @@ export class Parkrun {
 		});
 
 		return res.map(i => {
-			return new Event(i);
+			return new Event(i, this);
 		});
 	}
 
@@ -404,7 +400,7 @@ export class Parkrun {
 		const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
 		return res.map(i => {
-			return new Event(i);
+			return new Event(i, this);
 		});
 	}
 
@@ -447,19 +443,19 @@ export class Parkrun {
 	 * @returns {Promise<Array<Event>>}
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getAthleteParkruns(athleteID) {
+	async getAthleteParkruns(athleteID: number) {
 		const res = await this._multiGetEventsRaw({
 			params: { athleteID, expandedDetails: false },
 		});
 
 		return res
 			.map(i => {
-				return new Event(i);
+				return new Event(i, this);
 			})
 			.sort((a, b) => a.getName().localeCompare(b.getName()));
 	}
 
-	async _multiGet(url, options, dataName, rangeName) {
+	async _multiGet(url: string, options, dataName, rangeName) {
 		// Create an array for the responses
 		let data = [];
 
@@ -524,13 +520,19 @@ export class Parkrun {
 			.get(url, options)
 			.catch(err => {
 				console.log(err);
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return { data: res.data.data, range: res.data["Content-Range"] };
 	}
 
-	async _multiGetEventsRaw({ url = "/v1/events", params = { expandedDetails: true } }) {
+	async _multiGetEventsRaw({
+		url = "/v1/events",
+		params = { expandedDetails: true },
+	}: {
+		url?: string;
+		params?: { expandedDetails: boolean; athleteID?: number };
+	}) {
 		return await this._multiGet(
 			url,
 			{

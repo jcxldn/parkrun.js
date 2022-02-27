@@ -1,15 +1,15 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 
-import constants from "../constants";
+import { Constants } from "../constants";
 
 //const { version } = require("./parkrun") // doesn't work - possibly because of import loop?
 const { version } = require("../../package.json");
 
 // Get the initial user/pass from the raw auth data
-const authSplit = constants.auth;
+const authSplit = Constants.auth;
 
 const opts = {
-	baseURL: constants.api_base,
+	baseURL: Constants.api_base,
 	auth: {
 		username: authSplit[0],
 		password: authSplit[1],
@@ -20,14 +20,17 @@ const opts = {
 };
 
 // If available on the target platform, set the user agent
-process.env.PLATFORM != "WEB" ? (opts.headers["User-Agent"] = constants.user_agent) : undefined;
+process.env.PLATFORM != "WEB" ? (opts.headers["User-Agent"] = Constants.user_agent) : undefined;
 
 export class Net {
 	static getNonAuthed() {
 		return axios.create(opts);
 	}
 
-	constructor(access_token) {
+	private _params: any;
+	private _axiosAuthed: AxiosInstance;
+
+	constructor(access_token: string) {
 		const auth_opts = Object.assign(opts, {
 			params: {
 				expandedDetails: true,

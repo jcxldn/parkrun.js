@@ -1,9 +1,9 @@
-const Joi = require("@hapi/joi");
+import * as Joi from "joi";
 
 /**
  * Joi Schema for Athlete (Expanded) data.
  */
-module.exports = Joi.object({
+export const AuthSchema = Joi.object({
 	access_token: Joi.string().token().required(),
 	refresh_token: Joi.string().token().required(),
 	token_type: Joi.string().valid("bearer").required(),

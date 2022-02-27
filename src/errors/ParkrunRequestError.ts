@@ -1,5 +1,6 @@
-import URL from "url-parse";
 import { AxiosError } from "axios";
+import * as URL from "url-parse";
+
 import { ParkrunNetError } from "./ParkrunNetError";
 
 /**
