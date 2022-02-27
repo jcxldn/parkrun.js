@@ -22,28 +22,28 @@ const ParkrunUserPassError = require("./errors/ParkrunUserPassError");
 const ParkrunValidationError = require("./errors/ParkrunValidationError");
 
 module.exports = {
-  ClientUser,
-  Country,
-  Event,
-  EventNewsPost,
-  FreedomRunResult,
-  HomeRun,
-  RosterVolunteer,
-  RunResult,
-  User,
-  _common: {
-    AgeGradeEnums,
-    ClubsEnums,
-    refresh,
-    SearchParams,
-    SeriesID
-  },
-  _errors: {
-    ParkrunAuthError,
-    ParkrunDataNotAvailableError,
-    ParkrunNetError,
-    ParkrunRefreshExpiredError,
-    ParkrunUserPassError,
-    ParkrunValidationError
-  }
+	ClientUser,
+	Country,
+	Event,
+	EventNewsPost,
+	FreedomRunResult,
+	HomeRun,
+	RosterVolunteer,
+	RunResult,
+	User,
+	_common: {
+		AgeGradeEnums,
+		ClubsEnums,
+		refresh,
+		SearchParams,
+		SeriesID,
+	},
+	_errors: {
+		ParkrunAuthError,
+		ParkrunDataNotAvailableError,
+		ParkrunNetError,
+		ParkrunRefreshExpiredError,
+		ParkrunUserPassError,
+		ParkrunValidationError,
+	},
 };

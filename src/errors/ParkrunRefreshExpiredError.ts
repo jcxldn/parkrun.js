@@ -1,4 +1,4 @@
-import { ParkrunAuthError } from "./ParkrunAuthError"
+import { ParkrunAuthError } from "./ParkrunAuthError";
 
 /**
  * An error class for when a refresh token has expired.
@@ -6,7 +6,7 @@ import { ParkrunAuthError } from "./ParkrunAuthError"
  * @extends {ParkrunAuthError}
  */
 export class ParkrunRefreshExpiredError extends ParkrunAuthError {
-  constructor(message) {
-    super(message);
-  }
+	constructor(message) {
+		super(message);
+	}
 }

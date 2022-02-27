@@ -8,8 +8,7 @@ import Validate from "../validate";
 import HomeRun from "./HomeRun";
 import RunResult from "./RunResult";
 
-const capitalize = (str) =>
-	str.toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
+const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
 /**
  * A class representing a Parkrun User.
@@ -31,11 +30,7 @@ export class User {
 		this._avatar = data.Avatar;
 		this._clubName = data.ClubName;
 		this._firstName = data.FirstName;
-		this._homeRun = new HomeRun(
-			data.HomeRunID,
-			data.HomeRunLocation,
-			data.HomeRunName
-		);
+		this._homeRun = new HomeRun(data.HomeRunID, data.HomeRunLocation, data.HomeRunName);
 		this._lastName = data.LastName;
 
 		this._core = core;
@@ -134,7 +129,7 @@ export class User {
 			.get("/v1/hasrun/count/Run", {
 				params: { athleteId: this._athleteID, offset: 0 },
 			})
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 		// If the user has no runs, this will return NaN, so in that case just return 0.
@@ -157,7 +152,7 @@ export class User {
 			"ResultsRange"
 		);
 
-		return res.map((i) => {
+		return res.map(i => {
 			return new RunResult(i);
 		});
 		// v2-e1f - [up to] 2x as fast as for loop for this kind of data.
@@ -213,14 +208,11 @@ export class User {
 					offset: 0,
 				},
 			})
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 		const data = res.data.data.Results[0];
-		if (data == undefined)
-			throw new DataNotAvailableError(
-				"getClubs, athlete " + this.getID()
-			);
+		if (data == undefined) throw new DataNotAvailableError("getClubs, athlete " + this.getID());
 		return {
 			ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership],
 			JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],

@@ -6,10 +6,10 @@ import { ParkrunNetError } from "./ParkrunNetError";
  * @extends {ParkrunNetError}
  */
 export class ParkrunDataNotAvailableError extends ParkrunNetError {
-  constructor(reqName) {
-    // Add a prefix to the supplied message
-    const message = `no data available for ${reqName}`;
-    // Call parent constructor
-    super(message);
-  }
+	constructor(reqName) {
+		// Add a prefix to the supplied message
+		const message = `no data available for ${reqName}`;
+		// Call parent constructor
+		super(message);
+	}
 }

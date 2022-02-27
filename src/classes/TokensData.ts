@@ -9,7 +9,6 @@ export class TokensData {
 
 		// Save the epoch of the start time
 		this._date_start = new Date(date_issued).getTime() / 1000;
-		this._date_end =
-			parseInt(this._date_start) + parseInt(auth_res.expires_in);
+		this._date_end = parseInt(this._date_start) + parseInt(auth_res.expires_in);
 	}
 }

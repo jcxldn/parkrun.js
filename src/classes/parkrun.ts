@@ -91,8 +91,8 @@ export class Parkrun {
 	static auth(id, password, callback) {
 		//return new Parkrun(await authSync(id, password));
 		authSync(id, password)
-			.then((tokens) => callback(new Parkrun(tokens)))
-			.catch((err) => callback(undefined, err));
+			.then(tokens => callback(new Parkrun(tokens)))
+			.catch(err => callback(undefined, err));
 	}
 
 	/**
@@ -113,13 +113,7 @@ export class Parkrun {
 	 * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
 	 * @returns {Parkrun}
 	 */
-	static recreateTokens({
-		access,
-		refresh,
-		access_expiry_date,
-		type = "bearer",
-		scope = "app",
-	}) {
+	static recreateTokens({ access, refresh, access_expiry_date, type = "bearer", scope = "app" }) {
 		const tokens = new Tokens(
 			{
 				access_token: access,
@@ -193,7 +187,7 @@ export class Parkrun {
 			.get(`/v1/athletes/${id}`, {
 				params: { limit: 100, ...net._params },
 			})
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -213,7 +207,7 @@ export class Parkrun {
 			.get(`/v1/news/${eventID}`, {
 				params: { offset: 0, ...net._params },
 			})
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -235,7 +229,7 @@ export class Parkrun {
 	async getMe() {
 		const res = await this._getAuthedNet()
 			.get("/v1/me")
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -252,7 +246,7 @@ export class Parkrun {
 	async getRoster(eventID) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${eventID}/rosters`)
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -275,7 +269,7 @@ export class Parkrun {
 	async getEvent(id) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}`)
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -294,7 +288,7 @@ export class Parkrun {
 	async getStats() {
 		const res = await this._getAuthedNet()
 			.get("/v1/statistics")
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -312,7 +306,7 @@ export class Parkrun {
 	async getStatsByCountry(id) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries/${id}/statistics`)
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -330,7 +324,7 @@ export class Parkrun {
 	async getStatsByEvent(id) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}/statistics`)
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -370,7 +364,7 @@ export class Parkrun {
 	async getActiveCountries() {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries`)
-			.catch((err) => {
+			.catch(err => {
 				throw new NetError(err);
 			});
 
@@ -395,7 +389,7 @@ export class Parkrun {
 			url: `/v1/countries/${countryID}/searchEvents`,
 		});
 
-		return res.map((i) => {
+		return res.map(i => {
 			return new Event(i);
 		});
 	}
@@ -409,7 +403,7 @@ export class Parkrun {
 	async getAllEvents() {
 		const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
-		return res.map((i) => {
+		return res.map(i => {
 			return new Event(i);
 		});
 	}
@@ -423,7 +417,7 @@ export class Parkrun {
 	async getAllEventNames() {
 		const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
-		return res.map((i) => {
+		return res.map(i => {
 			return i.EventLongName;
 		});
 	}
@@ -439,7 +433,7 @@ export class Parkrun {
 			url: `/v1/countries/${countryID}/searchEvents`,
 		});
 
-		return res.map((i) => {
+		return res.map(i => {
 			return i.EventLongName;
 		});
 	}
@@ -459,7 +453,7 @@ export class Parkrun {
 		});
 
 		return res
-			.map((i) => {
+			.map(i => {
 				return new Event(i);
 			})
 			.sort((a, b) => a.getName().localeCompare(b.getName()));
@@ -504,10 +498,7 @@ export class Parkrun {
 			parallelRequests.push(
 				this._makeMultiGetRequest(
 					url,
-					Object.assign(
-						{ params: { offset: amountDownloaded } },
-						options
-					)
+					Object.assign({ params: { offset: amountDownloaded } }, options)
 				)
 			);
 
@@ -517,7 +508,7 @@ export class Parkrun {
 		// Run them in promise.all
 		const responsesArr = await Promise.all(parallelRequests);
 
-		responsesArr.forEach((response) => {
+		responsesArr.forEach(response => {
 			console.log(response.range[rangeName][0]);
 			data = data.concat(response.data[dataName]);
 		});
@@ -531,7 +522,7 @@ export class Parkrun {
 	async _makeMultiGetRequest(url, options) {
 		const res = await this._getAuthedNet()
 			.get(url, options)
-			.catch((err) => {
+			.catch(err => {
 				console.log(err);
 				throw new NetError(err);
 			});
@@ -539,10 +530,7 @@ export class Parkrun {
 		return { data: res.data.data, range: res.data["Content-Range"] };
 	}
 
-	async _multiGetEventsRaw({
-		url = "/v1/events",
-		params = { expandedDetails: true },
-	}) {
+	async _multiGetEventsRaw({ url = "/v1/events", params = { expandedDetails: true } }) {
 		return await this._multiGet(
 			url,
 			{

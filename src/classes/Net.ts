@@ -20,9 +20,7 @@ const opts = {
 };
 
 // If available on the target platform, set the user agent
-process.env.PLATFORM != "WEB"
-	? (opts.headers["User-Agent"] = constants.user_agent)
-	: undefined;
+process.env.PLATFORM != "WEB" ? (opts.headers["User-Agent"] = constants.user_agent) : undefined;
 
 export class Net {
 	static getNonAuthed() {
@@ -41,7 +39,7 @@ export class Net {
 		this._params = auth_opts.params;
 		this._axiosAuthed = axios.create(auth_opts);
 		// https://github.com/axios/axios/issues/2190 (axios >=0.18.0)
-		this._axiosAuthed.interceptors.request.use((config) => {
+		this._axiosAuthed.interceptors.request.use(config => {
 			config.params = Object.assign(
 				// Fix for leaking params when making multiple requests
 				Object.assign({}, this._params),
