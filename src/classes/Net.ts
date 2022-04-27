@@ -53,6 +53,13 @@ export class Net {
 	}
 
 	getAuthed() {
-		return this._axiosAuthed;
+		//return this._axiosAuthed;
+		// So that we can still override AxiosInstance params, we're going to use an intersection type
+		type _AxiosInstance = AxiosInstance & { _params: object }
+		return <_AxiosInstance>this._axiosAuthed;
+	}
+
+	getParams() {
+		return this._params
 	}
 }
