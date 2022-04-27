@@ -216,8 +216,10 @@ export class User {
 		if (data == undefined)
 			throw new ParkrunDataNotAvailableError("getClubs, athlete " + this.getID());
 		return {
-			ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership],
-			JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership],
+			// In the TypeScript rewrite, the "null" enum has been changed to 0.
+			// Let's use tertiary operators to return 0 if the input is null, else return the actual value.
+			ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership == null ? 0 : data.parkrunClubMembership],
+			JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership == null ? 0 : data.parkrunClubMembership],
 			VolunteerClub: ClubsEnums._volnFromCount(data.volcount),
 		};
 	}
