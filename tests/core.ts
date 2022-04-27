@@ -1,12 +1,13 @@
-import { Parkrun } from "../src/classes/parkrun";
+import { Parkrun } from "../src/classes";
+import { ParkrunUserPassError, ParkrunAuthError } from "../src/errors";
+
+import { refreshToken } from "../src/common";
 
 const { version, license } = require("../package.json");
 
-const { ParkrunUserPassError, ParkrunAuthError } = Parkrun.ClassList._errors;
+import { should, assert, expect } from "chai";
 
-const { refresh } = Parkrun.ClassList._common;
-
-chai.should();
+should();
 describe("Core", () => {
 	describe("Login (live creds)", () => {
 		it("Promise-Based Login (.then)", done => {
@@ -36,8 +37,8 @@ describe("Core", () => {
 		Parkrun.authSync("A124", "fakePassword")
 			.then(() => done(new Error()))
 			.catch(err => {
-				chai.assert(err instanceof ParkrunUserPassError);
-				chai.expect(err.message).to.eql("invalid username or password!");
+				assert(err instanceof ParkrunUserPassError);
+				expect(err.message).to.eql("invalid username or password!");
 				done();
 			});
 	});
@@ -45,8 +46,8 @@ describe("Core", () => {
 	it("Login [Callback] (invalid account user/pass)", done => {
 		Parkrun.auth("A124", "fakePassword", (client, err) => {
 			if (err) {
-				chai.assert(err instanceof ParkrunUserPassError);
-				chai.expect(err.message).to.eql("invalid username or password!");
+				assert(err instanceof ParkrunUserPassError);
+				expect(err.message).to.eql("invalid username or password!");
 				done();
 			} else {
 				done(new Error());
@@ -55,11 +56,11 @@ describe("Core", () => {
 	});
 
 	it("Refresh (invalid user token)", done => {
-		refresh("invalid")
+		refreshToken("invalid")
 			.then(() => done(new Error()))
 			.catch(err => {
-				chai.assert(err instanceof ParkrunAuthError);
-				chai.expect(err.message).to.eql("invalid refresh token");
+				assert(err instanceof ParkrunAuthError);
+				expect(err.message).to.eql("invalid refresh token");
 				done();
 			});
 	});
@@ -75,8 +76,8 @@ describe("Core", () => {
 
 	it("Refresh Token Authentication (.then, invalid token)", done => {
 		Parkrun.authRefresh({ token: "invalid" }).catch(err => {
-			chai.assert(err instanceof ParkrunAuthError);
-			chai.expect(err.message).to.eql("invalid refresh token");
+			assert(err instanceof ParkrunAuthError);
+			expect(err.message).to.eql("invalid refresh token");
 			done();
 		});
 	});
@@ -85,7 +86,7 @@ describe("Core", () => {
 		Parkrun.authSync(process.env.ID, process.env.PASS).then(client => {
 			Parkrun.authRefresh({ token: client.getTokens().getRefreshToken() })
 				.then(c => {
-					chai.assert(c instanceof Parkrun);
+					assert(c instanceof Parkrun);
 
 					// Sanity check - make sure the token and response instance works
 					c.getMe()
@@ -100,12 +101,12 @@ describe("Core", () => {
 
 	describe("Static variables", () => {
 		it("[main].version", done => {
-			chai.expect(Parkrun.version).to.eql(version);
+			expect(Parkrun.version).to.eql(version);
 			done();
 		});
 
 		it("[main].license", done => {
-			chai.expect(Parkrun.license).to.eql(license);
+			expect(Parkrun.license).to.eql(license);
 			done();
 		});
 	});

@@ -1,75 +1,67 @@
-const Parkrun = require("../src/classes/parkrun");
+import { ParkrunDataNotAvailableError, ParkrunNetError, ParkrunAuthError, ParkrunUserPassError, ParkrunRefreshExpiredError } from "../src/errors";
+import { should, assert, expect } from "chai";
 
-
-const {
-	ParkrunDataNotAvailableError,
-	ParkrunNetError,
-	ParkrunAuthError,
-	ParkrunUserPassError,
-	ParkrunRefreshExpiredError,
-} = Parkrun.ClassList._errors;
-
-chai.should();
+should();
 describe("Errors", () => {
 	it("DataNotAvailableError", done => {
 		const err = new ParkrunDataNotAvailableError("TEST");
-		chai.expect(err.message).to.eql("no data available for TEST");
-		chai.expect(err.name).to.eql(ParkrunDataNotAvailableError.name);
+		expect(err.message).to.eql("no data available for TEST");
+		expect(err.name).to.eql(ParkrunDataNotAvailableError.name);
 		done();
 	});
 
 	it("NetError (with res)", done => {
-		const err = new ParkrunNetError({
+		const err = new ParkrunNetError(JSON.stringify({
 			response: {
 				status: 999,
 				statusText: "testStatus",
 				config: { method: "test", url: "memes://api.fake.parkrun.com/v1/memes" },
 			},
-		});
-		chai.expect(err.message).to.eql("HTTP Error 999 (testStatus) on TEST request to '/v1/memes'");
-		chai.expect(err.name).to.eql(ParkrunNetError.name);
+		}));
+		expect(err.message).to.eql("HTTP Error 999 (testStatus) on TEST request to '/v1/memes'");
+		expect(err.name).to.eql(ParkrunNetError.name);
 		done();
 	});
 
 	it("NetError (no data)", done => {
-		const err = new ParkrunNetError();
-		chai.expect(err.message).to.eql("");
-		chai.expect(err.name).to.eql(ParkrunNetError.name);
+		const err = new ParkrunNetError("generic message");
+		expect(err.message).to.eql("");
+		expect(err.name).to.eql(ParkrunNetError.name);
 		done();
 	});
 
 	it("AuthError", done => {
 		const err = new ParkrunAuthError("auth error test");
-		chai.expect(err.message).to.eql("auth error test");
-		chai.expect(err.name).to.eql(ParkrunAuthError.name);
+		expect(err.message).to.eql("auth error test");
+		expect(err.name).to.eql(ParkrunAuthError.name);
 
-		chai.assert(err instanceof ParkrunAuthError);
-		chai.assert(err instanceof ParkrunNetError);
-		chai.assert(err instanceof Error);
+		assert(err instanceof ParkrunAuthError);
+		assert(err instanceof ParkrunNetError);
+		assert(err instanceof Error);
 
 		done();
 	});
 
 	it("UserPassError", done => {
 		const err = new ParkrunUserPassError("UserPass error test");
-		chai.expect(err.message).to.eql("UserPass error test");
-		chai.expect(err.name).to.eql(ParkrunUserPassError.name);
+		expect(err.message).to.eql("UserPass error test");
+		expect(err.name).to.eql(ParkrunUserPassError.name);
 
-		chai.assert(err instanceof ParkrunUserPassError);
-		chai.assert(err instanceof ParkrunNetError);
-		chai.assert(err instanceof Error);
+		assert(err instanceof ParkrunUserPassError);
+		assert(err instanceof ParkrunNetError);
+		assert(err instanceof Error);
 
 		done();
 	});
 
 	it("RefreshExpiredError", done => {
 		const err = new ParkrunRefreshExpiredError("RefreshExpired error test");
-		chai.expect(err.message).to.eql("RefreshExpired error test");
-		chai.expect(err.name).to.eql(ParkrunRefreshExpiredError.name);
+		expect(err.message).to.eql("RefreshExpired error test");
+		expect(err.name).to.eql(ParkrunRefreshExpiredError.name);
 
-		chai.assert(err instanceof ParkrunRefreshExpiredError);
-		chai.assert(err instanceof ParkrunNetError);
-		chai.assert(err instanceof Error);
+		assert(err instanceof ParkrunRefreshExpiredError);
+		assert(err instanceof ParkrunNetError);
+		assert(err instanceof Error);
 
 		done();
 	});
