@@ -1,9 +1,8 @@
 // TODO: Rename to 'Client'
 
 import { ParkrunNetError } from "../errors";
-import { Event } from "./Event";
-import { Net } from "./Net";
-import { Tokens } from "./Tokens";
+
+import { ClientUser, Country, Event, EventNewsPost, Net, RosterVolunteer, Tokens, User} from "./"
 
 // Import package.json for version and license static variables
 const { version, license } = require("../../package.json");
@@ -12,6 +11,20 @@ const { version, license } = require("../../package.json");
  * The main hub for interacting with the Parkrun API.
  */
 export class Parkrun {
+	/**
+	 * The Parkrun.JS version.
+	 *
+	 * @returns {String} Package version.
+	 */
+	static version: string = version;
+
+	/**
+	 * The Parkrun.JS license, as state by NPM.
+	 * 
+	 * @returns {String} License type.
+	 */
+	static license = license;
+	
 	private _tokens: Tokens;
 
 	/**
@@ -145,7 +158,7 @@ export class Parkrun {
 			refresh_token: token,
 			token_type: type,
 			scope,
-		});
+		}, null);
 
 		// use this method to test the validity of the refresh token provided.
 		// it will automatically reject if needed.
@@ -163,7 +176,7 @@ export class Parkrun {
 		const authed = net.getAuthed();
 
 		// Add ._params object to the axios class from the net class.
-		authed._params = net._params;
+		authed._params = net.getParams();
 
 		// Return the newly-customized Axios [Static] instance.
 		return authed;
@@ -226,7 +239,7 @@ export class Parkrun {
 		const res = await this._getAuthedNet()
 			.get("/v1/me")
 			.catch(err => {
-				throw new NetError(err);
+				throw new ParkrunNetError(err);
 			});
 
 		return new ClientUser(res.data, this);
@@ -480,7 +493,7 @@ export class Parkrun {
 
 		let amountDownloaded = Number.parseInt(range.last);
 		const amountTotal = Number.parseInt(range.max);
-		const amountRemaining = Number.parseInt(amountTotal - amountDownloaded);
+		const amountRemaining = amountTotal - amountDownloaded;
 
 		const amountOfPullsRequired = Math.ceil(amountRemaining / 100);
 
@@ -543,19 +556,3 @@ export class Parkrun {
 		);
 	}
 }
-
-// /**
-//  * The Parkrun.JS version.
-//  *
-//  * @returns {String} Package version.
-//  */
-// Parkrun.version = version;
-
-// /**
-//  * The Parkrun.JS license, as stated by NPM.
-//  *
-//  * @returns {String} License type.
-//  */
-// Parkrun.license = license;
-
-// Parkrun.ClassList = ClassList;
