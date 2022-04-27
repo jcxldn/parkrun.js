@@ -8,7 +8,7 @@ const SeriesDayAssert = data => {
 
 should();
 describe("Live", () => {
-	let client = null;
+	let client: Parkrun;
 	before(async () => {
 		client = await Parkrun.authSync(process.env.ID, process.env.PASS);
 		const me = await client.getMe();
@@ -134,8 +134,7 @@ describe("Live", () => {
 			try {
 				athlete.getSex();
 			} catch (err) {
-				chai
-					.expect(err.message)
+				expect(err.message)
 					.to.eql(
 						"no data available for getSex() - removed upstream as of Febuary 2020, see issue #33."
 					);
