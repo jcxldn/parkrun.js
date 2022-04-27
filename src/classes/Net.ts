@@ -24,14 +24,16 @@ process.env.PLATFORM != "WEB" ? (opts.headers["User-Agent"] = Constants.user_age
 
 export class Net {
 	static getNonAuthed() {
-		return axios.create(opts);
+		// Prevent axios from writing back to opts object.
+		return axios.create(Object.assign({}, opts));
 	}
 
 	private _params: any;
 	private _axiosAuthed: AxiosInstance;
 
 	constructor(access_token: string) {
-		const auth_opts = Object.assign(opts, {
+		// inner Object.assign -> Prevent axios from writing back to opts object
+		const auth_opts = Object.assign(Object.assign({}, opts), {
 			params: {
 				expandedDetails: true,
 				access_token,
