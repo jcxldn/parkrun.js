@@ -1,12 +1,13 @@
-import { Net } from "./classes/Net";
-import { Tokens } from "./classes/Tokens";
+import { Net, Tokens } from "./classes"
+import { SearchParams } from "./common";
 import { ParkrunAuthError, ParkrunUserPassError } from "./errors";
 import { AuthSchema } from "./schemas/AuthSchema";
 import { validate } from "./validate";
 
+
 const net = Net.getNonAuthed();
 
-export const auth = async (id: number, password: string) => {
+export const auth = async (id: string, password: string) => {
 	// ID checking here
 
 	const params = new SearchParams([

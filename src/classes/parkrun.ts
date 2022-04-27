@@ -4,6 +4,8 @@ import { ParkrunNetError } from "../errors";
 
 import { ClientUser, Country, Event, EventNewsPost, Net, RosterVolunteer, Tokens, User} from "./"
 
+import { auth } from "../auth"
+
 // Import package.json for version and license static variables
 const { version, license } = require("../../package.json");
 
@@ -60,7 +62,7 @@ export class Parkrun {
 	 * const client = await Parkrun.authSync("A1234567", "password")
 	 */
 	static async authSync(id, password) {
-		return new Parkrun(await this.authSync(id, password));
+		return new Parkrun(await auth(id, password));
 	}
 
 	// This TypeDef is for IntelliSense for end-users after using auth with callbacks.
