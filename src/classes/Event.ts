@@ -1,5 +1,6 @@
 import { ParkrunDataNotAvailableError } from "../errors";
 import { Parkrun } from "./parkrun";
+import { SeriesID } from "../common";
 
 /**
  *  A class representing a Parkrun event.

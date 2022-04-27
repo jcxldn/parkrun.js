@@ -1,10 +1,11 @@
-import { Net } from "../classes/Net";
-import { TokensData } from "../classes/TokensData";
-import { ParkrunAuthError, ParkrunRefreshExpiredError } from "../errors";
-
-const net = Net.getNonAuthed();
+import { Net, TokensData } from "../classes"
+import { SearchParams } from "./SearchParams";
+import { ParkrunAuthError, ParkrunNetError, ParkrunRefreshExpiredError } from "../errors";
 
 export const refreshToken = async (token: string) => {
+	// moved from outside of func (err was: "TypeError: Cannot read properties of undefined (reading 'getNonAuthed')")
+	const net = Net.getNonAuthed();
+
 	const params = new SearchParams([
 		["refresh_token", token],
 		["grant_type", "refresh_token"],
@@ -17,9 +18,7 @@ export const refreshToken = async (token: string) => {
 
 		// Check for no response data
 		if (!res.data) {
-			const err = new Error("server did not return any response data!");
-			err.wasPkrun = true;
-			throw err;
+			throw new ParkrunNetError("server did not return any response data!")
 		}
 
 		// Token refresh was successful, now we return a new Tokens class object.
@@ -29,7 +28,7 @@ export const refreshToken = async (token: string) => {
 	} catch (err) {
 		// Skip the error process if we defined one as such in the try block.
 		// See 'no response data' error.
-		if (err.wasPkrun) throw err;
+		if (err instanceof ParkrunNetError) throw err;
 
 		if (err.response.status == 400 && err.response.data.error == "invalid_grant") {
 			// At this point, we either have an expired or invalid refresh token.

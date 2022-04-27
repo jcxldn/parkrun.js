@@ -1,17 +1,7 @@
-import { ParkrunAuthError } from "./ParkrunAuthError";
-import { ParkrunDataNotAvailableError } from "./ParkrunDataNotAvailableError";
-import { ParkrunNetError } from "./ParkrunNetError";
-import { ParkrunRefreshExpiredError } from "./ParkrunRefreshExpiredError";
-import { ParkrunRequestError } from "./ParkrunRequestError";
-import { ParkrunUserPassError } from "./ParkrunUserPassError";
-import { ParkrunValidationError } from "./ParkrunValidationError";
-
-export {
-	ParkrunAuthError,
-	ParkrunDataNotAvailableError,
-	ParkrunNetError,
-	ParkrunRefreshExpiredError,
-	ParkrunRequestError,
-	ParkrunUserPassError,
-	ParkrunValidationError,
-};
+export * from "./ParkrunAuthError";
+export * from "./ParkrunDataNotAvailableError";
+export * from "./ParkrunNetError";
+export * from "./ParkrunRefreshExpiredError";
+export * from "./ParkrunRequestError";
+export * from "./ParkrunUserPassError";
+export * from "./ParkrunValidationError";

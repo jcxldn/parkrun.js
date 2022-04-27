@@ -1,10 +1,8 @@
-import axios from "axios";
-
 import { ParkrunDataNotAvailableError, ParkrunNetError } from "../errors";
 import { AthleteExpandedSchema } from "../schemas/AthleteExpanded";
 import { validate } from "../validate";
-import { HomeRun } from "./HomeRun";
-import { Parkrun } from "./parkrun";
+import { HomeRun, Parkrun, RunResult } from "./"
+import ClubsEnums from "../common/ClubsEnums";
 
 const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
@@ -28,7 +26,7 @@ export class User {
 	 *
 	 * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
 	 */
-	constructor(res: any, private readonly _core: Parkrun) {
+	constructor(res: any, protected readonly _core: Parkrun) {
 		const data = validate(res, AthleteExpandedSchema).data.Athletes[0];
 
 		this._athleteID = Number.parseInt(data.AthleteID);
