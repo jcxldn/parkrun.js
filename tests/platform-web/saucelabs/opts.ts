@@ -19,18 +19,18 @@ const server_url = "https://ondemand.eu-central-1.saucelabs.com/wd/hub";
 export const getBrowsers = () => {
 	return [
 		// ----- CHROME -----
-		_makeBrowserItem(), // Chrome latest, Windows 10 - defaults
-		_makeBrowserItem(undefined, "75.0"), // released June '19
+		_makeBrowserItem({}), // Chrome latest, Windows 10 - defaults
+		_makeBrowserItem({ version: "75.0" }), // released June '19
 
 		// ----- FIREFOX -----
-		_makeBrowserItem("firefox"), // Latest
-		_makeBrowserItem("firefox", "69.0"), // released Sept '19
+		_makeBrowserItem({ platform: "firefox" }), // Latest
+		_makeBrowserItem({ platform: "firefox", version: "69.0" }), // released Sept '19
 
 		// Firefox 68 [esr] is not compatible - error during auth flow (12/2)
 
 		// ----- EDGE -----
-		_makeBrowserItem("MicrosoftEdge"), // Latest
-		_makeBrowserItem("MicrosoftEdge", "79.0"), // Edge Chromium 1
+		_makeBrowserItem({ platform: "MicrosoftEdge" }), // Latest
+		_makeBrowserItem({platform: "MicrosoftEdge", version: "79.0"}), // Edge Chromium 1
 		// Edge 1X.X (before chrome) is not compatible. (10/4)
 
 		// ----- IE ------
@@ -47,13 +47,18 @@ export const getBrowsers = () => {
 	];
 };
 
-const _makeBrowserItem = (browser, version, platform) => {
+
+const _makeBrowserItem = ({
+	browser = "chrome",
+	version = "latest",
+	platform = "Windows 10"
+}) => {
 	return {
-		browserName: browser || "chrome",
-		browserVersion: version || "latest",
-		platformName: platform || "Windows 10",
-	};
-};
+		browserName: browser,
+		browserVersion: version,
+		platformName: platform
+	}
+}
 
 export const makeDriver = _caps => {
 	const caps = Object.assign({}, _caps, constant_caps);
