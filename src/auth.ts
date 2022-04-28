@@ -1,6 +1,6 @@
 import { Net, Tokens } from "./classes"
 import { SearchParams } from "./common";
-import { ParkrunAuthError, ParkrunUserPassError } from "./errors";
+import { ParkrunAuthError, ParkrunUserPassError, ParkrunValidationError } from "./errors";
 import { AuthSchema } from "./schemas/AuthSchema";
 import { validate } from "./validate";
 
@@ -36,7 +36,7 @@ export const auth = async (id: string, password: string) => {
 		}
 	} catch (error) {
 		// Validation errors
-		if (error.name == "ParkrunValidationError") throw error;
+		if (error instanceof ParkrunValidationError) throw error;
 
 		// Response errors
 		if (error.response != undefined) {
