@@ -20,10 +20,10 @@ describe("Errors", () => {
 				response: {
 					status: 999,
 					statusText: "testStatus",
-					config: { method: "test", url: "memes://api.fake.parkrun.com/v1/memes" },
+					config: { method: "test", url: "https://api.invalid/v1/invalid" },
 				},
 			});
-		expect(err.message).to.eql("HTTP Error 999 (testStatus) on TEST request to '/v1/memes'");
+		expect(err.message).to.eql("HTTP Error 999 (testStatus) on TEST request to '/v1/invalid'");
 		assert(err instanceof ParkrunNetError);
 		assert(err instanceof Error);
 		done();
