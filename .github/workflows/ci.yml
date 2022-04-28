@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         # Add 10.12.0 test (mocha 8's min spec)
-        node-version: ["10.12.0", "10", "12", "14", "15"]
+        node-version: ["12", "14", "15", "16"]
     steps:
     - uses: actions/checkout@v2
     
@@ -46,12 +46,12 @@ jobs:
       # Mocked tests don't require authentication
       run: npm run test:run:mock
     
-    - name: Report mocked-only coverage to codecov (node 14 only)
-      if: matrix.node-version == '14'
+    - name: Report mocked-only coverage to codecov (node 16 only)
+      if: matrix.node-version == '16'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
     
-    - name: Report mocked-only coverage to github (node 14 only)
-      if: matrix.node-version == '14'
+    - name: Report mocked-only coverage to github (node 16 only)
+      if: matrix.node-version == '16'
       run: npx nyc report --reporter=text | node .github/ci/mock-reporter.js
       # GitHub reporter needs authentication
       env:
@@ -67,7 +67,9 @@ jobs:
     
     - uses: actions/setup-node@v1
       with:
-        node-version: "14"
+        node-version: "16"
+    
+    - run: npm install -g npm@latest
     
     - run: npm ci --ignore-scripts
     
