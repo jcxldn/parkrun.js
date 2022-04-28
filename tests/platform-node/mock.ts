@@ -1,8 +1,9 @@
-import { merge } from "lodash";
 import nock from "nock";
+import { merge } from "lodash";
+import { should, assert, expect } from "chai";
 
-import { Parkrun } from "../../src/classes/parkrun";
-import { refreshToken } from "../../src/common/refresh";
+import { Parkrun } from "../../src/classes";
+import { refreshToken } from "../../src/common";
 import {
 	ParkrunAuthError, ParkrunDataNotAvailableError, ParkrunNetError,
 	ParkrunRefreshExpiredError, ParkrunUserPassError, ParkrunValidationError
@@ -43,7 +44,7 @@ const userResponse = {
 	},
 };
 
-chai.should();
+should();
 describe("Mock", () => {
 	describe("Authentication", () => {
 		it("HTTP 200 OK, no response data.", done => {
@@ -144,57 +145,57 @@ describe("Mock", () => {
 			});
 			it(`getEventNumber()`, done => {
 				const data = roster.getEventNumber();
-				chai.expect(data).to.be.a("number");
-				chai.expect(data).to.eql(0);
+				expect(data).to.be.a("number");
+				expect(data).to.eql(0);
 				done();
 			});
 
 			it(`getEventDate()`, done => {
 				const data = roster.getEventDate();
-				chai.expect(data).to.be.a("date");
-				chai.expect(data).to.eql(date);
+				expect(data).to.be.a("date");
+				expect(data).to.eql(date);
 				done();
 			});
 
 			it(`getVolunteerID()`, done => {
 				const data = roster.getVolunteerID();
-				chai.expect(data).to.be.a("number");
-				chai.expect(data).to.eql(1);
+				expect(data).to.be.a("number");
+				expect(data).to.eql(1);
 				done();
 			});
 
 			it(`getTaskID()`, done => {
 				const data = roster.getTaskID();
-				chai.expect(data).to.be.a("number");
-				chai.expect(data).to.eql(2);
+				expect(data).to.be.a("number");
+				expect(data).to.eql(2);
 				done();
 			});
 
 			it(`getRosterID()`, done => {
 				const data = roster.getRosterID();
-				chai.expect(data).to.be.a("number");
-				chai.expect(data).to.eql(3);
+				expect(data).to.be.a("number");
+				expect(data).to.eql(3);
 				done();
 			});
 
 			it(`getTaskName()`, done => {
 				const data = roster.getTaskName();
-				chai.expect(data).to.be.a("string");
-				chai.expect(data).to.eql("Example Task");
+				expect(data).to.be.a("string");
+				expect(data).to.eql("Example Task");
 				done();
 			});
 
 			it(`getVolunteerFirstName()`, done => {
 				const data = roster.getVolunteerFirstName();
-				chai.expect(data).to.be.a("string");
-				chai.expect(data).to.eql("Example");
+				expect(data).to.be.a("string");
+				expect(data).to.eql("Example");
 				done();
 			});
 
 			it(`getVolunteerLastName()`, done => {
 				const data = roster.getVolunteerLastName();
-				chai.expect(data).to.be.a("string");
-				chai.expect(data).to.eql("Volunteer");
+				expect(data).to.be.a("string");
+				expect(data).to.eql("Volunteer");
 				done();
 			});
 		});
@@ -346,8 +347,8 @@ describe("Mock", () => {
 					},
 				});
 			athlete.createFreedomRun("0", "2020", "01", "01", "00:30:00").then(id => {
-				chai.expect(id).to.be.a("number");
-				chai.expect(id).to.eql(1);
+				expect(id).to.be.a("number");
+				expect(id).to.eql(1);
 				done();
 			});
 		});
@@ -385,21 +386,21 @@ describe("Mock", () => {
 
 		it("getClubID()", done => {
 			const data = athlete.getClubID();
-			chai.expect(data).to.be.a("number");
-			chai.expect(data).to.eql(3);
+			expect(data).to.be.a("number");
+			expect(data).to.eql(3);
 			done();
 		});
 
 		it("getDOB()", done => {
 			const data = athlete.getDOB();
-			chai.expect(data).to.be.a("date");
-			chai.expect(data).to.eql(DOB);
+			expect(data).to.be.a("date");
+			expect(data).to.eql(DOB);
 			done();
 		});
 
 		it("getMobileNumber() (Available)", done => {
 			const data = athlete.getMobileNumber();
-			chai.expect(data).to.eql("01632960123");
+			expect(data).to.eql("01632960123");
 			done();
 		});
 
@@ -420,43 +421,43 @@ describe("Mock", () => {
 
 		it("getCommunicationAllowed()", done => {
 			const data = athlete.getCommunicationAllowed();
-			chai.expect(data).to.be.a("boolean");
-			chai.assert(data); // Assert true, other ways don't work at the moment. (May '20)
+			expect(data).to.be.a("boolean");
+			assert(data); // Assert true, other ways don't work at the moment. (May '20)
 			done();
 		});
 
 		it("getPostcode()", done => {
 			const data = athlete.getPostcode();
-			chai.expect(data).to.be.a("string");
-			chai.expect(data).to.eql("90210");
+			expect(data).to.be.a("string");
+			expect(data).to.eql("90210");
 			done();
 		});
 
 		it("getPreSignupExerciseFrequency()", done => {
 			const data = athlete.getPreSignupExerciseFrequency();
-			chai.expect(data).to.be.a("number");
-			chai.expect(data).to.eql(4);
+			expect(data).to.be.a("number");
+			expect(data).to.eql(4);
 			done();
 		});
 
 		it("getIsWheelchairUser()", done => {
 			const data = athlete.getIsWheelchairUser();
-			chai.expect(data).to.be.a("boolean");
-			chai.assert(data); // Assert true, other ways don't work at the moment. (May '20)
+			expect(data).to.be.a("boolean");
+			assert(data); // Assert true, other ways don't work at the moment. (May '20)
 			done();
 		});
 
 		it("getEmail()", done => {
 			const data = athlete.getEmail();
-			chai.expect(data).to.be.a("string");
-			chai.expect(data).to.eql("user@mail.server.tld");
+			expect(data).to.be.a("string");
+			expect(data).to.eql("user@mail.server.tld");
 			done();
 		});
 
 		it("getSex()", done => {
 			const data = athlete.getSex();
-			chai.expect(data).to.be.a("string");
-			chai.expect(data).to.eql("M");
+			expect(data).to.be.a("string");
+			expect(data).to.eql("M");
 			done();
 		});
 	});
