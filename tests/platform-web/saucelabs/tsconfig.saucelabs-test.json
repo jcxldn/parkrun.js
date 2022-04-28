@@ -1,0 +1,9 @@
+{
+    "extends": "../../../tsconfig.json",
+    "compilerOptions": {
+        // cannot use import statement outside a module
+        "module": "CommonJS",
+        // serve-handler in runner.ts requires this
+        "allowSyntheticDefaultImports": true
+    }
+}
