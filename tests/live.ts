@@ -1,5 +1,4 @@
-import { Parkrun, RunResult, FreedomRunResult, Country, Event } from "../src/classes"
-import { ParkrunDataNotAvailableError } from "../src/errors";
+import { Parkrun, RunResult, FreedomRunResult, Country, Event, ParkrunDataNotAvailableError } from "../src"
 import { should, assert, expect } from "chai";
 
 const SeriesDayAssert = data => {

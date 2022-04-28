@@ -1,4 +1,4 @@
-import { ParkrunDataNotAvailableError, ParkrunNetError, ParkrunAuthError, ParkrunUserPassError, ParkrunRefreshExpiredError } from "../src/errors";
+import { ParkrunDataNotAvailableError, ParkrunNetError, ParkrunAuthError, ParkrunUserPassError, ParkrunRefreshExpiredError } from "../src";
 import { should, assert, expect } from "chai";
 import { AxiosError } from "axios";
 

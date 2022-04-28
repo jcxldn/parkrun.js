@@ -1,7 +1,5 @@
-import { Parkrun } from "../src/classes"
-import { AGEGRADE, calculateEnum, getDisplayName } from "../src/common/AgeGradeEnums"
-import { CLUBS, VOLUNTEER_CLUBS, JUNIOR_CLUBS, _volnFromCount } from "../src/common/ClubsEnums"
-import { SeriesID } from "../src/common";
+import { AGEGRADE, calculateEnum, getDisplayName, CLUBS, VOLUNTEER_CLUBS, JUNIOR_CLUBS, _volnFromCount, SeriesID } from "../src";
+
 import { should, expect } from "chai";
 
 

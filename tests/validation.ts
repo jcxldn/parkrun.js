@@ -1,5 +1,4 @@
-import { ClientUser, User } from "../src/classes"
-import { ParkrunValidationError } from "../src/errors";
+import { ClientUser, User, ParkrunValidationError } from "../src"
 import { should, expect } from "chai";
 
 
