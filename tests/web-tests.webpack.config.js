@@ -8,7 +8,7 @@ module.exports = {
 	entry: glob.sync("./tests/*.ts"),
 	output: {
 		filename: "web-tests.tmp.js",
-		path: path.resolve(__dirname, "tests/platform-web"),
+		path: path.resolve(__dirname, "platform-web"),
 		library: "ParkrunTests",
 		libraryTarget: "umd",
 	},
