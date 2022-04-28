@@ -1,4 +1,4 @@
-import { Parkrun, RunResult, FreedomRunResult, Country } from "../src/classes"
+import { Parkrun, RunResult, FreedomRunResult, Country, Event } from "../src/classes"
 import { ParkrunDataNotAvailableError } from "../src/errors";
 import { should, assert, expect } from "chai";
 
