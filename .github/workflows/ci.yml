@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # Add 10.12.0 test (mocha 8's min spec)
+        # Mocha 8's min spec is 10.12, but 10.x is no longer supported by npm.
         node-version: ["12", "14", "15", "16"]
     steps:
     - uses: actions/checkout@v2
@@ -27,12 +27,12 @@ jobs:
         ID: ${{ secrets.CI_PARKRUN_ID }}
         PASS: ${{ secrets.CI_PARKRUN_PASS }}
     
-    - name: Report live-only coverage to codecov (node 14 only)
-      if: matrix.node-version == '14'
+    - name: Report live-only coverage to codecov (node 16only)
+      if: matrix.node-version == '16'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
    
-    - name: Report live-only coverage to github (node 14 only)
-      if: matrix.node-version == '14'
+    - name: Report live-only coverage to github (node 16 only)
+      if: matrix.node-version == '16'
       run: npx nyc report --reporter=text | node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
