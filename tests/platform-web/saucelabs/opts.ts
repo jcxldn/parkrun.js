@@ -23,14 +23,14 @@ export const getBrowsers = () => {
 		_makeBrowserItem({ version: "75.0" }), // released June '19
 
 		// ----- FIREFOX -----
-		_makeBrowserItem({ platform: "firefox" }), // Latest
-		_makeBrowserItem({ platform: "firefox", version: "69.0" }), // released Sept '19
+		_makeBrowserItem({ browser: "firefox" }), // Latest
+		_makeBrowserItem({ browser: "firefox", version: "69.0" }), // released Sept '19
 
 		// Firefox 68 [esr] is not compatible - error during auth flow (12/2)
 
 		// ----- EDGE -----
-		_makeBrowserItem({ platform: "MicrosoftEdge" }), // Latest
-		_makeBrowserItem({platform: "MicrosoftEdge", version: "79.0"}), // Edge Chromium 1
+		_makeBrowserItem({ browser: "MicrosoftEdge" }), // Latest
+		_makeBrowserItem({ browser: "MicrosoftEdge", version: "79.0"}), // Edge Chromium 1
 		// Edge 1X.X (before chrome) is not compatible. (10/4)
 
 		// ----- IE ------
