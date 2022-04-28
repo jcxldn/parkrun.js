@@ -55,7 +55,6 @@
     "@types/joi": "^17.2.3",
     "@types/lodash": "^4.14.179",
     "@types/mocha": "^9.1.0",
-    "@types/nock": "^11.1.0",
     "@types/serve-handler": "^6.1.1",
     "async": "^3.2.3",
     "babel-loader": "^8.2.2",
