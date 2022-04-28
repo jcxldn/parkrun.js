@@ -25,7 +25,7 @@ module.exports = {
 				use: {
 					loader: "ts-loader",
 					options: {
-						configFile: "tsconfig.webpack-test.json",
+						configFile: "tests/tsconfig.webpack-test.json",
 					},
 				},
 				exclude: [/node_modules/],

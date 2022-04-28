@@ -7,9 +7,9 @@
   "scripts": {
     "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
     "test": "node tests/platform-all/pre_ensure_env.ts && npm run test:run && npm run test:run:mock && nyc report",
-    "test:run": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc --silent mocha --timeout 20000 -r ts-node/register tests/*.ts --exit",
-    "test:run:mock": "cross-env TS_NODE_PROJECT='./tsconfig.test.json' nyc --silent --no-clean mocha --timeout 20000 --require ts-node/register tests/platform-node/*.ts --exit",
-    "test:web:build": "node tests/platform-all/pre_ensure_env.ts && webpack --config web-tests.webpack.config.js --mode production",
+    "test:run": "cross-env TS_NODE_PROJECT='./tests/tsconfig.test.json' nyc --silent mocha --timeout 20000 -r ts-node/register tests/*.ts --exit",
+    "test:run:mock": "cross-env TS_NODE_PROJECT='./tests/tsconfig.test.json' nyc --silent --no-clean mocha --timeout 20000 --require ts-node/register tests/platform-node/*.ts --exit",
+    "test:web:build": "node tests/platform-all/pre_ensure_env.ts && webpack --config tests/web-tests.webpack.config.js --mode production",
     "test:web:saucelabs": "run-s build test:web:build test:web:saucelabs:install test:web:saucelabs:run",
     "test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
     "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
