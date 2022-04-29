@@ -1,6 +1,5 @@
-import { ClientUser, User, ParkrunValidationError } from "../src"
+import { ClientUser, User, ParkrunValidationError } from "../src";
 import { should, expect } from "chai";
-
 
 should();
 describe("Validation", () => {
@@ -8,8 +7,8 @@ describe("Validation", () => {
 		try {
 			new ClientUser({}, null);
 		} catch (err) {
-			expect(err instanceof ParkrunValidationError)
-			expect(err instanceof Error)
+			expect(err instanceof ParkrunValidationError);
+			expect(err instanceof Error);
 			done();
 		}
 	});
@@ -18,8 +17,8 @@ describe("Validation", () => {
 		try {
 			new User({}, null);
 		} catch (err) {
-			expect(err instanceof ParkrunValidationError)
-			expect(err instanceof Error)
+			expect(err instanceof ParkrunValidationError);
+			expect(err instanceof Error);
 			done();
 		}
 	});

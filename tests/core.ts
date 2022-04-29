@@ -1,4 +1,4 @@
-import { Parkrun, ParkrunUserPassError, ParkrunAuthError, refreshToken } from "../src"
+import { Parkrun, ParkrunUserPassError, ParkrunAuthError, refreshToken } from "../src";
 
 const { version, license } = require("../package.json");
 

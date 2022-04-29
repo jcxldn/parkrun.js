@@ -2,9 +2,9 @@
 
 import { ParkrunNetError } from "../errors";
 
-import { ClientUser, Country, Event, EventNewsPost, Net, RosterVolunteer, Tokens, User} from "./"
+import { ClientUser, Country, Event, EventNewsPost, Net, RosterVolunteer, Tokens, User } from "./";
 
-import { auth } from "../auth"
+import { auth } from "../auth";
 
 // Import package.json for version and license static variables
 const { version, license } = require("../../package.json");
@@ -22,11 +22,11 @@ export class Parkrun {
 
 	/**
 	 * The Parkrun.JS license, as state by NPM.
-	 * 
+	 *
 	 * @returns {String} License type.
 	 */
 	static license = license;
-	
+
 	private _tokens: Tokens;
 
 	/**
@@ -156,11 +156,14 @@ export class Parkrun {
 	 * @returns {Promise<Parkrun>}
 	 */
 	static async authRefresh({ token, type = "bearer", scope = "app" }) {
-		const tokens = new Tokens({
-			refresh_token: token,
-			token_type: type,
-			scope,
-		}, null);
+		const tokens = new Tokens(
+			{
+				refresh_token: token,
+				token_type: type,
+				scope,
+			},
+			null
+		);
 
 		// use this method to test the validity of the refresh token provided.
 		// it will automatically reject if needed.

@@ -33,7 +33,7 @@ export const getBrowsers = () => {
 
 		// ----- EDGE -----
 		_makeBrowserItem({ browser: "MicrosoftEdge" }), // Latest
-		_makeBrowserItem({ browser: "MicrosoftEdge", version: "79.0"}), // Edge Chromium 1
+		_makeBrowserItem({ browser: "MicrosoftEdge", version: "79.0" }), // Edge Chromium 1
 		// Edge 1X.X (before chrome) is not compatible. (10/4)
 
 		// ----- IE ------
@@ -50,18 +50,13 @@ export const getBrowsers = () => {
 	];
 };
 
-
-const _makeBrowserItem = ({
-	browser = "chrome",
-	version = "latest",
-	platform = "Windows 10"
-}) => {
+const _makeBrowserItem = ({ browser = "chrome", version = "latest", platform = "Windows 10" }) => {
 	return {
 		browserName: browser,
 		browserVersion: version,
-		platformName: platform
-	}
-}
+		platformName: platform,
+	};
+};
 
 export const makeDriver = _caps => {
 	const caps = Object.assign({}, _caps, constant_caps);

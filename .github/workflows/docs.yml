@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-    
+
       - uses: actions/setup-node@v1
         with:
           node-version: "14"
-    
+
       - run: npm install -g npm@latest
-    
+
       - run: npm ci --ignore-scripts
 
       - name: Build Docs
         run: npm run docs:build
-          
+
       - name: Build Browser Dist
         run: |
           npm run build

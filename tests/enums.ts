@@ -1,7 +1,15 @@
-import { AGEGRADE, calculateEnum, getDisplayName, CLUBS, VOLUNTEER_CLUBS, JUNIOR_CLUBS, _volnFromCount, SeriesID } from "../src";
+import {
+	AGEGRADE,
+	calculateEnum,
+	getDisplayName,
+	CLUBS,
+	VOLUNTEER_CLUBS,
+	JUNIOR_CLUBS,
+	_volnFromCount,
+	SeriesID,
+} from "../src";
 
 import { should, expect } from "chai";
-
 
 should();
 describe("Enums", () => {

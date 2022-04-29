@@ -1,4 +1,4 @@
-import { Net, TokensData } from "../classes"
+import { Net, TokensData } from "../classes";
 import { SearchParams } from "./SearchParams";
 import { ParkrunAuthError, ParkrunNetError, ParkrunRefreshExpiredError } from "../errors";
 
@@ -18,7 +18,7 @@ export const refreshToken = async (token: string) => {
 
 		// Check for no response data
 		if (!res.data) {
-			throw new ParkrunNetError("server did not return any response data!")
+			throw new ParkrunNetError("server did not return any response data!");
 		}
 
 		// Token refresh was successful, now we return a new Tokens class object.

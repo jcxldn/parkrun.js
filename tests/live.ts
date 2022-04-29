@@ -1,4 +1,11 @@
-import { Parkrun, RunResult, FreedomRunResult, Country, Event, ParkrunDataNotAvailableError } from "../src"
+import {
+	Parkrun,
+	RunResult,
+	FreedomRunResult,
+	Country,
+	Event,
+	ParkrunDataNotAvailableError,
+} from "../src";
 import { should, assert, expect } from "chai";
 
 const SeriesDayAssert = data => {
@@ -133,10 +140,9 @@ describe("Live", () => {
 			try {
 				athlete.getSex();
 			} catch (err) {
-				expect(err.message)
-					.to.eql(
-						"no data available for getSex() - removed upstream as of Febuary 2020, see issue #33."
-					);
+				expect(err.message).to.eql(
+					"no data available for getSex() - removed upstream as of Febuary 2020, see issue #33."
+				);
 				done();
 			}
 		});

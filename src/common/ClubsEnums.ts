@@ -34,5 +34,5 @@ export default {
 	CLUBS,
 	VOLUNTEER_CLUBS,
 	JUNIOR_CLUBS,
-	_volnFromCount
-}
+	_volnFromCount,
+};

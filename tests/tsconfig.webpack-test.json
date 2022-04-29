@@ -1,8 +1,8 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        // Even though we mark ./src as external (it's not included in the test .js build), we still have to include it here!
-        "rootDir": null,
-        "rootDirs": ["src", "tests"]
-    }
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		// Even though we mark ./src as external (it's not included in the test .js build), we still have to include it here!
+		"rootDir": null,
+		"rootDirs": ["src", "tests"]
+	}
 }

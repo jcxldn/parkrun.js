@@ -10,90 +10,89 @@ jobs:
         # Mocha 8's min spec is 10.12, but 10.x is no longer supported by npm.
         node-version: ["12", "14", "15", "16"]
     steps:
-    - uses: actions/checkout@v2
-    
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    - run: npm install -g npm@latest
+      - uses: actions/checkout@v2
 
-    - run: npm ci --ignore-scripts
-   
-    - name: Run tests (live)
-      if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-      run: npm run test:run
-      # Live tests need valid parkrun login details
-      env:
-        ID: ${{ secrets.CI_PARKRUN_ID }}
-        PASS: ${{ secrets.CI_PARKRUN_PASS }}
-    
-    - name: Report live-only coverage to codecov (node 16 only)
-      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-      run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
-   
-    - name: Report live-only coverage to github (node 16 only)
-      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-      run: npx nyc report --reporter=text | npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node .github/ci/live-reporter.js
-      # GitHub reporter needs authentication
-      env:
-        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
-      
-      # Have nyc run an echo command to clean the output.
-    - name: Clean up nyc output
-      run: npx nyc --silent echo ""
-    
-    - name: Run tests (mocked)
-      # Mocked tests don't require authentication
-      run: npm run test:run:mock
-    
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
 
-      # Only report to codecov on master
-      # Live tests are not being ran, so codecov will give incorrect results on other branches (eg. -50% coverage)
-    - name: Report mocked-only coverage to codecov (node 16 only)
-      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-      run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
-    
-    - name: Report mocked-only coverage to github (node 16 only)
-      if: matrix.node-version == '16'
-      run: npx nyc report --reporter=text | npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node .github/ci/mock-reporter.js
-      # GitHub reporter needs authentication
-      env:
-        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
+      - run: npm install -g npm@latest
+
+      - run: npm ci --ignore-scripts
+
+      - name: Run tests (live)
+        if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        run: npm run test:run
+        # Live tests need valid parkrun login details
+        env:
+          ID: ${{ secrets.CI_PARKRUN_ID }}
+          PASS: ${{ secrets.CI_PARKRUN_PASS }}
+
+      - name: Report live-only coverage to codecov (node 16 only)
+        if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+
+      - name: Report live-only coverage to github (node 16 only)
+        if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        run: npx nyc report --reporter=text | npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node .github/ci/live-reporter.js
+        # GitHub reporter needs authentication
+        env:
+          GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
+
+        # Have nyc run an echo command to clean the output.
+      - name: Clean up nyc output
+        run: npx nyc --silent echo ""
+
+      - name: Run tests (mocked)
+        # Mocked tests don't require authentication
+        run: npm run test:run:mock
+
+        # Only report to codecov on master
+        # Live tests are not being ran, so codecov will give incorrect results on other branches (eg. -50% coverage)
+      - name: Report mocked-only coverage to codecov (node 16 only)
+        if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+
+      - name: Report mocked-only coverage to github (node 16 only)
+        if: matrix.node-version == '16'
+        run: npx nyc report --reporter=text | npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node .github/ci/mock-reporter.js
+        # GitHub reporter needs authentication
+        env:
+          GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
   saucelabs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
     steps:
-    - name: Setup /etc/hosts
-      # Saucelabs uses a FQDN that maps to localhost to run tests against
-      run: echo "127.0.0.1 web_tests.parkrun.js.invalid" | sudo tee -a /etc/hosts
-    
-    - uses: actions/checkout@v2
-    
-    - uses: actions/setup-node@v1
-      with:
-        node-version: "16"
-    
-    - run: npm install -g npm@latest
-    
-    - run: npm ci --ignore-scripts
-    
-    - name: Make sauceconnect installer script executable
-      run: chmod +x .github/ci/install-sauceconnect.sh
-    
-    - name: Run saucelabs tests
-      run: npm run test:web:saucelabs
-      # Saucelabs tests need valid parkrun + saucelabs login details, as well as a job identifier
-      env:
-        ID: ${{ secrets.CI_PARKRUN_ID }}
-        PASS: ${{ secrets.CI_PARKRUN_PASS }}
-        SAUCE_USERNAME: ${{ secrets.CI_SAUCELABS_RUNNER_USERNAME }}
-        SAUCE_ACCESS_KEY: ${{ secrets.CI_SAUCELABS_RUNNER_ACCESS_KEY }}
-    
-    - name: Report saucelabs results
-      run: npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node ./.github/ci/saucelabs_bot_travis.js
-      # Saucelabs reporter needs GitHub authentication (for making checks) and BackBlaze authentication (for storing job data)
-      env:
-        B2_KEY: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY }}
-        B2_KEY_ID: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY_ID }}
-        GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
+      - name: Setup /etc/hosts
+        # Saucelabs uses a FQDN that maps to localhost to run tests against
+        run: echo "127.0.0.1 web_tests.parkrun.js.invalid" | sudo tee -a /etc/hosts
+
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+
+      - run: npm install -g npm@latest
+
+      - run: npm ci --ignore-scripts
+
+      - name: Make sauceconnect installer script executable
+        run: chmod +x .github/ci/install-sauceconnect.sh
+
+      - name: Run saucelabs tests
+        run: npm run test:web:saucelabs
+        # Saucelabs tests need valid parkrun + saucelabs login details, as well as a job identifier
+        env:
+          ID: ${{ secrets.CI_PARKRUN_ID }}
+          PASS: ${{ secrets.CI_PARKRUN_PASS }}
+          SAUCE_USERNAME: ${{ secrets.CI_SAUCELABS_RUNNER_USERNAME }}
+          SAUCE_ACCESS_KEY: ${{ secrets.CI_SAUCELABS_RUNNER_ACCESS_KEY }}
+
+      - name: Report saucelabs results
+        run: npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node ./.github/ci/saucelabs_bot_travis.js
+        # Saucelabs reporter needs GitHub authentication (for making checks) and BackBlaze authentication (for storing job data)
+        env:
+          B2_KEY: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY }}
+          B2_KEY_ID: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY_ID }}
+          GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}

@@ -3,9 +3,7 @@
 import { SearchParams } from "../common/SearchParams";
 import { ParkrunDataNotAvailableError } from "../errors";
 import { ParkrunNetError } from "../errors/ParkrunNetError";
-import {
-	ClientAthleteExpandedExtra
-} from "../schemas/ClientAthleteExpandedExtra";
+import { ClientAthleteExpandedExtra } from "../schemas/ClientAthleteExpandedExtra";
 import { validate } from "../validate";
 import { FreedomRunResult } from "./FreedomRunResult";
 import { Parkrun } from "./parkrun";

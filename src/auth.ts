@@ -1,9 +1,8 @@
-import { Net, Tokens } from "./classes"
+import { Net, Tokens } from "./classes";
 import { SearchParams } from "./common";
 import { ParkrunAuthError, ParkrunUserPassError, ParkrunValidationError } from "./errors";
 import { AuthSchema } from "./schemas/AuthSchema";
 import { validate } from "./validate";
-
 
 const net = Net.getNonAuthed();
 

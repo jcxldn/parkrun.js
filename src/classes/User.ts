@@ -1,7 +1,7 @@
 import { ParkrunDataNotAvailableError, ParkrunNetError } from "../errors";
 import { AthleteExpandedSchema } from "../schemas/AthleteExpanded";
 import { validate } from "../validate";
-import { HomeRun, Parkrun, RunResult } from "./"
+import { HomeRun, Parkrun, RunResult } from "./";
 import ClubsEnums from "../common/ClubsEnums";
 
 const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
@@ -218,8 +218,10 @@ export class User {
 		return {
 			// In the TypeScript rewrite, the "null" enum has been changed to 0.
 			// Let's use tertiary operators to return 0 if the input is null, else return the actual value.
-			ParkrunClub: ClubsEnums.CLUBS[data.parkrunClubMembership == null ? 0 : data.parkrunClubMembership],
-			JuniorClub: ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership == null ? 0 : data.parkrunClubMembership],
+			ParkrunClub:
+				ClubsEnums.CLUBS[data.parkrunClubMembership == null ? 0 : data.parkrunClubMembership],
+			JuniorClub:
+				ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership == null ? 0 : data.parkrunClubMembership],
 			VolunteerClub: ClubsEnums._volnFromCount(data.volcount),
 		};
 	}

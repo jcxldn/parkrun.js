@@ -5,8 +5,12 @@ import { should, assert, expect } from "chai";
 import { Parkrun } from "../../src/classes";
 import { refreshToken } from "../../src/common";
 import {
-	ParkrunAuthError, ParkrunDataNotAvailableError, ParkrunNetError,
-	ParkrunRefreshExpiredError, ParkrunUserPassError, ParkrunValidationError
+	ParkrunAuthError,
+	ParkrunDataNotAvailableError,
+	ParkrunNetError,
+	ParkrunRefreshExpiredError,
+	ParkrunUserPassError,
+	ParkrunValidationError,
 } from "../../src/errors";
 
 const getFakeInstance = callback => {
@@ -235,7 +239,10 @@ describe("Mock", () => {
 			refreshToken("token")
 				.then(() => done(new Error())) // This should *never* be called The catch statement should exec instead.
 				.catch(err => {
-					if (err instanceof ParkrunRefreshExpiredError && err.message == "refresh token has expired") {
+					if (
+						err instanceof ParkrunRefreshExpiredError &&
+						err.message == "refresh token has expired"
+					) {
 						done();
 					} else {
 						done(err);
@@ -406,7 +413,7 @@ describe("Mock", () => {
 
 		it("getMobileNumber() (Not Available)", done => {
 			let athlete2 = athlete;
-			 athlete2._mobileNumber = undefined;
+			athlete2._mobileNumber = undefined;
 			try {
 				athlete2.getMobileNumber();
 				done(new Error());

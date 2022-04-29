@@ -1,7 +1,7 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        // Set to CommonJS to fix "SyntaxError: Unexpected token 'export'" when running reporter scripts.
-        "module": "CommonJS"
-    }
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		// Set to CommonJS to fix "SyntaxError: Unexpected token 'export'" when running reporter scripts.
+		"module": "CommonJS"
+	}
 }

@@ -1,4 +1,10 @@
-import { ParkrunDataNotAvailableError, ParkrunNetError, ParkrunAuthError, ParkrunUserPassError, ParkrunRefreshExpiredError } from "../src";
+import {
+	ParkrunDataNotAvailableError,
+	ParkrunNetError,
+	ParkrunAuthError,
+	ParkrunUserPassError,
+	ParkrunRefreshExpiredError,
+} from "../src";
 import { should, assert, expect } from "chai";
 import { AxiosError } from "axios";
 
@@ -14,15 +20,17 @@ describe("Errors", () => {
 	});
 
 	it("NetError (with res)", done => {
-		const err = new ParkrunNetError("",
+		const err = new ParkrunNetError(
+			"",
 			// Cast this object to AxiosError
-			<AxiosError><unknown>{
+			<AxiosError>(<unknown>{
 				response: {
 					status: 999,
 					statusText: "testStatus",
 					config: { method: "test", url: "https://api.invalid/v1/invalid" },
 				},
-			});
+			})
+		);
 		expect(err.message).to.eql("HTTP Error 999 (testStatus) on TEST request to '/v1/invalid'");
 		assert(err instanceof ParkrunNetError);
 		assert(err instanceof Error);
