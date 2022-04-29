@@ -78,7 +78,7 @@ export const run = async ({ driver, builder }) => {
 
 	console.log(`[${builder.sessionID}] Driver started.`);
 
-	await builder.get("http://web_tests.nr.jcx.ovh:3000/tests/platform-web/web");
+	await builder.get("http://web_tests.parkrun.js.invalid:3000/tests/platform-web/web");
 
 	await builder.wait(async webdriver => {
 		return (await webdriver.executeScript("return window.TESTS_COMPLETE")) == true;

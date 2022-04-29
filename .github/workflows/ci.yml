@@ -61,7 +61,7 @@ jobs:
     steps:
     - name: Setup /etc/hosts
       # Saucelabs uses a FQDN that maps to localhost to run tests against
-      run: echo "127.0.0.1 web_tests.nr.jcx.ovh" | sudo tee -a /etc/hosts
+      run: echo "127.0.0.1 web_tests.parkrun.js.invalid" | sudo tee -a /etc/hosts
     
     - uses: actions/checkout@v2
     
