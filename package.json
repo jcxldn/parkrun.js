@@ -14,7 +14,7 @@
     "test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
     "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
     "test:web:saucelabs:run:main": "cross-env TS_NODE_PROJECT='./tests/platform-web/saucelabs/tsconfig.saucelabs-test.json' cross-env-shell ts-node tests/platform-web/saucelabs/runner.ts",
-    "test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID -x https://eu-central-1.saucelabs.com/rest/v1",
+    "test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID --region eu-central",
     "build": "rimraf dist/ && npm run build:web",
     "build:web": "webpack --config webpack.config.js --mode production",
     "prepublishOnly": "npm run build",
