@@ -3,7 +3,10 @@
     "compilerOptions": {
         // cannot use import statement outside a module
         "module": "CommonJS",
-        // serve-handler in runner.ts requires this
-        "allowSyntheticDefaultImports": true
+        // serve-handler in runner.ts requires these options
+        "allowSyntheticDefaultImports": true,
+        // without this we get "TypeError: (0 , serve_handler_1.default) is not a function" 
+        // -> same issue + solution @ https://stackoverflow.com/a/63745904
+        "esModuleInterop": true
     }
 }
