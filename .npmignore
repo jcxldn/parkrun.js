@@ -111,3 +111,9 @@ tests/platform-web/*.tmp.js
 # CI files
 
 .ci_tmp/*
+
+# Prettier files
+.prettier*
+
+# tsconfig
+tsconfig.json
