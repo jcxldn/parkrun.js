@@ -21,18 +21,19 @@ jobs:
     - run: npm ci --ignore-scripts
    
     - name: Run tests (live)
+      if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
       run: npm run test:run
       # Live tests need valid parkrun login details
       env:
         ID: ${{ secrets.CI_PARKRUN_ID }}
         PASS: ${{ secrets.CI_PARKRUN_PASS }}
     
-    - name: Report live-only coverage to codecov (node 16only)
-      if: matrix.node-version == '16'
+    - name: Report live-only coverage to codecov (node 16 only)
+      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
    
     - name: Report live-only coverage to github (node 16 only)
-      if: matrix.node-version == '16'
+      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
       run: npx nyc report --reporter=text | npx cross-env TS_NODE_PROJECT='./.github/ci/tsconfig.ci-reporters.json' npx ts-node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
@@ -46,8 +47,11 @@ jobs:
       # Mocked tests don't require authentication
       run: npm run test:run:mock
     
+
+      # Only report to codecov on master
+      # Live tests are not being ran, so codecov will give incorrect results on other branches (eg. -50% coverage)
     - name: Report mocked-only coverage to codecov (node 16 only)
-      if: matrix.node-version == '16'
+      if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
       run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
     
     - name: Report mocked-only coverage to github (node 16 only)
@@ -58,6 +62,7 @@ jobs:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
   saucelabs:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
     steps:
     - name: Setup /etc/hosts
       # Saucelabs uses a FQDN that maps to localhost to run tests against
