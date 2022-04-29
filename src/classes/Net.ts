@@ -28,7 +28,7 @@ export class Net {
 		return axios.create(Object.assign({}, opts));
 	}
 
-	private _params: any;
+	private _params: Object;
 	private _axiosAuthed: AxiosInstance;
 
 	constructor(access_token: string) {
