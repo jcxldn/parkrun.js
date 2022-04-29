@@ -33,7 +33,7 @@ jobs:
    
     - name: Report live-only coverage to github (node 16 only)
       if: matrix.node-version == '16'
-      run: npx nyc report --reporter=text | node .github/ci/live-reporter.js
+      run: npx nyc report --reporter=text | ts-node .github/ci/live-reporter.js
       # GitHub reporter needs authentication
       env:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
@@ -52,7 +52,7 @@ jobs:
     
     - name: Report mocked-only coverage to github (node 16 only)
       if: matrix.node-version == '16'
-      run: npx nyc report --reporter=text | node .github/ci/mock-reporter.js
+      run: npx nyc report --reporter=text | ts-node .github/ci/mock-reporter.js
       # GitHub reporter needs authentication
       env:
         GITHUB_PEM: ${{ secrets.CI_GH_REPORTER_PEM }}
@@ -86,7 +86,7 @@ jobs:
         SAUCE_ACCESS_KEY: ${{ secrets.CI_SAUCELABS_RUNNER_ACCESS_KEY }}
     
     - name: Report saucelabs results
-      run: node ./.github/ci/saucelabs_bot_travis.js
+      run: ts-node ./.github/ci/saucelabs_bot_travis.js
       # Saucelabs reporter needs GitHub authentication (for making checks) and BackBlaze authentication (for storing job data)
       env:
         B2_KEY: ${{ secrets.CI_SAUCELABS_REPORTER_B2_KEY }}

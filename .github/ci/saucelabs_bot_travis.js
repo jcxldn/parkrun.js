@@ -2,7 +2,7 @@ const B2 = require("backblaze-b2");
 
 const retry = require("promise-retry");
 
-const { makeCheck } = require("./checks-api");
+const { ChecksApi } = require("./checks-api");
 
 const fs = require("fs");
 const path = require("path");
@@ -155,7 +155,10 @@ async function OctokitCheck(arr, check_passing) {
     summary += createSubset(item);
   });
 
-  await makeCheck({
+  const api = new ChecksApi()
+  await api.setup() // authenticate to gh
+
+  await api.makeCheck({
     name: "ci/web",
     status: "completed",
     conclusion: check_passing ? "success" : "failure", // Dynamic

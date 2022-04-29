@@ -1,7 +1,7 @@
 const fs = require("fs");
 const data = fs.readFileSync(0, "utf-8");
 
-const { makeCheck } = require("./checks-api");
+const { ChecksApi } = require("./checks-api");
 
 // Codecov uses % Lines.
 
@@ -15,10 +15,13 @@ const lines = get(3, 4);
 
 console.log(`Lines (Codecov metric): '${lines}' percent.`);
 
-makeCheck({
-  name: "ci/cov/live",
-  status: "completed",
-  conclusion: "neutral",
-  title: `${lines}% live-only coverage`,
-  summary: "```\n" + data + "\n```",
-});
+const api = new ChecksApi();
+api.setup.then(async () => {
+  await api.makeCheck({
+    name: "ci/cov/live",
+    status: "completed",
+    conclusion: "neutral",
+    title: `${lines}% live-only coverage`,
+    summary: "```\n" + data + "\n```",
+  })
+})

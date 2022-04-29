@@ -47,7 +47,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
-    "@octokit/app": "^4.3.0",
+    "@octokit/auth-app": "^3.6.1",
     "@octokit/request": "^5.4.13",
     "@types/async": "^3.2.12",
     "@types/chai": "^4.3.1",
