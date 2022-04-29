@@ -16,7 +16,7 @@ const lines = get(3, 4);
 console.log(`Lines (Codecov metric): '${lines}' percent.`);
 
 const api = new ChecksApi();
-api.setup.then(async () => {
+api.setup().then(async () => {
   await api.makeCheck({
     name: "ci/cov/live",
     status: "completed",
