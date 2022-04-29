@@ -11,7 +11,7 @@ export class ChecksApi {
 
   setup = async () => {
     this.auth = createAppAuth({
-      id: 53420,
+      appId: 53420,
       privateKey: process.env.GITHUB_PEM.toString().replace(/\\n/g, "\n"),
     });
 
