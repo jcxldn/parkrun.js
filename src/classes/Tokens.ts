@@ -51,8 +51,10 @@ export class Tokens {
 	 *
 	 * @returns {String} Token type.
 	 * @example
+	 * ```ts
 	 * console.log(client.getTokens().getTokenType())
 	 * // - 'bearer'
+	 * ```
 	 */
 	getTokenType() {
 		return this._data._type;
@@ -63,8 +65,10 @@ export class Tokens {
 	 *
 	 * @returns {String} Token scope.
 	 * @example
+	 * ```ts
 	 * console.log(client.getTokens().getScope())
 	 * // - 'app'
+	 * ```
 	 */
 	getScope() {
 		return this._data._scope;

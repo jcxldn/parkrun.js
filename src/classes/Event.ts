@@ -97,7 +97,9 @@ export class Event {
 	 * Get the internal name for this event, in a URL / URI friendly format.
 	 *
 	 * @returns {String} Internal name.
-	 * @example event.getInternalName(); // 'example-juniors'
+	 * @example ```ts
+	 * event.getInternalName(); // 'example-juniors'
+	 * ```
 	 */
 	getInternalName() {
 		return this._name_internal;
@@ -107,7 +109,9 @@ export class Event {
 	 * Get the short name for this event.
 	 *
 	 * @returns {String} Event short name.
-	 * @example event.getShortName(); // 'Example juniors'
+	 * @example ```ts
+	 * event.getShortName(); // 'Example juniors'
+	 * ```
 	 */
 	getShortName() {
 		return this._name_short;
@@ -117,7 +121,9 @@ export class Event {
 	 * Get the name of this event.
 	 *
 	 * @returns {String}
-	 * @example event.getName(); // 'Example junior parkrun'
+	 * @example ```ts
+	 * event.getName(); // 'Example junior parkrun'
+	 * ```
 	 */
 	getName() {
 		return this._name;
@@ -127,7 +133,9 @@ export class Event {
 	 * Get the location of this event.
 	 *
 	 * @returns {String} Event location.
-	 * @example event.getLocation(); // 'Example Park'
+	 * @example ```ts
+	 * event.getLocation(); // 'Example Park'
+	 * ```
 	 */
 	getLocation() {
 		return this._location;
@@ -137,7 +145,9 @@ export class Event {
 	 * Get the Parkrun Country Code for this event.
 	 *
 	 * @returns {Number} Country Code.
-	 * @example event.getCountryCode(); // 97
+	 * @example ```ts
+	 * event.getCountryCode(); // 97
+	 * ```
 	 */
 	getCountryCode() {
 		return this._countryCode;
@@ -147,7 +157,9 @@ export class Event {
 	 * Get the preferred language for this event.
 	 *
 	 * @returns {String} preferred language
-	 * @example event.getPreferredLangauge(); // 'en'
+	 * @example ```ts
+	 * event.getPreferredLangauge(); // 'en'
+	 * ```
 	 */
 	getPreferredLanguage() {
 		return this._preferredLanguage;

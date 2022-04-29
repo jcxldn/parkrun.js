@@ -167,11 +167,12 @@ export class ClientUser extends User {
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 * @throws {Error} Input data error.
 	 *
-	 * @example
+	 * @example ```ts
 	 * const user = [...]
 	 *
 	 * await user.createFreedomRun(953, "2020", "02", "15", "00:15:45")
 	 * // example output - 166164059
+	 * ```
 	 */
 	async createFreedomRun(eventNumber, runYear, runMonth, runDay, runTime) {
 		if (

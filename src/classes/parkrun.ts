@@ -57,9 +57,10 @@ export class Parkrun {
 	 * @param {String} id
 	 * @param {String} password
 	 * @returns {Promise<Parkrun>}
-	 * @example
+	 * @example ```ts
 	 * const Parkrun = require("parkrun.js")
 	 * const client = await Parkrun.authSync("A1234567", "password")
+	 * ```
 	 */
 	static async authSync(id, password) {
 		return new Parkrun(await auth(id, password));
@@ -82,14 +83,15 @@ export class Parkrun {
 	 * @param {String} id
 	 * @param {String} password
 	 * @param {authCallback} callback the callback to run once login has completed. The first paramater is the Parkrun client.
-	 * @example
+	 * @example ```ts
 	 * const Parkrun = require("parkrun.js")
 	 * Parkrun.auth("A1234567", "password", function(client, err) {
 	 *  if (!err) {
 	 *    // no errors, continue
 	 *  }
 	 * })
-	 * @example
+	 * ```
+	 * @example ```ts
 	 * // Alternative example using ES6
 	 *
 	 * const Parkrun = require("parkrun.js")
@@ -98,6 +100,7 @@ export class Parkrun {
 	 *    // no errors, continue
 	 *  }
 	 * })
+	 * ```
 	 */
 	static auth(id, password, callback) {
 		//return new Parkrun(await authSync(id, password));

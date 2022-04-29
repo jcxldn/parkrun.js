@@ -78,7 +78,9 @@ export class Country {
 	 * Get the site URL for this country.
 	 *
 	 * @returns {String} Site URL
-	 * @example country.getSiteURL(); // 'www.parkrun.org.uk'
+	 * @example ```ts
+	 * country.getSiteURL(); // 'www.parkrun.org.uk
+	 * ```
 	 */
 	getSiteURL() {
 		return this._site_url;
@@ -97,7 +99,9 @@ export class Country {
 	 * Get the Wiki Name for this country.
 	 *
 	 * @returns {String} Wiki Name.
-	 * @example country.getWikiName(); // 'UK'
+	 * @example ```ts
+	 * country.getWikiName(); // 'UK'
+	 * ```
 	 */
 	getWikiName() {
 		return this._wiki_name;
@@ -107,7 +111,9 @@ export class Country {
 	 * Get the Country-Code Top Level Domain (ccTLD) for this country.
 	 *
 	 * @returns {String} ccTLD.
-	 * @example country.getCCTLD(); // 'uk'
+	 * @example ```ts
+	 * country.getCCTLD(); // 'uk'
+	 * ```
 	 */
 	getCCTLD() {
 		return this._ccTLD;

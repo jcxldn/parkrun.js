@@ -183,7 +183,7 @@ export class User {
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
 	 *
-	 * @example
+	 * @example ```ts
 	 *
 	 * const user = .....
 	 *
@@ -197,6 +197,7 @@ export class User {
 	 *   JuniorClub: { id: 'j0', name: 'No Club' },
 	 *   VolunteerClub: { id: 'v1', name: 'Volunteer 25+ Club' }
 	 * }
+	 * ```
 	 */
 	async getClubs() {
 		// We are using /v1/results (from getRuns() as it returns all club statuses at once.)
