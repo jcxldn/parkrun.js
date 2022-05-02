@@ -15,6 +15,9 @@
 			"GitHub": "https://github.com/Prouser123/parkrun.js"
 		},
 		// Don't show private class members in generated docs
-		"excludePrivate": true
+		"excludePrivate": true,
+
+		// Sort members (eg. methods) - static first
+		"sort": ["static-first"]
 	}
 }
