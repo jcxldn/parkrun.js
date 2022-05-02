@@ -81,7 +81,7 @@ export class Tokens {
 	 *
 	 * @returns {Promise<String>} A promise containing a valid access token.
 	 *
-	 * @throws {Error} General error during token refresh
+	 * @throws Error General error during token refresh
 	 * @throws {@link ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
 	 */
 	async getValidAccessToken() {
@@ -97,7 +97,7 @@ export class Tokens {
 	 *
 	 * @returns {Promise<void>}
 	 *
-	 * @throws {@link Error} General error during token refresh
+	 * @throws Error General error during token refresh
 	 * @throws {@link ParkrunAuthError} Error thrown then the current refresh token is invalid.
 	 * @throws {@link ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
 	 */

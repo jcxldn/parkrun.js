@@ -165,7 +165,7 @@ export class ClientUser extends User {
 	 * @returns {Promise<Number>} The newly created Freedom Run ID.
 	 *
 	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
-	 * @throws {@link Error} Input data error.
+	 * @throws Error Input data error.
 	 *
 	 * @example ```ts
 	 * const user = [...]

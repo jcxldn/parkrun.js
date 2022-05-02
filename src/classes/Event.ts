@@ -74,7 +74,7 @@ export class Event {
 	 * Get statistics across a parkrun event.
 	 *
 	 * @see (Borrows from {@link Parkrun.getStatsByEvent})
-	 * @see Parkrun.getStats
+	 * @see {@link Parkrun.getStats}
 	 *
 	 * @returns {Promise<Object>} statistics.
 	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.

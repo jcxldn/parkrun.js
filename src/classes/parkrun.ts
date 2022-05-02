@@ -85,10 +85,8 @@ export class Parkrun {
 	 *    // no errors, continue
 	 *  }
 	 * })
-	 * ```
-	 * @example ```ts
-	 * // Alternative example using ES6
 	 *
+	 * // Alternative example using ES6
 	 * const Parkrun = require("parkrun.js")
 	 * Parkrun.auth("A1234567", "password", (client, err) => {
 	 *  if (!err) {
@@ -143,7 +141,7 @@ export class Parkrun {
 	 *
 	 * @throws {@link ParkrunAuthError} Error thrown if the refresh token is invalid.
 	 * @throws {@link ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
-	 * @throws {@link Error} General authentication flow error.
+	 * @throws Error General authentication flow error.
 	 *
 	 * @static
 	 * @param {Object} data

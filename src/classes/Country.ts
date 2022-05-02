@@ -25,7 +25,7 @@ export class Country {
 	 *
 	 *
 	 * @see (Borrows from {@link Parkrun.getAllEventsByCountry})
-	 * @see Parkrun#getAllEvents
+	 * @see {@link Parkrun.getAllEvents}
 	 *
 	 * @returns {Promise<Array<Event>>}
 	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
@@ -38,7 +38,7 @@ export class Country {
 	 * Get an array with the names of all parkrun events in this country, in alphabetical order.
 	 *
 	 * @see (Borrows from {@link Parkrun.getAllEventNamesByCountry})
-	 * @see Parkrun#getAllEventNames
+	 * @see {@link Parkrun.getAllEventNames}
 	 *
 	 * @returns {Promise<Array<String>>}
 	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
