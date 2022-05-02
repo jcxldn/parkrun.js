@@ -1,3 +1,5 @@
+import { Parkrun } from "./parkrun";
+
 /**
  * A class representing a parkrun country.
  */
@@ -10,7 +12,7 @@ export class Country {
 	private _wiki_name: string;
 	private _ccTLD: string;
 
-	constructor(res, private readonly _core) {
+	constructor(res, private readonly _core: Parkrun) {
 		this._code = Number.parseInt(res.CountryCode);
 		this._name = res.Country;
 		this._active = !!new Boolean(res.Active);
