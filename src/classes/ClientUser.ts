@@ -147,7 +147,7 @@ export class ClientUser extends User {
 		return this._sex;
 	}
 
-	_hasNumOfDigits(numberOfDigits, number) {
+	private _hasNumOfDigits(numberOfDigits, number) {
 		return number.toString().length == numberOfDigits;
 	}
 
@@ -182,7 +182,7 @@ export class ClientUser extends User {
 			runMonth <= 12 // haha works because quirky nodejs
 		) {
 			const params = new SearchParams([
-				["AthleteID", this._athleteID],
+				["AthleteID", this.getID()],
 				["EventNumber", eventNumber],
 				["RunDate", runYear + runMonth + runDay],
 				["RunTime", runTime],

@@ -10,12 +10,12 @@ const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase())
  * A class representing a Parkrun User.
  */
 export class User {
-	_athleteID: number;
-	_avatar: string;
-	_clubName: string;
-	_firstName: string;
-	_homeRun: HomeRun;
-	_lastName: string;
+	private _athleteID: number;
+	private _avatar: string;
+	private _clubName: string;
+	private _firstName: string;
+	private _homeRun: HomeRun;
+	private _lastName: string;
 
 	/**
 	 * Create a new User class from the API responses.
