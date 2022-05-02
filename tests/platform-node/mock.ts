@@ -1,5 +1,5 @@
 import nock from "nock";
-import { merge } from "lodash";
+import merge from "lodash.merge";
 import { should, assert, expect } from "chai";
 
 import { Parkrun } from "../../src/classes";

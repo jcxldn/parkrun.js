@@ -39,14 +39,10 @@
 	"dependencies": {
 		"abab": "^2.0.5",
 		"axios": "^0.21.4",
-		"joi": "^17.6.0",
-		"lodash": "^4.17.21"
+		"joi": "^17.6.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
-		"@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-		"@babel/preset-env": "^7.16.11",
-		"@babel/register": "^7.12.10",
 		"@octokit/auth-app": "^3.6.1",
 		"@octokit/request": "^5.6.3",
 		"@types/async": "^3.2.12",
@@ -61,7 +57,6 @@
 		"chai": "^4.3.6",
 		"codecov": "^3.8.1",
 		"cross-env": "^7.0.3",
-		"envify": "^4.1.0",
 		"fast-text-encoding": "^1.0.3",
 		"glob": "^7.1.6",
 		"http-terminator": "^2.0.3",
