@@ -49,10 +49,10 @@ export class Event {
 	/**
 	 * Get all news posts for this event.
 	 *
-	 * @see (Borrows from {@link Parkrun#getNews})
+	 * @see (Borrows from {@link Parkrun.getNews})
 	 *
 	 * @returns {Promise<Array<EventNewsPost>>} Array of news posts.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getNews() {
 		return this._core.getNews(this._id);
@@ -61,10 +61,10 @@ export class Event {
 	/**
 	 * Get the upcoming roster(s) for this event.
 	 *
-	 * @see (Borrows from {@link Parkrun#getRoster})
+	 * @see (Borrows from {@link Parkrun.getRoster})
 	 *
 	 * @returns {Promise<Array<RosterVolunteer>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getRoster() {
 		return this._core.getRoster(this._id);
@@ -73,11 +73,11 @@ export class Event {
 	/**
 	 * Get statistics across a parkrun event.
 	 *
-	 * @see (Borrows from {@link Parkrun#getStatsByEvent})
-	 * @see Parkrun#getStats
+	 * @see (Borrows from {@link Parkrun.getStatsByEvent})
+	 * @see {@link Parkrun.getStats}
 	 *
 	 * @returns {Promise<Object>} statistics.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getStats() {
 		return this._core.getStatsByEvent(this._id);
@@ -97,7 +97,9 @@ export class Event {
 	 * Get the internal name for this event, in a URL / URI friendly format.
 	 *
 	 * @returns {String} Internal name.
-	 * @example event.getInternalName(); // 'example-juniors'
+	 * @example ```ts
+	 * event.getInternalName(); // 'example-juniors'
+	 * ```
 	 */
 	getInternalName() {
 		return this._name_internal;
@@ -107,7 +109,9 @@ export class Event {
 	 * Get the short name for this event.
 	 *
 	 * @returns {String} Event short name.
-	 * @example event.getShortName(); // 'Example juniors'
+	 * @example ```ts
+	 * event.getShortName(); // 'Example juniors'
+	 * ```
 	 */
 	getShortName() {
 		return this._name_short;
@@ -117,7 +121,9 @@ export class Event {
 	 * Get the name of this event.
 	 *
 	 * @returns {String}
-	 * @example event.getName(); // 'Example junior parkrun'
+	 * @example ```ts
+	 * event.getName(); // 'Example junior parkrun'
+	 * ```
 	 */
 	getName() {
 		return this._name;
@@ -127,7 +133,9 @@ export class Event {
 	 * Get the location of this event.
 	 *
 	 * @returns {String} Event location.
-	 * @example event.getLocation(); // 'Example Park'
+	 * @example ```ts
+	 * event.getLocation(); // 'Example Park'
+	 * ```
 	 */
 	getLocation() {
 		return this._location;
@@ -137,7 +145,9 @@ export class Event {
 	 * Get the Parkrun Country Code for this event.
 	 *
 	 * @returns {Number} Country Code.
-	 * @example event.getCountryCode(); // 97
+	 * @example ```ts
+	 * event.getCountryCode(); // 97
+	 * ```
 	 */
 	getCountryCode() {
 		return this._countryCode;
@@ -147,7 +157,9 @@ export class Event {
 	 * Get the preferred language for this event.
 	 *
 	 * @returns {String} preferred language
-	 * @example event.getPreferredLangauge(); // 'en'
+	 * @example ```ts
+	 * event.getPreferredLangauge(); // 'en'
+	 * ```
 	 */
 	getPreferredLanguage() {
 		return this._preferredLanguage;
@@ -156,7 +168,7 @@ export class Event {
 	/**
 	 * Get the Numerical Series ID for this event.
 	 *
-	 * @see {@link Event#getEventDay} for this value as a string.
+	 * @see {@link Event.getEventDay} for this value as a string.
 	 * @returns {Number} Series ID.
 	 */
 	getSeriesID() {
@@ -193,10 +205,10 @@ export class Event {
 	/**
 	 * Get the office email for this event.
 	 *
-	 * Only available when this class is constructed via {@link Parkrun#getEvent}.
+	 * Only available when this class is constructed via {@link Parkrun.getEvent}.
 	 *
 	 * @returns {String} Office Email.
-	 * @throws {ParkrunDataNotAvailableError} When not using {@link Parkrun#getEvent}, this value is not provided and trying to access it will result in this error.
+	 * @throws {@link ParkrunDataNotAvailableError} When not using {@link Parkrun.getEvent}, this value is not provided and trying to access it will result in this error.
 	 */
 	getOfficeEmail() {
 		if (this._officeEmail == undefined)
@@ -209,10 +221,10 @@ export class Event {
 	/**
 	 * Get the helper email for this event.
 	 *
-	 * Only available when this class is constructed via {@link Parkrun#getEvent}.
+	 * Only available when this class is constructed via {@link Parkrun.getEvent}.
 	 *
 	 * @returns {String} Helper Email.
-	 * @throws {ParkrunDataNotAvailableError} When not using {@link Parkrun#getEvent}, this value is not provided and trying to access it will result in this error.
+	 * @throws {@link ParkrunDataNotAvailableError} When not using {@link Parkrun.getEvent}, this value is not provided and trying to access it will result in this error.
 	 */
 	getHelperEmail() {
 		if (this._helperEmail == undefined)
@@ -225,10 +237,10 @@ export class Event {
 	/**
 	 * Get the amount of sessions that have taken place at this event.
 	 *
-	 * Only available when this class is constructed via {@link Parkrun#getEvent}.
+	 * Only available when this class is constructed via {@link Parkrun.getEvent}.
 	 *
 	 * @returns {Number} No. of sessions taken place.
-	 * @throws {ParkrunDataNotAvailableError} When not using {@link Parkrun#getEvent}, this value is not provided and trying to access it will result in this error.
+	 * @throws {@link ParkrunDataNotAvailableError} When not using {@link Parkrun.getEvent}, this value is not provided and trying to access it will result in this error.
 	 */
 	getTotalCount() {
 		if (isNaN(this._totalEvents))

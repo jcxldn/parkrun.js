@@ -1,3 +1,5 @@
+import { Parkrun } from "./parkrun";
+
 /**
  * A class representing a parkrun country.
  */
@@ -10,7 +12,7 @@ export class Country {
 	private _wiki_name: string;
 	private _ccTLD: string;
 
-	constructor(res, private readonly _core) {
+	constructor(res, private readonly _core: Parkrun) {
 		this._code = Number.parseInt(res.CountryCode);
 		this._name = res.Country;
 		this._active = !!new Boolean(res.Active);
@@ -24,11 +26,11 @@ export class Country {
 	 * Get an array of all the events in this country.
 	 *
 	 *
-	 * @see (Borrows from {@link Parkrun#getAllEventsByCountry})
-	 * @see Parkrun#getAllEvents
+	 * @see (Borrows from {@link Parkrun.getAllEventsByCountry})
+	 * @see {@link Parkrun.getAllEvents}
 	 *
 	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAllEvents() {
 		return await this._core.getAllEventsByCountry(this._code);
@@ -37,11 +39,11 @@ export class Country {
 	/**
 	 * Get an array with the names of all parkrun events in this country, in alphabetical order.
 	 *
-	 * @see (Borrows from {@link Parkrun#getAllEventNamesByCountry})
-	 * @see Parkrun#getAllEventNames
+	 * @see (Borrows from {@link Parkrun.getAllEventNamesByCountry})
+	 * @see {@link Parkrun.getAllEventNames}
 	 *
 	 * @returns {Promise<Array<String>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAllEventNames() {
 		return await this._core.getAllEventNamesByCountry(this._code);
@@ -78,7 +80,9 @@ export class Country {
 	 * Get the site URL for this country.
 	 *
 	 * @returns {String} Site URL
-	 * @example country.getSiteURL(); // 'www.parkrun.org.uk'
+	 * @example ```ts
+	 * country.getSiteURL(); // 'www.parkrun.org.uk
+	 * ```
 	 */
 	getSiteURL() {
 		return this._site_url;
@@ -97,7 +101,9 @@ export class Country {
 	 * Get the Wiki Name for this country.
 	 *
 	 * @returns {String} Wiki Name.
-	 * @example country.getWikiName(); // 'UK'
+	 * @example ```ts
+	 * country.getWikiName(); // 'UK'
+	 * ```
 	 */
 	getWikiName() {
 		return this._wiki_name;
@@ -107,7 +113,9 @@ export class Country {
 	 * Get the Country-Code Top Level Domain (ccTLD) for this country.
 	 *
 	 * @returns {String} ccTLD.
-	 * @example country.getCCTLD(); // 'uk'
+	 * @example ```ts
+	 * country.getCCTLD(); // 'uk'
+	 * ```
 	 */
 	getCCTLD() {
 		return this._ccTLD;

@@ -64,7 +64,7 @@ export class ClientUser extends User {
 	 * Gets the mobile number for the currently logged-in user.
 	 *
 	 * @returns {String} mobile number
-	 * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
+	 * @throws {@link ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
 	 */
 	getMobileNumber() {
 		if (this._mobileNumber == null)
@@ -123,7 +123,7 @@ export class ClientUser extends User {
 	 * Get an array of all the user's freedom runs.
 	 *
 	 * @returns {Promise<Array<FreedomRunResult>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getFreedomRuns() {
 		const res = await this._core._multiGet(
@@ -147,7 +147,7 @@ export class ClientUser extends User {
 		return this._sex;
 	}
 
-	_hasNumOfDigits(numberOfDigits, number) {
+	private _hasNumOfDigits(numberOfDigits: number, number: number) {
 		return number.toString().length == numberOfDigits;
 	}
 
@@ -164,26 +164,33 @@ export class ClientUser extends User {
 	 *
 	 * @returns {Promise<Number>} The newly created Freedom Run ID.
 	 *
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
-	 * @throws {Error} Input data error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws Error Input data error.
 	 *
-	 * @example
+	 * @example ```ts
 	 * const user = [...]
 	 *
 	 * await user.createFreedomRun(953, "2020", "02", "15", "00:15:45")
 	 * // example output - 166164059
+	 * ```
 	 */
-	async createFreedomRun(eventNumber, runYear, runMonth, runDay, runTime) {
+	async createFreedomRun(
+		eventNumber: number,
+		runYear: number,
+		runMonth: number,
+		runDay: number,
+		runTime: string
+	) {
 		if (
 			this._hasNumOfDigits(4, runYear) &&
 			this._hasNumOfDigits(2, runMonth) &&
 			this._hasNumOfDigits(2, runDay) &&
-			runMonth <= 12 // haha works because quirky nodejs
+			runMonth <= 12
 		) {
 			const params = new SearchParams([
-				["AthleteID", this._athleteID],
-				["EventNumber", eventNumber],
-				["RunDate", runYear + runMonth + runDay],
+				["AthleteID", this.getID().toString()],
+				["EventNumber", eventNumber.toString()],
+				["RunDate", `${runYear}${runMonth}${runDay}`],
 				["RunTime", runTime],
 			]);
 

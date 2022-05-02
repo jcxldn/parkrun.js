@@ -27,7 +27,7 @@ export class Tokens {
 	 *
 	 * This function is __not recommended__ for use as the response may be invalid. No checks are peformed here.
 	 *
-	 * @see {@link Tokens#getValidAccessToken} to get a valid access token.
+	 * @see {@link Tokens.getValidAccessToken} to get a valid access token.
 	 *
 	 * @returns {String} Access token.
 	 */
@@ -51,8 +51,10 @@ export class Tokens {
 	 *
 	 * @returns {String} Token type.
 	 * @example
+	 * ```ts
 	 * console.log(client.getTokens().getTokenType())
 	 * // - 'bearer'
+	 * ```
 	 */
 	getTokenType() {
 		return this._data._type;
@@ -63,8 +65,10 @@ export class Tokens {
 	 *
 	 * @returns {String} Token scope.
 	 * @example
+	 * ```ts
 	 * console.log(client.getTokens().getScope())
 	 * // - 'app'
+	 * ```
 	 */
 	getScope() {
 		return this._data._scope;
@@ -73,12 +77,12 @@ export class Tokens {
 	/**
 	 * Get a VALID API Access Token, issuing a new token if needed.
 	 *
-	 * When resolved, the new token (if needed) is also saved to {@link Tokens#getCurrentAccessToken}
+	 * When resolved, the new token (if needed) is also saved to {@link Tokens.getCurrentAccessToken}
 	 *
 	 * @returns {Promise<String>} A promise containing a valid access token.
 	 *
-	 * @throws {Error} General error during token refresh
-	 * @throws {ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
+	 * @throws Error General error during token refresh
+	 * @throws {@link ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
 	 */
 	async getValidAccessToken() {
 		if (!this.isValid()) await this.getNewTokens();
@@ -93,9 +97,9 @@ export class Tokens {
 	 *
 	 * @returns {Promise<void>}
 	 *
-	 * @throws {Error} General error during token refresh
-	 * @throws {ParkrunAuthError} Error thrown then the current refresh token is invalid.
-	 * @throws {ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
+	 * @throws Error General error during token refresh
+	 * @throws {@link ParkrunAuthError} Error thrown then the current refresh token is invalid.
+	 * @throws {@link ParkrunRefreshExpiredError} Error thrown when the current refresh token has expired for whatever reason.
 	 */
 	async getNewTokens() {
 		console.log("GET_NEW_TOKENS");

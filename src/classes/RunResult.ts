@@ -224,7 +224,7 @@ export class RunResult {
 	 * Get weather this run was a PB.
 	 *
 	 * @returns {Boolean} Was PB?
-	 * @see {@link RunResult#getWasGenuinePB} for a more accurate result.
+	 * @see {@link RunResult.getWasGenuinePB} for a more accurate result.
 	 */
 	getWasPB() {
 		return this._was_pb;
@@ -233,7 +233,7 @@ export class RunResult {
 	/**
 	 * Get the numerical series ID for this run / event.
 	 *
-	 * @see {@link RunResult#getEventDay} for this value as a string.
+	 * @see {@link RunResult.getEventDay} for this value as a string.
 	 * @returns {Number} Series ID.
 	 */
 	getSeriesID() {

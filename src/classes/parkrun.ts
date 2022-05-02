@@ -21,20 +21,18 @@ export class Parkrun {
 	static version: string = version;
 
 	/**
-	 * The Parkrun.JS license, as state by NPM.
+	 * The Parkrun.JS license, as stated by NPM.
 	 *
 	 * @returns {String} License type.
 	 */
-	static license = license;
+	static license: string = license;
 
 	private _tokens: Tokens;
 
 	/**
-	 * Constructor from tokens.
-	 *
-	 * @param {Tokens} tokens
+	 * Reconstruct a Parkrun instance from a Tokens instance.
 	 */
-	constructor(tokens) {
+	constructor(tokens: Tokens) {
 		this._tokens = tokens;
 	}
 
@@ -50,18 +48,16 @@ export class Parkrun {
 	/**
 	 * Asynchronously authenticate a user via id/password
 	 *
-	 * @throws {ParkrunAuthError} (Unexpected) error during authentication flow.
-	 * @throws {ParkrunUserPassError} Error thrown when the username or password is incorrect.
+	 * @throws {@link ParkrunAuthError} (Unexpected) error during authentication flow.
+	 * @throws {@link ParkrunUserPassError} Error thrown when the username or password is incorrect.
 	 *
 	 * @static
-	 * @param {String} id
-	 * @param {String} password
-	 * @returns {Promise<Parkrun>}
-	 * @example
+	 * @example ```ts
 	 * const Parkrun = require("parkrun.js")
 	 * const client = await Parkrun.authSync("A1234567", "password")
+	 * ```
 	 */
-	static async authSync(id, password) {
+	static async authSync(id: string, password: string) {
 		return new Parkrun(await auth(id, password));
 	}
 
@@ -75,34 +71,34 @@ export class Parkrun {
 	/**
 	 * Synchronously authenticate a user via id/password
 	 *
-	 * @throws {ParkrunAuthError} (Unexpected) error during authentication flow.
-	 * @throws {ParkrunUserPassError} Error thrown when the username or password is incorrect.
+	 * @throws {@link ParkrunAuthError} (Unexpected) error during authentication flow.
+	 * @throws {@link ParkrunUserPassError} Error thrown when the username or password is incorrect.
 	 *
 	 * @static
 	 * @param {String} id
 	 * @param {String} password
 	 * @param {authCallback} callback the callback to run once login has completed. The first paramater is the Parkrun client.
-	 * @example
+	 * @example ```ts
 	 * const Parkrun = require("parkrun.js")
 	 * Parkrun.auth("A1234567", "password", function(client, err) {
 	 *  if (!err) {
 	 *    // no errors, continue
 	 *  }
 	 * })
-	 * @example
-	 * // Alternative example using ES6
 	 *
+	 * // Alternative example using ES6
 	 * const Parkrun = require("parkrun.js")
 	 * Parkrun.auth("A1234567", "password", (client, err) => {
 	 *  if (!err) {
 	 *    // no errors, continue
 	 *  }
 	 * })
+	 * ```
 	 */
-	static auth(id, password, callback) {
+	static auth(id: string, password: string, callback: any) {
 		//return new Parkrun(await authSync(id, password));
 		this.authSync(id, password)
-			.then(tokens => callback(new Parkrun(tokens)))
+			.then(parkrun => callback(parkrun))
 			.catch(err => callback(undefined, err));
 	}
 
@@ -143,17 +139,15 @@ export class Parkrun {
 	/**
 	 * (Asynchronously) Authenticate a client based on a previous refresh token.
 	 *
-	 * @throws {ParkrunAuthError} Error thrown if the refresh token is invalid.
-	 * @throws {ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
-	 * @throws {Error} General authentication flow error.
+	 * @throws {@link ParkrunAuthError} Error thrown if the refresh token is invalid.
+	 * @throws {@link ParkrunRefreshExpiredError} Error thrown if the refresh token has expired.
+	 * @throws Error General authentication flow error.
 	 *
 	 * @static
 	 * @param {Object} data
 	 * @param {String} data.refresh refresh token
 	 * @param {String} [data.type=bearer] OPTIONAL - token type, usually 'bearer'
 	 * @param {String} [data.scope=app] OPTIONAL - token scope, usally 'app'
-	 *
-	 * @returns {Promise<Parkrun>}
 	 */
 	static async authRefresh({ token, type = "bearer", scope = "app" }) {
 		const tokens = new Tokens(
@@ -190,12 +184,12 @@ export class Parkrun {
 	/**
 	 * Asynchronously get an athlete based on their ID.
 	 *
-	 * @param {Number} id athlete id of the user you wish to get.
+	 * @param id athlete id of the user you wish to get.
 	 * @returns {Promise<User>} User object of the specified athlete.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
-	 * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
 	 */
-	async getAthlete(id) {
+	async getAthlete(id: number) {
 		const net = this._getAuthedNet();
 		const res = await net
 			.get(`/v1/athletes/${id}`, {
@@ -211,11 +205,10 @@ export class Parkrun {
 	/**
 	 * Get all news posts for the specified event id.
 	 *
-	 * @param {Number} eventID
-	 * @returns {Promise<Array<EventNewsPost>>} Array of news posts.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @returns Array of news posts.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getNews(eventID: number) {
+	async getNews(eventID: number): Promise<EventNewsPost[]> {
 		const net = this._getAuthedNet();
 		const res = await net
 			.get(`/v1/news/${eventID}`, {
@@ -236,9 +229,9 @@ export class Parkrun {
 	/**
 	 * Get the Profile of the currently logged-in user.
 	 *
-	 * @returns {Promise<ClientUser>} Your ClientUser object.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
-	 * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
+	 * @returns Your ClientUser object.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
 	 */
 	async getMe() {
 		const res = await this._getAuthedNet()
@@ -253,11 +246,9 @@ export class Parkrun {
 	/**
 	 * Get the upcoming roster(s) for a parkrun event.
 	 *
-	 * @param {Number} eventID
-	 * @returns {Promise<Array<RosterVolunteer>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getRoster(eventID: number) {
+	async getRoster(eventID: number): Promise<RosterVolunteer[]> {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${eventID}/rosters`)
 			.catch(err => {
@@ -276,11 +267,10 @@ export class Parkrun {
 	/**
 	 * Asynchronously get an event based on its ID.
 	 *
-	 * @param {Number} id
-	 * @returns {Promise<Event>} Event Object.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @returns Event Object.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getEvent(id) {
+	async getEvent(id: number) {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}`)
 			.catch(err => {
@@ -293,13 +283,13 @@ export class Parkrun {
 	/**
 	 * Get statistics across all of parkrun.
 	 *
-	 * @see Parkrun#getStatsByCountry
-	 * @see Parkrun#getStatsByEvent
+	 * @see {@link Parkrun.getStatsByCountry}
+	 * @see {@link Parkrun.getStatsByEvent}
 	 *
-	 * @returns {Promise<Object>} statistics.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @returns Raw statistics object.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getStats() {
+	async getStats(): Promise<Object> {
 		const res = await this._getAuthedNet()
 			.get("/v1/statistics")
 			.catch(err => {
@@ -312,12 +302,12 @@ export class Parkrun {
 	/**
 	 * Get statistics across a country.
 	 *
-	 * @see Parkrun#getStats
-	 * @param {Number} id Country ID.
-	 * @returns {Promise<Object>} statistics.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @see {@link Parkrun.getStats}
+	 * @param id Country ID.
+	 * @returns Raw statistics object.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getStatsByCountry(id) {
+	async getStatsByCountry(id: number): Promise<Object> {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries/${id}/statistics`)
 			.catch(err => {
@@ -330,12 +320,12 @@ export class Parkrun {
 	/**
 	 * Get statistics across a parkrun event.
 	 *
-	 * @see Parkrun#getStats
-	 * @param {Number} id Event ID.
-	 * @returns {Promise<Object>} statistics.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @see {@link Parkrun.getStats}
+	 * @param id Event ID.
+	 * @returns Raw statistics object.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getStatsByEvent(id) {
+	async getStatsByEvent(id: number): Promise<Object> {
 		const res = await this._getAuthedNet()
 			.get(`/v1/events/${id}/statistics`)
 			.catch(err => {
@@ -348,7 +338,7 @@ export class Parkrun {
 	/**
 	 * Internal function for creating Objects from the array of the statistics API endpoint.
 	 *
-	 * @see Parkrun#getStats
+	 * @see {@link Parkrun.getStats}
 	 * @ignore
 	 */
 	_makeStatsResponse(res) {
@@ -372,10 +362,9 @@ export class Parkrun {
 	/**
 	 *  Get an array of all active parkrun countries.
 	 *
-	 * @returns {Promise<Array<Country>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getActiveCountries() {
+	async getActiveCountries(): Promise<Country[]> {
 		const res = await this._getAuthedNet()
 			.get(`/v1/countries`)
 			.catch(err => {
@@ -394,11 +383,10 @@ export class Parkrun {
 	/**
 	 * Get an array of all events for a country.
 	 *
-	 * @param {Number} countryID Country ID.
-	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @param countryID Country ID.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getAllEventsByCountry(countryID) {
+	async getAllEventsByCountry(countryID: number) {
 		const res = await this._multiGetEventsRaw({
 			url: `/v1/countries/${countryID}/searchEvents`,
 		});
@@ -411,8 +399,7 @@ export class Parkrun {
 	/**
 	 * Get an array of all parkrun events.
 	 *
-	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAllEvents() {
 		const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
@@ -425,10 +412,9 @@ export class Parkrun {
 	/**
 	 * Get an array with the names of all parkrun events, in alphabetical order.
 	 *
-	 * @returns {Promise<Array<String>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getAllEventNames() {
+	async getAllEventNames(): Promise<String[]> {
 		const res = await this._multiGetEventsRaw({ url: "/v1/searchEvents" });
 
 		return res.map(i => {
@@ -439,10 +425,9 @@ export class Parkrun {
 	 * Get an array with the names of all parkrun events in the specified country, in alphabetical order.
 	 *
 	 * @param {Number} countryID Country ID.
-	 * @returns {Promise<Array<String>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
-	async getAllEventNamesByCountry(countryID) {
+	async getAllEventNamesByCountry(countryID): Promise<String[]> {
 		const res = await this._multiGetEventsRaw({
 			url: `/v1/countries/${countryID}/searchEvents`,
 		});
@@ -458,8 +443,7 @@ export class Parkrun {
 	 * (Needed for freedomRuns)
 	 *
 	 * @param {Number} athleteID The athlete ID for which to get results for.
-	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAthleteParkruns(athleteID: number) {
 		const res = await this._multiGetEventsRaw({

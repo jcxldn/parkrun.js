@@ -1,3 +1,7 @@
+/**
+ * Utility class to construct a query string // search parameters
+ * @internal
+ */
 export class SearchParams {
 	private _data = "";
 

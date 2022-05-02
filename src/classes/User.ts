@@ -10,21 +10,19 @@ const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase())
  * A class representing a Parkrun User.
  */
 export class User {
-	_athleteID: number;
-	_avatar: string;
-	_clubName: string;
-	_firstName: string;
-	_homeRun: HomeRun;
-	_lastName: string;
+	private _athleteID: number;
+	private _avatar: string;
+	private _clubName: string;
+	private _firstName: string;
+	private _homeRun: HomeRun;
+	private _lastName: string;
 
 	/**
 	 * Create a new User class from the API responses.
 	 *
 	 * @param {*} res the API response
-	 * @param {Parkrun} core parkrun.js instance
-	 * @returns {User} the new user class
 	 *
-	 * @throws {ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
+	 * @throws {@link ParkrunValidationError} ParkrunJS Validation Error - API response was not what was expected.
 	 */
 	constructor(res: any, protected readonly _core: Parkrun) {
 		const data = validate(res, AthleteExpandedSchema).data.Athletes[0];
@@ -95,7 +93,7 @@ export class User {
 	 * Get the user's gender.
 	 *
 	 * @deprecated As of #33 (Feb '20), this endpoint is no longer supported by Parkrun and will now result in an error.
-	 * @throws {ParkrunDataNotAvailableError}
+	 * @throws {@link ParkrunDataNotAvailableError}
 	 * @see https://github.com/Prouser123/parkrun.js/issues/33
 	 */
 	getSex() {
@@ -117,7 +115,7 @@ export class User {
 	 * Get the user's run count.
 	 *
 	 * @returns {Promise<Number>} Run count.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getRunCount() {
 		/*
@@ -141,7 +139,7 @@ export class User {
 	 * Get a array of the user's runs.
 	 *
 	 * @returns {Promise<Array<RunResult>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getRuns() {
 		const res = await this._core._multiGet(
@@ -183,7 +181,7 @@ export class User {
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
 	 *
-	 * @example
+	 * @example ```ts
 	 *
 	 * const user = .....
 	 *
@@ -197,6 +195,7 @@ export class User {
 	 *   JuniorClub: { id: 'j0', name: 'No Club' },
 	 *   VolunteerClub: { id: 'v1', name: 'Volunteer 25+ Club' }
 	 * }
+	 * ```
 	 */
 	async getClubs() {
 		// We are using /v1/results (from getRuns() as it returns all club statuses at once.)
@@ -228,10 +227,10 @@ export class User {
 	/**
 	 * Get an array of {@link Event} objects for each parkrun that the athlete has run, in alphabetical order.
 	 *
-	 * @see (Borrows from {@link Parkrun#getAthleteParkruns})
+	 * @see (Borrows from {@link Parkrun.getAthleteParkruns})
 	 *
 	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getEvents() {
 		return this._core.getAthleteParkruns(this._athleteID);
