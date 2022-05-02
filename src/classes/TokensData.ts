@@ -1,3 +1,7 @@
+/**
+ * Utility class representing an individual (access) token.
+ * @internal
+ */
 export class TokensData {
 	_access: string;
 	_refresh: string;
