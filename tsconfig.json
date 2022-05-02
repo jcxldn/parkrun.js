@@ -9,7 +9,7 @@
 	},
 	"typedocOptions": {
 		"entryPoints": ["src/index.ts"],
-		"out": "docs/v2",
+		"out": "docs",
 		// typedoc-plugin-header-links
 		"headerLinks": {
 			"GitHub": "https://github.com/Prouser123/parkrun.js"
