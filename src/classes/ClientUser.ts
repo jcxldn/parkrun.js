@@ -147,7 +147,7 @@ export class ClientUser extends User {
 		return this._sex;
 	}
 
-	private _hasNumOfDigits(numberOfDigits, number) {
+	private _hasNumOfDigits(numberOfDigits: number, number: number) {
 		return number.toString().length == numberOfDigits;
 	}
 
@@ -174,17 +174,23 @@ export class ClientUser extends User {
 	 * // example output - 166164059
 	 * ```
 	 */
-	async createFreedomRun(eventNumber, runYear, runMonth, runDay, runTime) {
+	async createFreedomRun(
+		eventNumber: number,
+		runYear: number,
+		runMonth: number,
+		runDay: number,
+		runTime: string
+	) {
 		if (
 			this._hasNumOfDigits(4, runYear) &&
 			this._hasNumOfDigits(2, runMonth) &&
 			this._hasNumOfDigits(2, runDay) &&
-			runMonth <= 12 // haha works because quirky nodejs
+			runMonth <= 12
 		) {
 			const params = new SearchParams([
-				["AthleteID", this.getID()],
-				["EventNumber", eventNumber],
-				["RunDate", runYear + runMonth + runDay],
+				["AthleteID", this.getID().toString()],
+				["EventNumber", eventNumber.toString()],
+				["RunDate", `${runYear}${runMonth}${runDay}`],
 				["RunTime", runTime],
 			]);
 
