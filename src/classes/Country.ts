@@ -24,11 +24,11 @@ export class Country {
 	 * Get an array of all the events in this country.
 	 *
 	 *
-	 * @see (Borrows from {@link Parkrun#getAllEventsByCountry})
+	 * @see (Borrows from {@link Parkrun.getAllEventsByCountry})
 	 * @see Parkrun#getAllEvents
 	 *
 	 * @returns {Promise<Array<Event>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAllEvents() {
 		return await this._core.getAllEventsByCountry(this._code);
@@ -37,11 +37,11 @@ export class Country {
 	/**
 	 * Get an array with the names of all parkrun events in this country, in alphabetical order.
 	 *
-	 * @see (Borrows from {@link Parkrun#getAllEventNamesByCountry})
+	 * @see (Borrows from {@link Parkrun.getAllEventNamesByCountry})
 	 * @see Parkrun#getAllEventNames
 	 *
 	 * @returns {Promise<Array<String>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getAllEventNames() {
 		return await this._core.getAllEventNamesByCountry(this._code);

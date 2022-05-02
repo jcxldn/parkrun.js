@@ -64,7 +64,7 @@ export class ClientUser extends User {
 	 * Gets the mobile number for the currently logged-in user.
 	 *
 	 * @returns {String} mobile number
-	 * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
+	 * @throws {@link ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
 	 */
 	getMobileNumber() {
 		if (this._mobileNumber == null)
@@ -123,7 +123,7 @@ export class ClientUser extends User {
 	 * Get an array of all the user's freedom runs.
 	 *
 	 * @returns {Promise<Array<FreedomRunResult>>}
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getFreedomRuns() {
 		const res = await this._core._multiGet(
@@ -164,8 +164,8 @@ export class ClientUser extends User {
 	 *
 	 * @returns {Promise<Number>} The newly created Freedom Run ID.
 	 *
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
-	 * @throws {Error} Input data error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link Error} Input data error.
 	 *
 	 * @example ```ts
 	 * const user = [...]

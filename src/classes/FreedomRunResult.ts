@@ -34,10 +34,10 @@ export class FreedomRunResult {
 	/**
 	 * Get the event object for the event this took place at.
 	 *
-	 * @see (Borrows from {@link Parkrun#getEvent})
+	 * @see (Borrows from {@link Parkrun.getEvent})
 	 *
 	 * @returns {Promise<Event>} Array of news posts.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	async getEvent() {
 		return this._core.getEvent(this.getEventID());
@@ -47,7 +47,7 @@ export class FreedomRunResult {
 	 *  Get the name of the event that this run took place at.
 	 *
 	 * @returns {String} Event name.
-	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
+	 * @throws {@link ParkrunNetError} ParkrunJS Networking Error.
 	 */
 	getEventName() {
 		return this._event_name;
