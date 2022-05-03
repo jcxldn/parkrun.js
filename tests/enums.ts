@@ -1,51 +1,32 @@
-import {
-	AGEGRADE,
-	calculateEnum,
-	getDisplayName,
-	CLUBS,
-	VOLUNTEER_CLUBS,
-	JUNIOR_CLUBS,
-	_volnFromCount,
-	SeriesID,
-} from "../src";
+import { AgeGrade, CLUBS, VOLUNTEER_CLUBS, JUNIOR_CLUBS, _volnFromCount, SeriesID } from "../src";
 
 import { should, expect } from "chai";
 
 should();
 describe("Enums", () => {
 	describe("AgeGradeEnums", () => {
-		it("Enum | AGEGRADE", done => {
-			expect(AGEGRADE.WORLD_RECORD_BREAKING).to.equal("age_grade_10");
-			expect(AGEGRADE.WORLD_RECORD_MATCH).to.equal("age_grade_9");
-			expect(AGEGRADE.WORLD_CLASS).to.equal("age_grade_4");
-			expect(AGEGRADE.NATIONAL_CLASS).to.equal("age_grade_3");
-			expect(AGEGRADE.REGIONAL_CLASS).to.equal("age_grade_2");
-			expect(AGEGRADE.LOCAL_CLASS).to.equal("age_grade_1");
-			expect(AGEGRADE.NO_GRADE).to.equal("age_grade_0");
+		it("calculateEnum", done => {
+			expect(AgeGrade.calculateEnum(1.1)).to.equal(AgeGrade.WORLD_RECORD_BREAKING);
+			expect(AgeGrade.calculateEnum(1)).to.equal(AgeGrade.WORLD_RECORD_MATCH);
+			expect(AgeGrade.calculateEnum(0.91)).to.equal(AgeGrade.WORLD_CLASS);
+			expect(AgeGrade.calculateEnum(0.9)).to.equal(AgeGrade.NATIONAL_CLASS);
+			expect(AgeGrade.calculateEnum(0.8)).to.equal(AgeGrade.REGIONAL_CLASS);
+			expect(AgeGrade.calculateEnum(0.7)).to.equal(AgeGrade.LOCAL_CLASS);
+			expect(AgeGrade.calculateEnum(0.6)).to.equal(AgeGrade.NO_GRADE);
 
 			done();
 		});
 
-		it("Helper | calculateEnum", done => {
-			expect(calculateEnum(1.1)).to.equal(AGEGRADE.WORLD_RECORD_BREAKING);
-			expect(calculateEnum(1)).to.equal(AGEGRADE.WORLD_RECORD_MATCH);
-			expect(calculateEnum(0.91)).to.equal(AGEGRADE.WORLD_CLASS);
-			expect(calculateEnum(0.9)).to.equal(AGEGRADE.NATIONAL_CLASS);
-			expect(calculateEnum(0.8)).to.equal(AGEGRADE.REGIONAL_CLASS);
-			expect(calculateEnum(0.7)).to.equal(AGEGRADE.LOCAL_CLASS);
-			expect(calculateEnum(0.6)).to.equal(AGEGRADE.NO_GRADE);
-
-			done();
-		});
-
-		it("Helper | getDisplayName", done => {
-			expect(getDisplayName(AGEGRADE.WORLD_RECORD_BREAKING)).to.equal("World Record Breaking");
-			expect(getDisplayName(AGEGRADE.WORLD_RECORD_MATCH)).to.equal("World Record Level");
-			expect(getDisplayName(AGEGRADE.WORLD_CLASS)).to.equal("World Class");
-			expect(getDisplayName(AGEGRADE.NATIONAL_CLASS)).to.equal("National Class");
-			expect(getDisplayName(AGEGRADE.REGIONAL_CLASS)).to.equal("Regional Class");
-			expect(getDisplayName(AGEGRADE.LOCAL_CLASS)).to.equal("Local Class");
-			expect(getDisplayName(AGEGRADE.NO_GRADE)).to.equal("No Grade");
+		it("getDisplayName", done => {
+			expect(AgeGrade.getDisplayName(AgeGrade.WORLD_RECORD_BREAKING)).to.equal(
+				"World Record Breaking"
+			);
+			expect(AgeGrade.getDisplayName(AgeGrade.WORLD_RECORD_MATCH)).to.equal("World Record Level");
+			expect(AgeGrade.getDisplayName(AgeGrade.WORLD_CLASS)).to.equal("World Class");
+			expect(AgeGrade.getDisplayName(AgeGrade.NATIONAL_CLASS)).to.equal("National Class");
+			expect(AgeGrade.getDisplayName(AgeGrade.REGIONAL_CLASS)).to.equal("Regional Class");
+			expect(AgeGrade.getDisplayName(AgeGrade.LOCAL_CLASS)).to.equal("Local Class");
+			expect(AgeGrade.getDisplayName(AgeGrade.NO_GRADE)).to.equal("No Grade");
 
 			done();
 		});
