@@ -1,4 +1,4 @@
-import { AgeGrade } from "../common/enums/AgeGradeEnums";
+import { AgeGrade, AgeGradeUtil } from "../common/enums/AgeGradeEnums";
 import { SeriesID } from "../common";
 
 /*
@@ -54,9 +54,9 @@ export class RunResult {
 
 	constructor(data) {
 		this._age_category = data.AgeCategory;
-		this._age_grading = AgeGrade.calculateEnum(data.AgeGrading);
+		this._age_grading = AgeGradeUtil.calculateEnum(data.AgeGrading);
 		this._age_grading_num = Number.parseFloat(data.AgeGrading);
-		this._age_grading_label = AgeGrade.getDisplayName(this._age_grading);
+		this._age_grading_label = AgeGradeUtil.getDisplayName(this._age_grading);
 		this._user_id = Number.parseInt(data.AthleteID);
 		this._event_date = new Date(data.EventDate);
 		this._event_name = data.EventLongName;
