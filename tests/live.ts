@@ -8,6 +8,9 @@ import {
 	User,
 	Club,
 	ClubType,
+	ClientUser,
+	EventNewsPost,
+	RosterVolunteer,
 } from "../src";
 import { should, assert, expect } from "chai";
 
@@ -76,7 +79,7 @@ describe("Live", () => {
 	});
 
 	describe("Athlete", () => {
-		let athlete: User = null;
+		let athlete: User;
 		before("getAthlete (by id, .then)", async () => {
 			athlete = await client.getAthlete(198825);
 		});
@@ -183,7 +186,7 @@ describe("Live", () => {
 		});
 
 		describe("RunResult", () => {
-			let result = null;
+			let result: RunResult;
 			before(async () => {
 				// Get a single run and save it
 				result = (await athlete.getRuns())[0];
@@ -355,7 +358,7 @@ describe("Live", () => {
 	});
 
 	describe("Client User (Athlete)", () => {
-		let athlete = null;
+		let athlete: ClientUser;
 		before("getMe() (await)", async () => {
 			athlete = await client.getMe();
 		});
@@ -411,7 +414,7 @@ describe("Live", () => {
 		});
 
 		describe("Freedom Runs", () => {
-			let runs = null;
+			let runs: FreedomRunResult[];
 			before(async () => {
 				runs = await athlete.getFreedomRuns();
 
@@ -474,14 +477,14 @@ describe("Live", () => {
 	});
 
 	describe("Event", () => {
-		let event = null;
+		let event: Event;
 		const eventID = 191; // Gunnersbury Parkrun, London, UK. Quite popular.
 		before(async () => {
 			event = await client.getEvent(eventID);
 		});
 
 		describe("EventNewsPost (Arr #0)", () => {
-			let post = null;
+			let post: EventNewsPost;
 			before(async () => {
 				post = (await event.getNews())[0];
 			});
@@ -531,7 +534,7 @@ describe("Live", () => {
 		});
 
 		describe("RosterVolunteer (Arr #0)", () => {
-			let roster = null;
+			let roster: RosterVolunteer;
 			before(async () => {
 				roster = (await event.getRoster())[0];
 			});
@@ -725,8 +728,8 @@ describe("Live", () => {
 	// getStatsByEvent() already tested in Event object!
 
 	describe("Country (using getActiveCountries())", () => {
-		let country = null;
-		let countries = null;
+		let country: Country;
+		let countries: Country[];
 		before(async () => {
 			countries = await client.getActiveCountries();
 			country = countries[0];
