@@ -147,8 +147,8 @@ export class ClientUser extends User {
 		return this._sex;
 	}
 
-	private _hasNumOfDigits(numberOfDigits: number, number: number) {
-		return number.toString().length == numberOfDigits;
+	private _hasNumOfDigits(numberOfDigits: number, number: string) {
+		return number.length == numberOfDigits;
 	}
 
 	/**
@@ -156,11 +156,11 @@ export class ClientUser extends User {
 	 *
 	 * **Please note that Freedom Runs CANNOT be deleted.**
 	 *
-	 * @param {Number} eventNumber
-	 * @param {String} runYear The year of the run (4 digits)
-	 * @param {String} runMonth The month of the run. (2 digits)
-	 * @param {String} runDay The day of the run. (2 digits)
-	 * @param {String} runTime The time of the run (hh:mm:ss)
+	 * @param eventNumber
+	 * @param runYear The year of the run (4 digits)
+	 * @param runMonth The month of the run. (2 digits)
+	 * @param runDay The day of the run. (2 digits)
+	 * @param runTime The time of the run (hh:mm:ss)
 	 *
 	 * @returns {Promise<Number>} The newly created Freedom Run ID.
 	 *
@@ -176,16 +176,16 @@ export class ClientUser extends User {
 	 */
 	async createFreedomRun(
 		eventNumber: number,
-		runYear: number,
-		runMonth: number,
-		runDay: number,
+		runYear: string,
+		runMonth: string,
+		runDay: string,
 		runTime: string
 	) {
 		if (
 			this._hasNumOfDigits(4, runYear) &&
 			this._hasNumOfDigits(2, runMonth) &&
 			this._hasNumOfDigits(2, runDay) &&
-			runMonth <= 12
+			parseInt(runMonth) <= 12 // not the best way to do this!
 		) {
 			const params = new SearchParams([
 				["AthleteID", this.getID().toString()],
