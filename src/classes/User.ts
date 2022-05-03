@@ -2,7 +2,7 @@ import { ParkrunDataNotAvailableError, ParkrunNetError } from "../errors";
 import { AthleteExpandedSchema } from "../schemas/AthleteExpanded";
 import { validate } from "../validate";
 import { HomeRun, Parkrun, RunResult } from "./";
-import ClubsEnums from "../common/ClubsEnums";
+import { Club, ClubUtil, ClubType } from "../common/ClubsEnums";
 
 const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
@@ -157,27 +157,10 @@ export class User {
 		// v2-e1f - [up to] 2x as fast as for loop for this kind of data.
 	}
 
-	// TypeDef for getClubs()
-	/**
-	 * @typedef {Object} clubsResult
-	 *
-	 * @property {Object} ParkrunClub
-	 * @property {String} ParkrunClub.id
-	 * @property {String} ParkrunClub.name
-	 *
-	 * @property {Object} JuniorClub
-	 * @property {String} JuniorClub.id
-	 * @property {String} JuniorClub.name
-	 *
-	 * @property {Object} VolunteerClub
-	 * @property {String} VolunteerClub.id
-	 * @property {String} VolunteerClub.name
-	 */
-
 	/**
 	 * Get the user's Parkrun Clubs (for milestone runs / duties)
 	 *
-	 * @returns {Promise<clubsResult>}
+	 * @see {User.getClubByType} if you want data from only a single club.
 	 * @throws {ParkrunNetError} ParkrunJS Networking Error.
 	 * @throws {ParkrunDataNotAvailableError} Error when no data is available, usually because of a new account with no runs.
 	 *
@@ -190,11 +173,11 @@ export class User {
 	 *
 	 * // Example Response:
 	 *
-	 * {
-	 *   ParkrunClub: { id: 'c3', name: '250+ Club' }
-	 *   JuniorClub: { id: 'j0', name: 'No Club' },
-	 *   VolunteerClub: { id: 'v1', name: 'Volunteer 25+ Club' }
-	 * }
+	 * [
+	 *   { type: ClubType.ADULT, club: Clubs.TWO_HUNDRED_AND_FIFTY },
+	 *   { type: ClubType.JUNIOR, club: Clubs.NONE },
+	 *   { type: ClubType.VOLUNTEER, club: Clubs.TWENTY_FIVE }
+	 * ]
 	 * ```
 	 */
 	async getClubs() {
@@ -214,16 +197,18 @@ export class User {
 		const data = res.data.data.Results[0];
 		if (data == undefined)
 			throw new ParkrunDataNotAvailableError("getClubs, athlete " + this.getID());
-		return {
-			// In the TypeScript rewrite, the "null" enum has been changed to 0.
-			// Let's use tertiary operators to return 0 if the input is null, else return the actual value.
-			ParkrunClub:
-				ClubsEnums.CLUBS[data.parkrunClubMembership == null ? 0 : data.parkrunClubMembership],
-			JuniorClub:
-				ClubsEnums.JUNIOR_CLUBS[data.JuniorClubMembership == null ? 0 : data.parkrunClubMembership],
-			VolunteerClub: ClubsEnums._volnFromCount(data.volcount),
-		};
+		return ClubUtil.calculateFromParkrunResponse(data);
 	}
+
+	/**
+	 * Get a club by it's type (defaults to {@link ClubType.ADULT})
+	 * This default club represents club "milestones" for running a certain number of parkruns.
+	 */
+	async getClubByType(type: ClubType): Promise<Club> {
+		const clubsData = await this.getClubs();
+		return clubsData.find(dat => dat.type == type).club;
+	}
+
 	/**
 	 * Get an array of {@link Event} objects for each parkrun that the athlete has run, in alphabetical order.
 	 *

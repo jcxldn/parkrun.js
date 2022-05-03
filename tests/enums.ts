@@ -1,12 +1,4 @@
-import {
-	AgeGrade,
-	AgeGradeUtil,
-	CLUBS,
-	VOLUNTEER_CLUBS,
-	JUNIOR_CLUBS,
-	_volnFromCount,
-	SeriesID,
-} from "../src";
+import { AgeGrade, AgeGradeUtil, SeriesID } from "../src";
 
 import { should, expect } from "chai";
 
@@ -42,7 +34,9 @@ describe("Enums", () => {
 		});
 	});
 
-	describe("ClubsEnums", () => {
+	// TODO: Need to rewrite these tests
+	// TODO: (Optional): Use nock for e2e coverage for this enum's util functions.
+	/*describe("ClubsEnums", () => {
 		it("Enum | CLUBS", done => {
 			expect(CLUBS[0]).to.deep.equal({
 				id: "c0",
@@ -131,8 +125,9 @@ describe("Enums", () => {
 
 			done();
 		});
-	});
+	}); */
 
+	// TODO: This should really in core.ts?
 	describe("SeriesID", () => {
 		it("getDayOfWeek", done => {
 			expect(SeriesID.getDayOfWeek(1)).to.equal("Saturday");

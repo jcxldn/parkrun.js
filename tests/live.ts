@@ -5,6 +5,9 @@ import {
 	Country,
 	Event,
 	ParkrunDataNotAvailableError,
+	User,
+	Club,
+	ClubType,
 } from "../src";
 import { should, assert, expect } from "chai";
 
@@ -73,7 +76,7 @@ describe("Live", () => {
 	});
 
 	describe("Athlete", () => {
-		let athlete = null;
+		let athlete: User = null;
 		before("getAthlete (by id, .then)", async () => {
 			athlete = await client.getAthlete(198825);
 		});
@@ -306,11 +309,27 @@ describe("Live", () => {
 			athlete
 				.getClubs()
 				.then(data => {
-					expect(data).to.be.an("object");
+					console.log(data);
+					expect(data).to.be.an("array");
 
-					assert(data.ParkrunClub != undefined);
-					assert(data.JuniorClub != undefined);
-					assert(data.VolunteerClub != undefined);
+					// We know this athlete / user is:
+					// Has done 250+ runs (is in 250+ plus runs group)
+					/**
+					 * We know this athlete / user has:
+					 * - Done at least 250 runs
+					 * - Done zero junior runs
+					 * - Has volunteered at least 25 times
+					 */
+					assert(data.length == 3);
+					assert(data[0].club <= Club.TWO_HUNDRED_AND_FIFTY);
+					assert(data[0].type == ClubType.ADULT);
+
+					// This should always be zero (athlete / user is an adult)
+					assert(data[1].club <= Club.NONE);
+					assert(data[1].type == ClubType.JUNIOR);
+
+					assert(data[2].club <= Club.TWENTY_FIVE);
+					assert(data[2].type == ClubType.VOLUNTEER);
 
 					done();
 				})
