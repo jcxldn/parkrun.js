@@ -1,4 +1,4 @@
-import { getDisplayName } from "../common/AgeGradeEnums";
+import { AgeGrade } from "../common/enums/AgeGradeEnums";
 import { SeriesID } from "../common";
 
 /*
@@ -33,7 +33,8 @@ Reason: Nonspecific to individual runs.
  */
 export class RunResult {
 	private _age_category: string;
-	private _age_grading: number;
+	private _age_grading: AgeGrade;
+	private _age_grading_num: number;
 	private _user_id: number;
 	private _event_date: Date;
 	private _event_name: string;
@@ -53,7 +54,9 @@ export class RunResult {
 
 	constructor(data) {
 		this._age_category = data.AgeCategory;
-		this._age_grading = Number.parseFloat(data.AgeGrading);
+		this._age_grading = AgeGrade.calculateEnum(data.AgeGrading);
+		this._age_grading_num = Number.parseFloat(data.AgeGrading);
+		this._age_grading_label = AgeGrade.getDisplayName(this._age_grading);
 		this._user_id = Number.parseInt(data.AthleteID);
 		this._event_date = new Date(data.EventDate);
 		this._event_name = data.EventLongName;
@@ -69,8 +72,6 @@ export class RunResult {
 		this._updated = new Date(data.Updated);
 		this._was_pb = !!new Boolean(data.WasPbRun);
 		this._series_id = Number.parseInt(data.SeriesID);
-
-		this._age_grading_label = getDisplayName(this._age_grading);
 	}
 
 	/**
@@ -83,12 +84,21 @@ export class RunResult {
 	}
 
 	/**
+	 * Get the enum age grade for this run.
+	 *
+	 * @returns {AgeGrade} Age grade represented as an enum.
+	 */
+	getAgeGrading() {
+		return this._age_grading;
+	}
+
+	/**
 	 * Get the *decimal* age grade for this run.
 	 *
 	 * @returns {Number} The decimal age grade as a float.
 	 */
 	getAgeGradingDecimal() {
-		return this._age_grading;
+		return this._age_grading_num;
 	}
 
 	/**
