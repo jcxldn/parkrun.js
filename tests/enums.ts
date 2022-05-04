@@ -1,6 +1,6 @@
-import { AgeGrade, AgeGradeUtil, SeriesID } from "../src";
+import { AgeGrade, AgeGradeUtil, Club, ClubUtil, SeriesID } from "../src";
 
-import { should, expect } from "chai";
+import { assert, should, expect } from "chai";
 
 should();
 describe("Enums", () => {
@@ -31,6 +31,57 @@ describe("Enums", () => {
 			expect(AgeGradeUtil.getDisplayName(AgeGrade.NO_GRADE)).to.equal("No Grade");
 
 			done();
+		});
+	});
+
+	describe("ClubsEnums", () => {
+		it("Clubs have increasing value", done => {
+			expect(Club.NONE).to.eql(0);
+			expect(Club.TEN_JUNIOR).to.eql(1);
+			expect(Club.TWENTY_FIVE).to.eql(2);
+			expect(Club.FIFTY).to.eql(3);
+			expect(Club.ONE_HUNDRED).to.eql(4);
+			expect(Club.TWO_HUNDRED_AND_FIFTY).to.eql(5);
+			expect(Club.FIVE_HUNDRED).to.eql(6);
+
+			done();
+		});
+
+		describe("calculateFromRunCount", () => {
+			const permutations = [
+				// Adult permutations
+				[Club.NONE, 0, 24, 0],
+				[Club.TWENTY_FIVE, 25, 49, 0],
+				[Club.FIFTY, 50, 99, 0],
+				[Club.ONE_HUNDRED, 100, 249, 0],
+				[Club.TWO_HUNDRED_AND_FIFTY, 250, 499, 0],
+				[Club.FIVE_HUNDRED, 500, 501, 0], // Club 500 is the highest club (500+ runs)
+				// Junior permutations
+				[Club.NONE, 0, 9, 1],
+				[Club.TEN_JUNIOR, 10, 24, 1],
+				[Club.TWENTY_FIVE, 25, 49, 1],
+				[Club.FIFTY, 50, 99, 1],
+				[Club.ONE_HUNDRED, 100, 249, 1],
+				[Club.TWO_HUNDRED_AND_FIFTY, 250, 499, 1],
+				[Club.FIVE_HUNDRED, 500, 501, 1], // Club 500 is the highest club (500+ runs)
+			];
+
+			permutations.forEach(permutation => {
+				// Assign array items to variables to make them clearer
+				const club = permutation[0];
+				const clubEnum = Club[club];
+				const minValue = permutation[1];
+				const maxValue = permutation[2];
+				const isJunior = Boolean(permutation[3]);
+
+				// Make a test for each item in the array
+				it(`Club.${clubEnum}, ${minValue}-${maxValue} runs${isJunior ? " (junior)" : ""}`, done => {
+					for (let i = minValue; i <= maxValue; i++) {
+						expect(ClubUtil.calculateFromRunCount(i, isJunior)).to.eql(club);
+					}
+					done();
+				});
+			});
 		});
 	});
 
