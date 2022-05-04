@@ -2,7 +2,7 @@ import { ParkrunDataNotAvailableError, ParkrunNetError } from "../errors";
 import { AthleteExpandedSchema } from "../schemas/AthleteExpanded";
 import { validate } from "../validate";
 import { HomeRun, Parkrun, RunResult } from "./";
-import { Club, ClubUtil, ClubType } from "../common/ClubsEnums";
+import { Club, ClubUtil, ClubType } from "../common";
 
 const capitalize = str => str.toLowerCase().replace(/^\w/, c => c.toUpperCase());
 
