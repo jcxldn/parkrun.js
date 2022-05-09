@@ -47,37 +47,56 @@ describe("Enums", () => {
 			done();
 		});
 
+		const permutations = {
+			adult: [
+				{ club: Club.NONE, min: 0, max: 24 },
+				{ club: Club.TWENTY_FIVE, min: 25, max: 49 },
+				{ club: Club.FIFTY, min: 50, max: 99 },
+				{ club: Club.ONE_HUNDRED, min: 100, max: 249 },
+				{ club: Club.TWO_HUNDRED_AND_FIFTY, min: 250, max: 499 },
+				{ club: Club.FIVE_HUNDRED, min: 500, max: 501 },
+			],
+			junior: [
+				{ club: Club.NONE, min: 0, max: 9 },
+				{ club: Club.TEN_JUNIOR, min: 10, max: 24 },
+				{ club: Club.TWENTY_FIVE, min: 25, max: 49 },
+				{ club: Club.FIFTY, min: 50, max: 99 },
+				{ club: Club.ONE_HUNDRED, min: 100, max: 249 },
+				{ club: Club.TWO_HUNDRED_AND_FIFTY, min: 250, max: 499 },
+				{ club: Club.FIVE_HUNDRED, min: 500, max: 501 },
+			],
+			junior_volunteer: [
+				{ club: Club.NONE, min: 0, max: 9 },
+				{ club: Club.TEN_JUNIOR, min: 10, max: 24 },
+				{ club: Club.TWENTY_FIVE, min: 25, max: 49 },
+				{ club: Club.FIFTY, min: 50, max: 99 },
+				{ club: Club.ONE_HUNDRED, min: 100, max: 249 },
+				{ club: Club.TWO_HUNDRED_AND_FIFTY, min: 250, max: 499 },
+				{ club: Club.FIVE_HUNDRED, min: 500, max: 501 },
+			],
+			volunteer: [
+				{ club: Club.NONE, min: 0, max: 24 },
+				{ club: Club.TWENTY_FIVE, min: 25, max: 49 },
+				{ club: Club.FIFTY, min: 50, max: 99 },
+				{ club: Club.ONE_HUNDRED, min: 100, max: 249 },
+				{ club: Club.TWO_HUNDRED_AND_FIFTY, min: 250, max: 499 },
+				{ club: Club.FIVE_HUNDRED, min: 500, max: 501 },
+			],
+		};
+
 		describe("calculateFromRunCount", () => {
-			const permutations = [
-				// Adult permutations
-				[Club.NONE, 0, 24, 0],
-				[Club.TWENTY_FIVE, 25, 49, 0],
-				[Club.FIFTY, 50, 99, 0],
-				[Club.ONE_HUNDRED, 100, 249, 0],
-				[Club.TWO_HUNDRED_AND_FIFTY, 250, 499, 0],
-				[Club.FIVE_HUNDRED, 500, 501, 0], // Club 500 is the highest club (500+ runs)
-				// Junior permutations
-				[Club.NONE, 0, 9, 1],
-				[Club.TEN_JUNIOR, 10, 24, 1],
-				[Club.TWENTY_FIVE, 25, 49, 1],
-				[Club.FIFTY, 50, 99, 1],
-				[Club.ONE_HUNDRED, 100, 249, 1],
-				[Club.TWO_HUNDRED_AND_FIFTY, 250, 499, 1],
-				[Club.FIVE_HUNDRED, 500, 501, 1], // Club 500 is the highest club (500+ runs)
-			];
+			// Build an array of test cases from the permutations object.
+			const testCases = [];
+			permutations.adult.forEach(perm => testCases.push({ isJunior: false, ...perm }));
+			permutations.junior.forEach(perm => testCases.push({ isJunior: true, ...perm }));
 
-			permutations.forEach(permutation => {
-				// Assign array items to variables to make them clearer
-				const club = permutation[0];
-				const clubEnum = Club[club];
-				const minValue = permutation[1];
-				const maxValue = permutation[2];
-				const isJunior = Boolean(permutation[3]);
-
+			testCases.forEach(testCase => {
 				// Make a test for each item in the array
-				it(`Club.${clubEnum}, ${minValue}-${maxValue} runs${isJunior ? " (junior)" : ""}`, done => {
-					for (let i = minValue; i <= maxValue; i++) {
-						expect(ClubUtil.calculateFromRunCount(i, isJunior)).to.eql(club);
+				it(`Club.${Club[testCase.club]}, ${testCase.min}-${testCase.max} runs${
+					testCase.isJunior ? " (junior)" : ""
+				}`, done => {
+					for (let i = testCase.min; i <= testCase.max; i++) {
+						expect(ClubUtil.calculateFromRunCount(i, testCase.isJunior)).to.eql(testCase.club);
 					}
 					done();
 				});
