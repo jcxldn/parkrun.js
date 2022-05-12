@@ -58,7 +58,7 @@
     "docdash": "^1.2.0",
     "envify": "^4.1.0",
     "fast-text-encoding": "^1.0.3",
-    "glob": "^7.1.6",
+    "glob": "^8.0.2",
     "http-terminator": "^2.0.3",
     "jsdoc": "^3.6.10",
     "lodash.merge": "^4.6.2",
