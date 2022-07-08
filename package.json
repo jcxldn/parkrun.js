@@ -48,7 +48,7 @@
     "@babel/preset-env": "^7.12.11",
     "@babel/register": "^7.12.10",
     "@octokit/app": "^4.3.0",
-    "@octokit/request": "^5.4.13",
+    "@octokit/request": "^6.0.2",
     "async": "^3.1.1",
     "babel-loader": "^8.2.2",
     "backblaze-b2": "git://github.com/yakovkhalinsky/backblaze-b2.git#e9fd2908de95ad16c1e06f85396852f8bb238026",
