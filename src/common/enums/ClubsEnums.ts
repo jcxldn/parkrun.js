@@ -48,7 +48,7 @@ export class ClubUtil {
 
 		return [
 			{ type: ClubType.ADULT, club: this.calculateFromRunCount(res.RunTotal) },
-			{ type: ClubType.JUNIOR, club: this.calculateFromRunCount(res.JuniorRunTotal) },
+			{ type: ClubType.JUNIOR, club: this.calculateFromRunCount(res.JuniorRunTotal, true) },
 			{ type: ClubType.VOLUNTEER, club: this.calculateFromRunCount(res.volcount) },
 		];
 	};
