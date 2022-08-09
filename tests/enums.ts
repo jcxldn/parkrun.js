@@ -1,4 +1,4 @@
-import { AgeGrade, AgeGradeUtil, Club, ClubUtil, SeriesID } from "../src";
+import { AgeGrade, AgeGradeUtil, Club, ClubType, ClubUtil, SeriesID } from "../src";
 
 import { assert, should, expect } from "chai";
 
@@ -99,6 +99,46 @@ describe("Enums", () => {
 						expect(ClubUtil.calculateFromRunCount(i, testCase.isJunior)).to.eql(testCase.club);
 					}
 					done();
+				});
+			});
+		});
+
+		describe("calculateFromParkrunResponse", () => {
+			// This function creates a test for every possible permutation of input data for calculateFromParkrunResponse.
+			// This is intended as a quick way to test the minimum and maximum bounds programatically.
+			const bounds = ["min", "max"];
+
+			// This loop will run twice (one for minimum bounds, one for maximum)
+			bounds.forEach(num => {
+				// Iterate through every adult permutation
+				permutations.adult.forEach(adultPerm => {
+					// Iterate through every junior permutation (nested)
+					permutations.junior.forEach(juniorPerm => {
+						// Iterate through every volunteer permutation (nested)
+						permutations.volunteer.forEach(volunteerPerm => {
+							// For every combination, create a test and name it appropriately
+							it(`${num} bounds - ${Club[adultPerm.club]} (${adultPerm[num]}), ${
+								Club[juniorPerm.club]
+							} (${juniorPerm[num]}), ${Club[volunteerPerm.club]} (${
+								volunteerPerm[num]
+							}), `, done => {
+								// Inner test function
+								// 1. Call calculateFromParkrunResponse with the given data
+								const res = ClubUtil.calculateFromParkrunResponse({
+									RunTotal: adultPerm[num],
+									JuniorRunTotal: juniorPerm[num],
+									volcount: volunteerPerm[num],
+								});
+								// 2. Check that the returned clubs match what we expected.
+								expect(res).to.eql([
+									{ type: ClubType.ADULT, club: adultPerm.club },
+									{ type: ClubType.JUNIOR, club: juniorPerm.club },
+									{ type: ClubType.VOLUNTEER, club: volunteerPerm.club },
+								]);
+								done();
+							});
+						});
+					});
 				});
 			});
 		});
