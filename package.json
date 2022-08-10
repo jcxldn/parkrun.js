@@ -43,7 +43,7 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
-		"@octokit/auth-app": "^3.6.1",
+		"@octokit/auth-app": "^4.0.4",
 		"@octokit/request": "^6.2.0",
 		"@types/async": "^3.2.12",
 		"@types/chai": "^4.3.1",
