@@ -34,6 +34,9 @@ jobs:
       - name: Upload live-only coverage to codecov (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v3
+        with:
+          files: coverage.lcov
+          name: live-coverage
 
       - name: Report live-only coverage to github (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
@@ -58,6 +61,9 @@ jobs:
       - name: Upload mocked-only coverage to codecov (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
         uses: codecov/codecov-action@v3
+        with:
+          files: coverage.lcov
+          name: mocked-coverage
 
       - name: Report mocked-only coverage to github (node 16 only)
         if: matrix.node-version == '16'
