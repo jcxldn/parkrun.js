@@ -72,7 +72,7 @@
 		"serve": "^13.0.2",
 		"ts-loader": "^9.2.9",
 		"ts-node": "^10.5.0",
-		"typedoc": "^0.22.15",
+		"typedoc": "^0.23.10",
 		"typedoc-plugin-header-links": "1.0.0",
 		"typedoc-plugin-mdn-links": "^1.0.6",
 		"typescript": "^4.5.5",
