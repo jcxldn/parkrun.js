@@ -1,0 +1,23 @@
+{
+	"include": ["src/**/*.ts"],
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "dist",
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node"
+	},
+	"typedocOptions": {
+		"entryPoints": ["src/index.ts"],
+		"out": "docs",
+		// typedoc-plugin-header-links
+		"headerLinks": {
+			"GitHub": "https://github.com/Prouser123/parkrun.js"
+		},
+		// Don't show private class members in generated docs
+		"excludePrivate": true,
+
+		// Sort members (eg. methods) - static first
+		"sort": ["static-first"]
+	}
+}

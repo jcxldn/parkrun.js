@@ -12,9 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
 
+      - run: npm install -g npm@latest
+
       - name: Install Dependencies & Build Proxy
         run: npm install && npm run build:cf-workers:webpack
-        
+
       - name: Deploy Proxy
         env:
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}

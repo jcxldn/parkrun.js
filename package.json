@@ -1,81 +1,87 @@
 {
-  "name": "parkrun.js",
-  "version": "1.3.1",
-  "description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
-  "main": "src/classes/parkrun.js",
-  "browser": "dist/parkrun.browser.min.js",
-  "scripts": {
-    "docs:build": "jsdoc -r src -R README.md -c jsdoc.json",
-    "test": "node tests/platform-all/pre_ensure_env.js && npm run test:run && npm run test:run:mock && nyc report",
-    "test:run": "nyc --silent mocha --timeout 20000 --require @babel/register tests/*.js --exit",
-    "test:run:mock": "nyc --silent --no-clean mocha --timeout 20000 --require @babel/register tests/platform-node/*.js --exit",
-    "test:web:build": "node tests/platform-all/pre_ensure_env.js && webpack --config web-tests.webpack.config.js --mode production",
-    "test:web:saucelabs": "run-s build test:web:build test:web:saucelabs:install test:web:saucelabs:run",
-    "test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
-    "test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
-    "test:web:saucelabs:run:main": "cross-env-shell node tests/platform-web/saucelabs/runner.js",
-    "test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID -x https://eu-central-1.saucelabs.com/rest/v1",
-    "build": "rimraf dist/ && npm run build:web",
-    "build:web": "webpack --config webpack.config.js --mode production",
-    "prepublishOnly": "npm run build",
-    "build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
-    "build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
-    "build:cf-workers:deploy": "cd .cf-workers && wrangler publish"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Prouser123/parkrun.js.git"
-  },
-  "keywords": [
-    "parkrun",
-    "api"
-  ],
-  "author": "James Cahill <npm@jcx.ovh>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Prouser123/parkrun.js/issues"
-  },
-  "homepage": "https://parkrun.js.org/",
-  "dependencies": {
-    "@hapi/joi": "^17.1.0",
-    "abab": "^2.0.5",
-    "axios": "^0.21.4",
-    "url-parse": "^1.5.10"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.1",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/register": "^7.12.10",
-    "@octokit/app": "^4.3.0",
-    "@octokit/request": "^5.4.13",
-    "async": "^3.1.1",
-    "babel-loader": "^8.2.2",
-    "backblaze-b2": "git://github.com/yakovkhalinsky/backblaze-b2.git#e9fd2908de95ad16c1e06f85396852f8bb238026",
-    "chai": "^4.2.0",
-    "codecov": "^3.8.1",
-    "cross-env": "^7.0.3",
-    "docdash": "^1.2.0",
-    "envify": "^4.1.0",
-    "fast-text-encoding": "^1.0.3",
-    "glob": "^7.1.6",
-    "http-terminator": "^2.0.3",
-    "jsdoc": "^3.6.10",
-    "lodash.merge": "^4.6.2",
-    "mocha": "^9.2.1",
-    "nock": "^13.0.6",
-    "npm-run-all": "^4.1.5",
-    "nyc": "^15.1.0",
-    "promise-retry": "^2.0.1",
-    "regenerator-runtime": "^0.13.7",
-    "rimraf": "^3.0.2",
-    "selenium-webdriver": "^4.0.0-alpha.8",
-    "serve": "^13.0.2",
-    "webpack": "^5.69.1",
-    "webpack-bundle-analyzer": "^4.5.0",
-    "webpack-cli": "^4.9.2"
-  },
-  "engines": {
-    "node": ">=10.12.0"
-  }
+	"name": "parkrun.js",
+	"version": "1.3.1",
+	"description": "A JavaScript implementation of the Parkrun API gathered from reverse-engineering the official app. ",
+	"main": "src/classes/parkrun.js",
+	"browser": "dist/parkrun.browser.min.js",
+	"scripts": {
+		"docs:build": "typedoc --validation.invalidLink",
+		"test": "node tests/platform-all/pre_ensure_env.ts && npm run test:run && npm run test:run:mock && nyc report",
+		"test:run": "cross-env TS_NODE_PROJECT='./tests/tsconfig.test.json' nyc --silent mocha --timeout 20000 -r ts-node/register tests/*.ts --exit",
+		"test:run:mock": "cross-env TS_NODE_PROJECT='./tests/tsconfig.test.json' nyc --silent --no-clean mocha --timeout 20000 --require ts-node/register tests/platform-node/*.ts --exit",
+		"test:web:build": "node tests/platform-all/pre_ensure_env.ts && webpack --config tests/web-tests.webpack.config.js --mode production",
+		"test:web:saucelabs": "run-s build test:web:build test:web:saucelabs:install test:web:saucelabs:run",
+		"test:web:saucelabs:install": "cross-env-shell .github/ci/install-sauceconnect.sh",
+		"test:web:saucelabs:run": "run-p -l test:web:saucelabs:run:proxy test:web:saucelabs:run:main",
+		"test:web:saucelabs:run:main": "cross-env TS_NODE_PROJECT='./tests/platform-web/saucelabs/tsconfig.saucelabs-test.json' cross-env-shell ts-node tests/platform-web/saucelabs/runner.ts",
+		"test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID --region eu-central",
+		"build": "rimraf dist/ && npm run build:web",
+		"build:web": "webpack --config webpack.config.js --mode production",
+		"prepublishOnly": "npm run build",
+		"build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
+		"build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
+		"build:cf-workers:deploy": "cd .cf-workers && wrangler publish"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Prouser123/parkrun.js.git"
+	},
+	"keywords": [
+		"parkrun",
+		"api"
+	],
+	"author": "James Cahill <npm@jcx.ovh>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Prouser123/parkrun.js/issues"
+	},
+	"homepage": "https://parkrun.js.org/",
+	"dependencies": {
+		"abab": "^2.0.5",
+		"axios": "^0.21.4",
+		"joi": "^17.6.0"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.12.10",
+		"@octokit/auth-app": "^3.6.1",
+		"@octokit/request": "^5.6.3",
+		"@types/async": "^3.2.12",
+		"@types/chai": "^4.3.1",
+		"@types/http-terminator": "^2.0.2",
+		"@types/lodash": "^4.14.179",
+		"@types/mocha": "^9.1.0",
+		"@types/serve-handler": "^6.1.1",
+		"async": "^3.2.3",
+		"babel-loader": "^8.2.5",
+		"backblaze-b2": "^1.7.0",
+		"chai": "^4.3.6",
+		"codecov": "^3.8.1",
+		"cross-env": "^7.0.3",
+		"fast-text-encoding": "^1.0.3",
+		"glob": "^7.1.6",
+		"http-terminator": "^2.0.3",
+		"lodash.merge": "^4.6.2",
+		"mocha": "^9.2.1",
+		"nock": "^13.0.6",
+		"npm-run-all": "^4.1.5",
+		"nyc": "^15.1.0",
+		"prettier": "^2.5.1",
+		"promise-retry": "^2.0.1",
+		"regenerator-runtime": "^0.13.9",
+		"rimraf": "^3.0.2",
+		"selenium-webdriver": "^4.0.0-alpha.8",
+		"serve": "^13.0.2",
+		"ts-loader": "^9.2.9",
+		"ts-node": "^10.5.0",
+		"typedoc": "^0.22.15",
+		"typedoc-plugin-header-links": "1.0.0",
+		"typedoc-plugin-mdn-links": "^1.0.6",
+		"typescript": "^4.5.5",
+		"webpack": "^5.69.1",
+		"webpack-bundle-analyzer": "^4.5.0",
+		"webpack-cli": "^4.9.2"
+	},
+	"engines": {
+		"node": ">=10.12.0"
+	}
 }
