@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         # Mocha 8's min spec is 10.12, but 10.x is no longer supported by npm.
-        node-version: ["12", "14", "15", "16"]
+        node-version: ["14", "16", "18"]
     steps:
       - uses: actions/checkout@v2
 
