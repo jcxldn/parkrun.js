@@ -38,7 +38,7 @@
 	"homepage": "https://parkrun.js.org/",
 	"dependencies": {
 		"abab": "^2.0.5",
-		"axios": "^0.21.4",
+		"axios": "^0.27.2",
 		"joi": "^17.6.0"
 	},
 	"devDependencies": {
