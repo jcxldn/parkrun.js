@@ -28,9 +28,12 @@ jobs:
           ID: ${{ secrets.CI_PARKRUN_ID }}
           PASS: ${{ secrets.CI_PARKRUN_PASS }}
 
-      - name: Report live-only coverage to codecov (node 16 only)
+      - name: Prepare live-only coverage report for codecov (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-        run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+        run: npx nyc report --reporter=text-lcov > coverage.lcov
+      - name: Upload live-only coverage to codecov (node 16 only)
+        if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        uses: codecov/codecov-action@v3
 
       - name: Report live-only coverage to github (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
@@ -49,9 +52,12 @@ jobs:
 
         # Only report to codecov on master
         # Live tests are not being ran, so codecov will give incorrect results on other branches (eg. -50% coverage)
-      - name: Report mocked-only coverage to codecov (node 16 only)
+      - name: Prepare mocked-only coverage report for codecov (node 16 only)
         if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
-        run: npx nyc report --reporter=text-lcov > coverage.lcov && npx codecov
+        run: npx nyc report --reporter=text-lcov > coverage.lcov
+      - name: Upload mocked-only coverage to codecov (node 16 only)
+        if: matrix.node-version == '16' && github.ref == 'refs/heads/master' && github.actor != 'dependabot[bot]'
+        uses: codecov/codecov-action@v3
 
       - name: Report mocked-only coverage to github (node 16 only)
         if: matrix.node-version == '16'

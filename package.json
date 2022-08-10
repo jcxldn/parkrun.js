@@ -55,7 +55,6 @@
 		"babel-loader": "^8.2.5",
 		"backblaze-b2": "^1.7.0",
 		"chai": "^4.3.6",
-		"codecov": "^3.8.1",
 		"cross-env": "^7.0.3",
 		"fast-text-encoding": "^1.0.3",
 		"glob": "^8.0.3",
