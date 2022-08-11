@@ -37,7 +37,7 @@
 	},
 	"homepage": "https://parkrun.js.org/",
 	"dependencies": {
-		"abab": "^2.0.5",
+		"abab": "^2.0.6",
 		"axios": "^0.27.2",
 		"joi": "^17.6.0"
 	},
@@ -56,20 +56,20 @@
 		"backblaze-b2": "^1.7.0",
 		"chai": "^4.3.6",
 		"cross-env": "^7.0.3",
-		"fast-text-encoding": "^1.0.3",
+		"fast-text-encoding": "^1.0.4",
 		"glob": "^8.0.3",
 		"http-terminator": "^3.2.0",
 		"lodash.merge": "^4.6.2",
 		"mocha": "^10.0.0",
-		"nock": "^13.0.6",
+		"nock": "^13.2.9",
 		"npm-run-all": "^4.1.5",
 		"nyc": "^15.1.0",
-		"prettier": "^2.5.1",
+		"prettier": "^2.7.1",
 		"promise-retry": "^2.0.1",
 		"regenerator-runtime": "^0.13.9",
 		"rimraf": "^3.0.2",
 		"selenium-webdriver": "^4.0.0-alpha.8",
-		"serve": "^13.0.2",
+		"serve": "^14.0.1",
 		"ts-loader": "^9.2.9",
 		"ts-node": "^10.5.0",
 		"typedoc": "^0.23.10",
@@ -78,7 +78,7 @@
 		"typescript": "^4.7.4",
 		"webpack": "^5.69.1",
 		"webpack-bundle-analyzer": "^4.5.0",
-		"webpack-cli": "^4.9.2"
+		"webpack-cli": "^4.10.0"
 	},
 	"engines": {
 		"node": ">=10.12.0"
