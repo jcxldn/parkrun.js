@@ -10,9 +10,9 @@ jobs:
         # Mocha 8's min spec is 10.12, but 10.x is no longer supported by npm.
         node-version: ["14", "16", "18"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -79,9 +79,9 @@ jobs:
         # Saucelabs uses a FQDN that maps to localhost to run tests against
         run: echo "127.0.0.1 web_tests.parkrun.js.invalid" | sudo tee -a /etc/hosts
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v3
         with:
           node-version: "16"
 
