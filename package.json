@@ -17,7 +17,7 @@
 		"test:web:saucelabs:run:proxy": "cross-env-shell ./.ci_tmp/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $GITHUB_RUN_ID --region eu-central",
 		"build": "rimraf dist/ && npm run build:web",
 		"build:web": "webpack --config webpack.config.js --mode production",
-		"prepublishOnly": "npm run build",
+		"prepack": "npm run build",
 		"build:cf-workers": "npm run build:cf-workers:webpack && npm run build:cf-workers:deploy",
 		"build:cf-workers:webpack": "cd .cf-workers && webpack --config webpack.config.js --mode production",
 		"build:cf-workers:deploy": "cd .cf-workers && wrangler publish"
